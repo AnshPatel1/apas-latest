@@ -3,9 +3,11 @@
 apas-2-decrypted.csv
 db.sqlite3
 *.ipynb
-*/migrations/
+**/migrations/**
 media/
 .env
 exports/
 .idea/
 prepopulated/
+staticfiles/
+static/
