@@ -29,7 +29,8 @@ class RO1MainView:
                 try:
                     context['file'] = StaffAppraisalFile.objects.get(user=request.user)
                 except StaffAppraisalFile.DoesNotExist:
-                    context['file'] = StaffAppraisalFile.create(dt.datetime.now().year, request.user)
+                    config = StaffAppraisalCycleConfiguration.objects.filter(is_active=True).first()
+                    context['file'] = StaffAppraisalFile.create(config.year, request.user)
 
                     context['file'].save()
 

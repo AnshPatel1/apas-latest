@@ -24,8 +24,10 @@ class StaffViewSet:
             if request.user.roles == 'stf':
                 try:
                     file = StaffAppraisalFile.objects.get(user=request.user)
+
                 except StaffAppraisalFile.DoesNotExist:
-                    year = dt.now().year
+                    config = StaffAppraisalCycleConfiguration.objects.filter(is_active=True).first()
+                    year = config.year
                     file = StaffAppraisalFile.create(year, request.user)
                     file.save()
                 context = {}
@@ -103,7 +105,8 @@ class StaffViewSet:
                 try:
                     file = StaffAppraisalFile.objects.get(user=request.user)
                 except StaffAppraisalFile.DoesNotExist:
-                    year = datetime.now().year
+                    config = StaffAppraisalCycleConfiguration.objects.filter(is_active=True).first()
+                    year = config.year
                     file = StaffAppraisalFile.create(year, request.user)
                     file.save()
                 context = {}
@@ -240,7 +243,8 @@ class StaffViewSet:
                 file = StaffAppraisalFile.objects.get(user=request.user)
                 context['file'] = file
             except StaffAppraisalFile.DoesNotExist:
-                year = datetime.now().year
+                config = StaffAppraisalCycleConfiguration.objects.filter(is_active=True).first()
+                year = config.year
                 file = StaffAppraisalFile.create(year, request.user)
 
             context['cycle'], context['stage'], context['today'] = HelperFunctions.get_cycles()
@@ -338,7 +342,8 @@ class StaffViewSet:
             try:
                 file = StaffAppraisalFile.objects.get(user=request.user)
             except StaffAppraisalFile.DoesNotExist:
-                year = datetime.now().year
+                config = StaffAppraisalCycleConfiguration.objects.filter(is_active=True).first()
+                year = config.year
                 file = StaffAppraisalFile.create(year, request.user)
 
             context['cycle'], context['stage'], context['today'] = HelperFunctions.get_cycles()
@@ -419,11 +424,13 @@ class StaffViewSet:
                 # create a new staff appraisal file
                 try:
                     file = StaffAppraisalFile.objects.get(user=request.user)
+                    config = StaffAppraisalCycleConfiguration.objects.filter(is_active=True).first()
                 except StaffAppraisalFile.DoesNotExist:
                     file = None
+                    config = None
                 if file is None:
                     # get current year as int
-                    year = datetime.now().year
+                    year = config.year
                     file = StaffAppraisalFile.create(year=year, user=request.user)
                     file.save()
 
