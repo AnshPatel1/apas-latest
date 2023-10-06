@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        class="light-style layout-menu-fixed layout-navbar-fixed layout-menu-collapsed"
+        dir="ltr"
+        data-theme="theme-default"
+        data-assets-path="/static/assets/"
+        data-template="vertical-menu-template-free"
+>
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>
+        APAS - Result
+    </title>
+
+    <link rel="icon" type="image/x-icon"
+          href="/media/admin-interface/favicon/Pandit_Deendayal_Energy_University_logo-2.png">
+
+    <meta name="description" content=""/>
+
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"
+    />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="/static/assets/vendor/fonts/boxicons.css"/>
+    <link rel="stylesheet" href="/static/assets/vendor/css/tm2.css"/>
+    <script src="https://kit.fontawesome.com/5fbd3e2d5f.js" crossorigin="anonymous"></script>
+
+    <!-- Core CSS -->
+    <link
+            rel="stylesheet"
+            href="/static/assets/vendor/css/core.css"
+            class="template-customizer-core-css"
+    />
+    <link
+            rel="stylesheet"
+            href="/static/assets/vendor/css/theme-default.css"
+            class="template-customizer-theme-css"
+    />
+    <link rel="stylesheet" href="/static/assets/css/demo.css"/>
+
+    <!-- Vendors CSS -->
+    <link
+            rel="stylesheet"
+            href="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"
+    />
+
+    <link
+            rel="stylesheet"
+            href="/static/assets/vendor/libs/apex-charts/apex-charts.css"
+    />
+    <style type="text/css" media="print">
+        @page {
+            size: landscape;
+        }
+    </style>
+    <!-- Page CSS -->
+
+    <!-- Helpers -->
+    <script src="/static/assets/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="/static/assets/js/config.js"></script>
+</head>
+
+<body>
+
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <!-- Menu -->
+
+        {% include 'html/faculty/science/includes/sidebar.html' %}
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme justify-content-between"
+                 id="layout-navbar">
+                <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                    <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                        <i class="bx bx-menu bx-sm"></i>
+                    </a>
+                </div>
+
+                <div class="navbar-nav-right d-flex align-items-center justify-content-center" id="navbar-collapse">
+                    <div class="navbar-nav align-items-center">
+                        <div class="nav-item d-flex align-items-center">
+                            <i class="bx bx-user fs-4 lh-0"></i>
+                            <strong>&nbsp; &nbsp;{{ request.user.full_name }}</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-end text-danger">
+                    <i class="bx bx-arrow-back"></i>
+                    <a class="nav-item nav-link px-0" href="{% url 'home' %}">
+                        Back
+                    </a>
+                </div>
+            </nav>
+
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+
+                <!-- Content -->
+
+                <div class="container-p-y ps-3 pe-3">
+                    {% if not can_submit %}
+                        <div class="row mb-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4>Summary</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>
+                                            <strong>All Sections need to be saved before you can submit your appraisal
+                                                form</strong>
+                                        </p>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped" id="review-table">
+                                                <thead>
+                                                <tr>
+                                                    <th class="col-3">Name</th>
+                                                    <th>Status</th>
+                                                    <th>Action Required</th>
+                                                    <th>Review</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody class="table-border-bottom-0" id="review-list">
+                                                <tr class="visible">
+                                                    <td>
+                                                        <i class="menu-icon tf-icons bx {% if not file.ro2_validator.teaching_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                                                           style="color: {% if not file.ro2_validator.teaching_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                                                        <strong>Teaching</strong>
+                                                    </td>
+
+                                                    <td>
+                                                        {% if not file.ro2_validator.teaching_validated %}
+                                                            <span class="badge bg-label-danger me-1">Pending</span>
+                                                        {% else %}
+                                                            <span class="badge bg-label-success me-1">Data Received</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.teaching_validated %}
+                                                            <span>Enter valid data for all parameters and click the <strong>green Save button</strong> at the bottom</span>
+                                                        {% else %}
+                                                            <span>No actions required</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% if page_name != "faculty-home" %}../{% endif %}teaching/"
+                                                           class="menu-link">
+                                                            <button type="button" id="add-btn"
+                                                                    class="btn btn-outline-primary">
+                                                                <span class="tf-icons bx bx-edit-alt"></span>&nbsp;
+                                                                Review
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr class="visible">
+                                                    <td>
+                                                        <i class="menu-icon tf-icons bx {% if not file.ro2_validator.research_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                                                           style="color: {% if not file.ro2_validator.research_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                                                        <strong>Research</strong>
+                                                    </td>
+
+                                                    <td>
+                                                        {% if not file.ro2_validator.research_validated %}
+                                                            <span class="badge bg-label-danger me-1">Pending</span>
+                                                        {% else %}
+                                                            <span class="badge bg-label-success me-1">Data Received</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.research_validated %}
+                                                            <span>Enter valid data for all parameters and click the <strong>green Save button</strong> at the bottom</span>
+                                                        {% else %}
+                                                            <span>No actions required</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% if page_name != "faculty-home" %}../{% endif %}research/"
+                                                           class="menu-link">
+                                                            <button type="button" id="add-btn"
+                                                                    class="btn btn-outline-primary">
+                                                                <span class="tf-icons bx bx-edit-alt"></span>&nbsp;
+                                                                Review
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr class="visible">
+                                                    <td>
+                                                        <i class="menu-icon tf-icons bx {% if not file.ro2_validator.project_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                                                           style="color: {% if not file.ro2_validator.project_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                                                        <strong>Project</strong>
+                                                    </td>
+
+                                                    <td>
+                                                        {% if not file.ro2_validator.project_validated %}
+                                                            <span class="badge bg-label-danger me-1">Pending</span>
+                                                        {% else %}
+                                                            <span class="badge bg-label-success me-1">Data Received</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.project_validated %}
+                                                            <span>Enter valid data for all parameters and click the <strong>green Save button</strong> at the bottom</span>
+                                                        {% else %}
+                                                            <span>No actions required</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% if page_name != "faculty-home" %}../{% endif %}project/"
+                                                           class="menu-link">
+                                                            <button type="button" id="add-btn"
+                                                                    class="btn btn-outline-primary">
+                                                                <span class="tf-icons bx bx-edit-alt"></span>&nbsp;
+                                                                Review
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                {% if file.user.designation_abbreviation != 'assistant_prof_on_contract' %}
+                                                    <tr class="visible">
+                                                        <td>
+                                                            <i class="menu-icon tf-icons bx {% if not file.ro2_validator.phd_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                                                               style="color: {% if not file.ro2_validator.phd_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                                                            <strong>PhD Guidance</strong>
+                                                        </td>
+
+                                                        <td>
+                                                            {% if not file.ro2_validator.phd_validated %}
+                                                                <span class="badge bg-label-danger me-1">Pending</span>
+                                                            {% else %}
+                                                                <span class="badge bg-label-success me-1">Data Received</span>
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>
+                                                            {% if not file.ro2_validator.phd_validated %}
+                                                                <span>Enter valid data for all parameters and click the <strong>green Save button</strong> at the bottom</span>
+                                                            {% else %}
+                                                                <span>No actions required</span>
+                                                            {% endif %}
+                                                        </td>
+                                                        <td>
+                                                            <a href="{% if page_name != "faculty-home" %}../{% endif %}phd-guidance/"
+                                                               class="menu-link">
+                                                                <button type="button" id="add-btn"
+                                                                        class="btn btn-outline-primary">
+                                                                    <span class="tf-icons bx bx-edit-alt"></span>&nbsp;
+                                                                    Review
+                                                                </button>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                {% endif %}
+                                                {#                                                <tr class="visible">#}
+                                                {#                                                    <td>#}
+                                                {#                                                        <i class="menu-icon tf-icons bx {% if not file.ro2_validator.dissertation_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"#}
+                                                {#                                                           style="color: {% if not file.ro2_validator.dissertation_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>#}
+                                                {#                                                        <strong>Masters' and Bachelors' Dissertation</strong>#}
+                                                {#                                                    </td>#}
+                                                {##}
+                                                {#                                                    <td>#}
+                                                {#                                                        {% if not file.ro2_validator.dissertation_validated %}#}
+                                                {#                                                            <span class="badge bg-label-danger me-1">Pending</span>#}
+                                                {#                                                        {% else %}#}
+                                                {#                                                            <span class="badge bg-label-success me-1">Data Received</span>#}
+                                                {#                                                        {% endif %}#}
+                                                {#                                                    </td>#}
+                                                {#                                                    <td>#}
+                                                {#                                                        {% if not file.ro2_validator.dissertation_validated %}#}
+                                                {#                                                            <span>Enter valid data for all parameters and click the <strong>green Save button</strong> at the bottom</span>#}
+                                                {#                                                        {% else %}#}
+                                                {#                                                            <span>No actions required</span>#}
+                                                {#                                                        {% endif %}#}
+                                                {#                                                    </td>#}
+                                                {#                                                    <td>#}
+                                                {#                                                        <a href="{% if page_name != "faculty-home" %}../{% endif %}dissertation/"#}
+                                                {#                                                           class="menu-link">#}
+                                                {##}
+                                                {#                                                            <button type="button" id="add-btn"#}
+                                                {#                                                                    class="btn btn-outline-primary">#}
+                                                {#                                                                <span class="tf-icons bx bx-edit-alt"></span>&nbsp;#}
+                                                {#                                                                Review#}
+                                                {#                                                            </button>#}
+                                                {#                                                        </a>#}
+                                                {#                                                    </td>#}
+                                                {#                                                </tr>#}
+
+                                                <tr class="visible">
+                                                    <td>
+                                                        <i class="menu-icon tf-icons bx {% if not file.ro2_validator.patents_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                                                           style="color: {% if not file.ro2_validator.patents_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                                                        <strong>Patent</strong>
+                                                        <br>
+                                                        OR <strong>Faculty Advisor</strong>
+                                                        <br>(Only for Assistant Professor on Contract)
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.patents_validated %}
+                                                            <span class="badge bg-label-danger me-1">Pending</span>
+                                                        {% else %}
+                                                            <span class="badge bg-label-success me-1">Data Received</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.patents_validated %}
+                                                            <span>Enter valid data for all parameters and click the <strong>green Save button</strong> at the bottom</span>
+                                                        {% else %}
+                                                            <span>No actions required</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% if page_name != "faculty-home" %}../{% endif %}patent/"
+                                                           class="menu-link">
+                                                            <button type="button" id="add-btn"
+                                                                    class="btn btn-outline-primary">
+                                                                <span class="tf-icons bx bx-edit-alt"></span>&nbsp;
+                                                                Review
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr class="visible">
+                                                    <td>
+                                                        <i class="menu-icon tf-icons bx {% if not file.ro2_validator.award_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                                                           style="color: {% if not file.ro2_validator.award_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                                                        <strong>Recognition / Awards</strong>
+                                                    </td>
+
+                                                    <td>
+                                                        {% if not file.ro2_validator.award_validated %}
+                                                            <span class="badge bg-label-danger me-1">Pending</span>
+                                                        {% else %}
+                                                            <span class="badge bg-label-success me-1">Data Received</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.award_validated %}
+                                                            <span>Enter valid data for all parameters and click the <strong>green Save button</strong> at the bottom</span>
+                                                        {% else %}
+                                                            <span>No actions required</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% if page_name != "faculty-home" %}../{% endif %}award/"
+                                                           class="menu-link">
+                                                            <button type="button" id="add-btn"
+                                                                    class="btn btn-outline-primary">
+                                                                <span class="tf-icons bx bx-edit-alt"></span>&nbsp;
+                                                                Review
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                {#                                                <tr class="visible">#}
+                                                {#                                                    <td>#}
+                                                {#                                                        <i class="menu-icon tf-icons bx {% if not file.ro2_validator.consultancy_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"#}
+                                                {#                                                           style="color: {% if not file.ro2_validator.consultancy_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>#}
+                                                {#                                                        <strong>Consultancy</strong>#}
+                                                {#                                                        <br>#}
+                                                {#                                                        OR <strong>Industry Collaboration</strong>#}
+                                                {#                                                        <br>(Only for Assistant Professor on Contract)#}
+                                                {#                                                    </td>#}
+                                                {#                                                    <td>#}
+                                                {#                                                        {% if not file.ro2_validator.consultancy_validated %}#}
+                                                {#                                                            <span class="badge bg-label-danger me-1">Pending</span>#}
+                                                {#                                                        {% else %}#}
+                                                {#                                                            <span class="badge bg-label-success me-1">Data Received</span>#}
+                                                {#                                                        {% endif %}#}
+                                                {#                                                    </td>#}
+                                                {#                                                    <td>#}
+                                                {#                                                        {% if not file.ro2_validator.consultancy_validated %}#}
+                                                {#                                                            <span>Enter valid data for all parameters and click the <strong>green Save button</strong> at the bottom</span>#}
+                                                {#                                                        {% else %}#}
+                                                {#                                                            <span>No actions required</span>#}
+                                                {#                                                        {% endif %}#}
+                                                {#                                                    </td>#}
+                                                {#                                                    <td>#}
+                                                {#                                                        <a href="{% if page_name != "faculty-home" %}../{% endif %}consultancy/"#}
+                                                {#                                                           class="menu-link">#}
+                                                {#                                                            <button type="button" id="add-btn"#}
+                                                {#                                                                    class="btn btn-outline-primary">#}
+                                                {#                                                                <span class="tf-icons bx bx-edit-alt"></span>&nbsp;#}
+                                                {#                                                                Review#}
+                                                {#                                                            </button>#}
+                                                {#                                                        </a>#}
+                                                {#                                                    </td>#}
+                                                {#                                                </tr>#}
+                                                <tr class="visible">
+                                                    <td>
+                                                        <i class="menu-icon tf-icons bx {% if not file.ro2_validator.academia_collab_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                                                           style="color: {% if not file.ro2_validator.academia_collab_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                                                        <strong>Academia Collaboration</strong>
+                                                    </td>
+
+                                                    <td>
+                                                        {% if not file.ro2_validator.academia_collab_validated %}
+                                                            <span class="badge bg-label-danger me-1">Pending</span>
+                                                        {% else %}
+                                                            <span class="badge bg-label-success me-1">Data Received</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.academia_collab_validated %}
+                                                            <span>Enter valid data for all parameters and click the <strong>green Save button</strong> at the bottom</span>
+                                                        {% else %}
+                                                            <span>No actions required</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% if page_name != "faculty-home" %}../{% endif %}academia-collab/"
+                                                           class="menu-link">
+                                                            <button type="button" id="add-btn"
+                                                                    class="btn btn-outline-primary">
+                                                                <span class="tf-icons bx bx-edit-alt"></span>&nbsp;
+                                                                Review
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr class="visible">
+                                                    <td>
+                                                        <i class="menu-icon tf-icons bx {% if not file.ro2_validator.arranging_conferences_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                                                           style="color: {% if not file.ro2_validator.arranging_conferences_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                                                        <strong>Arranging Conferences</strong>
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.arranging_conferences_validated %}
+                                                            <span class="badge bg-label-danger me-1">Pending</span>
+                                                        {% else %}
+                                                            <span class="badge bg-label-success me-1">Data Received</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.arranging_conferences_validated %}
+                                                            <span>Enter valid data for all parameters and click the <strong>green Save button</strong> at the bottom</span>
+                                                        {% else %}
+                                                            <span>No actions required</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% if pagename != "staff-review-home" %}../{% endif %}arranging-conference/"
+                                                           class="menu-link">
+                                                            <button type="button" id="add-btn"
+                                                                    class="btn btn-outline-primary">
+                                                                <span class="tf-icons bx bx-edit-alt"></span>&nbsp;
+                                                                Review
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr class="visible">
+                                                    <td>
+                                                        <i class="menu-icon tf-icons bx {% if not file.ro2_validator.mentorship_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                                                           style="color: {% if not file.ro2_validator.mentorship_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                                                        <strong>Mentorship</strong>
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.mentorship_validated %}
+                                                            <span class="badge bg-label-danger me-1">Pending</span>
+                                                        {% else %}
+                                                            <span class="badge bg-label-success me-1">Data Received</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.mentorship_validated %}
+                                                            <span>Enter valid data for all parameters and click the <strong>green Save button</strong> at the bottom</span>
+                                                        {% else %}
+                                                            <span>No actions required</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% if pagename != "staff-review-home" %}../{% endif %}mentorship/"
+                                                           class="menu-link">
+                                                            <button type="button" id="add-btn"
+                                                                    class="btn btn-outline-primary">
+                                                                <span class="tf-icons bx bx-edit-alt"></span>&nbsp;
+                                                                Review
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr class="visible">
+                                                    <td>
+                                                        <i class="menu-icon tf-icons bx {% if not file.ro2_validator.attending_conferences_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                                                           style="color: {% if not file.ro2_validator.attending_conferences_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                                                        <strong>Attending Conferences</strong>
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.attending_conferences_validated %}
+                                                            <span class="badge bg-label-danger me-1">Pending</span>
+                                                        {% else %}
+                                                            <span class="badge bg-label-success me-1">Data Received</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.attending_conferences_validated %}
+                                                            <span>Enter valid data for all parameters and click the <strong>green Save button</strong> at the bottom</span>
+                                                        {% else %}
+                                                            <span>No actions required</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% if page_name != "faculty-home" %}../{% endif %}attending-conference/"
+                                                           class="menu-link">
+                                                            <button type="button" id="add-btn"
+                                                                    class="btn btn-outline-primary">
+                                                                <span class="tf-icons bx bx-edit-alt"></span>&nbsp;
+                                                                Review
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr class="visible">
+                                                    <td>
+                                                        <i class="menu-icon tf-icons bx {% if not file.ro2_validator.community_development_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                                                           style="color: {% if not file.ro2_validator.community_development_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                                                        <strong>Community Development</strong>
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.community_development_validated %}
+                                                            <span class="badge bg-label-danger me-1">Pending</span>
+                                                        {% else %}
+                                                            <span class="badge bg-label-success me-1">Data Received</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.community_development_validated %}
+                                                            <span>Enter valid data for all parameters and click the <strong>green Save button</strong> at the bottom</span>
+                                                        {% else %}
+                                                            <span>No actions required</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% if page_name != "faculty-home" %}../{% endif %}community-development/"
+                                                           class="menu-link">
+                                                            <button type="button" id="add-btn"
+                                                                    class="btn btn-outline-primary">
+                                                                <span class="tf-icons bx bx-edit-alt"></span>&nbsp;
+                                                                Review
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr class="visible">
+                                                    <td>
+                                                        <i class="menu-icon tf-icons bx {% if not file.ro2_validator.extra_curricular_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                                                           style="color: {% if not file.ro2_validator.extra_curricular_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                                                        <strong>Extra Curricular</strong>
+                                                    </td>
+
+                                                    <td>
+                                                        {% if not file.ro2_validator.extra_curricular_validated %}
+                                                            <span class="badge bg-label-danger me-1">Pending</span>
+                                                        {% else %}
+                                                            <span class="badge bg-label-success me-1">Data Received</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.extra_curricular_validated %}
+                                                            <span>Enter valid data for all parameters and click the <strong>green Save button</strong> at the bottom</span>
+                                                        {% else %}
+                                                            <span>No actions required</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% if page_name != "faculty-home" %}../{% endif %}extra-curricular/"
+                                                           class="menu-link">
+                                                            <button type="button" id="add-btn"
+                                                                    class="btn btn-outline-primary">
+                                                                <span class="tf-icons bx bx-edit-alt"></span>&nbsp;
+                                                                Review
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr class="visible">
+                                                    <td>
+                                                        <i class="menu-icon tf-icons bx {% if not file.ro2_validator.additional_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                                                           style="color: {% if not file.ro2_validator.additional_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                                                        <strong>Additional</strong>
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.additional_validated %}
+                                                            <span class="badge bg-label-danger me-1">Pending</span>
+                                                        {% else %}
+                                                            <span class="badge bg-label-success me-1">Data Received</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.additional_validated %}
+                                                            <span>Enter valid data for all parameters and click the <strong>green Save button</strong> at the bottom</span>
+                                                        {% else %}
+                                                            <span>No actions required</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% if page_name != "faculty-home" %}../{% endif %}additional/"
+                                                           class="menu-link">
+                                                            <button type="button" id="add-btn"
+                                                                    class="btn btn-outline-primary">
+                                                                <span class="tf-icons bx bx-edit-alt"></span>&nbsp;
+                                                                Review
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                <tr class="visible">
+                                                    <td>
+                                                        <i class="menu-icon tf-icons bx {% if not file.ro2_validator.senior_feedback_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                                                           style="color: {% if not file.ro2_validator.senior_feedback_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                                                        <strong>Senior Feedback</strong>
+                                                    </td>
+
+                                                    <td>
+                                                        {% if not file.ro2_validator.senior_feedback_validated %}
+                                                            <span class="badge bg-label-danger me-1">Pending</span>
+                                                        {% else %}
+                                                            <span class="badge bg-label-success me-1">Data Received</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.senior_feedback_validated %}
+                                                            <span>Enter valid data for all parameters and click the <strong>green Save button</strong> at the bottom</span>
+                                                        {% else %}
+                                                            <span>No actions required</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% if page_name != "faculty-home" %}../{% endif %}senior-feedback/"
+                                                           class="menu-link">
+                                                            <button type="button" id="add-btn"
+                                                                    class="btn btn-outline-primary">
+                                                                <span class="tf-icons bx bx-edit-alt"></span>&nbsp;
+                                                                Review
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    {% if can_submit %}
+                        <div class="row justify-content-center invoice-preview">
+                            <!-- Invoice -->
+                            <div class="col-xxl mb-md-0 mb-4">
+                                <div class="card invoice-preview-card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between flex-xl-row flex-md-column flex-sm-row flex-column p-sm-3 p-0">
+                                            <div class="mb-xl-0 mb-4">
+                                                <div class="d-flex svg-illustration mb-3 gap-2">
+                                                    <span class="app-brand-logo demo mb-5">
+
+                                                        <img src="https://pdpu.ac.in/pdeubtech2022/images/logos/logo.png"
+                                                             alt="PDEU" class="logo-lg"
+                                                             style="width: 300px; height: auto;"/>
+
+                                                    </span>
+
+                                                    <span class="app-brand-text demo text-body fw-bolder"></span>
+                                                </div>
+                                                <p class="mb-1">Pandit Deendayal Energy University</p>
+                                                <p class="mb-1">Raisan, Gandhinagar</p>
+                                                <p class="mb-0">Gujarat, India</p>
+                                            </div>
+                                            <div>
+                                                <h4>Faculty Science File #{{ file.id }}</h4>
+                                                <div class="mb-2">
+                                                    <span class="me-1">Date Issues:</span>
+                                                    <span class="fw-semibold">{% now "jS F Y H:i" %}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="my-0">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between flex-xl-row flex-md-column flex-column">
+                                            <div class="col-4 pe-2 ps-2 mb-4">
+                                                <h5 class="pb-2"><b>Faculty (Appraisee) Details</b></h5>
+
+                                                <table>
+                                                    <tbody>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Name:</td>
+                                                        <td><b>{{ file.user.full_name }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Email:</td>
+                                                        <td><b>{{ file.user.email }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Designation:</td>
+                                                        <td><b>{{ file.user.designation }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Department:</td>
+                                                        <td><b>{{ file.user.department }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">School:</td>
+                                                        <td><b>{{ file.user.school }}</b></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                            <div class="col-4 ps-2 pe-2 mb-4">
+                                                <h5 class="pb-2"><b>RO1 Details</b></h5>
+
+                                                <table>
+                                                    <tbody>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Name:</td>
+                                                        <td><b>{{ file.user.ro1_id.full_name }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Email:</td>
+                                                        <td><b>{{ file.user.ro1_id.email }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Designation:</td>
+                                                        <td><b>{{ file.user.ro1_id.designation }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Department:</td>
+                                                        <td><b>{{ file.user.ro1_id.department }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">School:</td>
+                                                        <td><b>{{ file.user.ro1_id.school }}</b></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="col-4 ps-2">
+                                                <h5 class="pb-2"><b>RO2 Details</b></h5>
+
+                                                <table>
+                                                    <tbody>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Name:</td>
+                                                        <td><b>{{ file.user.ro2_id.full_name }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Email:</td>
+                                                        <td><b>{{ file.user.ro2_id.email }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Designation:</td>
+                                                        <td><b>{{ file.user.ro2_id.designation }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Department:</td>
+                                                        <td><b>{{ file.user.ro2_id.department }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">School:</td>
+                                                        <td><b>{{ file.user.ro2_id.school }}</b></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+{#                                <div class="card mt-4">#}
+{#                                    <div class="card-body">#}
+{#                                        <div class="table-responsive">#}
+{#                                            <div class="col-12 my-3 d-flex justify-content-center">#}
+{#                                                <h4 style="font-weight: bold;">RESULT</h4>#}
+{#                                            </div>#}
+{#                                            <table class="table table-bordered border-top m-0">#}
+{#                                                <thead>#}
+{#                                                <tr>#}
+{#                                                    <th>Sr</th>#}
+{#                                                    <th>Name</th>#}
+                                                    {#                                                    <th class="col-1">R1 Marks</th>#}
+{#                                                    <th class="col-3">Detail</th>#}
+{#                                                </tr>#}
+{#                                                </thead>#}
+{#                                                <tbody>#}
+{#                                                <tr>#}
+{#                                                    <td style="width: 1px">1</td>#}
+{#                                                    <td>Grand Total</td>#}
+                                                    {#                                                    <td>{{ engine.calculateTeachingMaster }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td><strong>{{ engineR2.calculateGrandTotal }}#}
+{#                                                        / {{ file.configuration.grand_total }}</strong></td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td style="width: 1px">2</td>#}
+{#                                                    <td>Percentage</td>#}
+                                                    {#                                                    <td>{{ engine.calculateTeachingMaster }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td><strong>{{ file.r2_percentage }}%</strong></td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td style="width: 1px">3</td>#}
+{#                                                    <td>Grade Received</td>#}
+                                                    {#                                                    <td>{{ engine.calculateTeachingMaster }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td><strong>{{ file.r2_grade }}</strong></td>#}
+{#                                                </tr>#}
+{#                                                </tbody>#}
+{#                                            </table>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+                                <div class="card mt-4">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <div class="col-12 my-3 d-flex justify-content-center">
+                                                <h4 style="font-weight: bold;">GRAND TOTAL</h4>
+                                            </div>
+                                            <table class="table table-bordered border-top m-0">
+                                                <thead>
+                                                <tr>
+                                                    <th>Sr</th>
+                                                    <th>Section</th>
+                                                    <th>Inclusion</th>
+                                                    {#                                                    <th class="col-1">R1 Marks</th>#}
+                                                    <th class="col-1">R2 Marks</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td style="width: 1px">1</td>
+                                                    <td>Teaching</td>
+                                                    <td>
+                                                        Teaching Load /
+                                                        Student's Feedback /
+                                                        Modern Methods Of teaching /
+                                                        Exam Duties /
+                                                        Books and Publications
+                                                    </td>
+                                                    {#                                                    <td>{{ engine.calculateTeachingMaster }}#}
+                                                    {#                                                    </td>#}
+                                                    <td>{{ engineR2.calculateTeachingMaster }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 1px">2</td>
+                                                    <td>Research and Publication/Patents</td>
+                                                    <td>
+                                                        Research and Publications /
+                                                        PhD Guidance /
+                                                        Dissertation /
+                                                        Patents/Inventions or Faculty Advisor /
+                                                        Recognitions and Awards /
+                                                        Consultancy or Industry Collaborations /
+                                                        Academia Collaborations
+                                                    </td>
+                                                    {#                                                    <td>{{ engine.calculateSection2 }}#}
+                                                    <td>{{ engineR2.calculateSection2 }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 1px">3</td>
+                                                    <td>Administrative Activities</td>
+                                                    <td>
+                                                        Arranging Conferences /
+                                                        Being Mentor To students
+                                                    </td>
+                                                    {#                                                    <td>{{ engine.calculateSection3 }}</td>#}
+                                                    <td>{{ engineR2.calculateSection3 }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 1px">4</td>
+                                                    <td>Extended Activities</td>
+                                                    <td>
+                                                        Attending Conferences /
+                                                        Community Development Initiatives /
+                                                        Involvement in Co-Curricular Activities /
+                                                        Additional*
+                                                    </td>
+                                                    {#                                                    <td>{{ engine.calculateSection4 }}#}
+                                                    {#                                                    </td>#}
+                                                    <td>{{ engineR2.calculateSection4 }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 1px">5</td>
+                                                    <td>Part B</td>
+                                                    <td>
+                                                        Senior's Feedback /
+                                                        Self Development /
+                                                        Additional Responsibilities
+                                                    </td>
+
+                                                    {#                                                    <td>{{ engine.calculatePartB }}</td>#}
+                                                    <td>{{ engineR2.calculatePartB }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 1px">6</td>
+                                                    <td>Additional Activities</td>
+                                                    <td>
+                                                        {% if file.user.is_hod %}Additional marks for being HOD
+                                                            / {% endif %}Nominated for year round Placement Activity /
+                                                        Nominated for year round Admission Activity / MOOC Course
+                                                    </td>
+
+                                                    {#                                                    <td>{{ engine.calculateAdditionalTotal }}</td>#}
+                                                    <td>{{ engineR2.calculateAdditionalTotal }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="3" class="text-center h5">
+                                                        <strong>Grand Total</strong>
+                                                    </td>
+                                                    {#                                                    <td><strong>{{ engine.calculateGrandTotal }}</strong></td>#}
+                                                    <td><strong>{{ engineR2.calculateGrandTotal }}</strong>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+{#                                <div class="card mt-4">#}
+{#                                    <div class="card-body">#}
+{#                                        <div class="table-responsive">#}
+{#                                            <div class="col-12 my-3 d-flex justify-content-center">#}
+{#                                                <h4>Part A / Section 1 / <strong>Teaching</strong></h4>#}
+{#                                            </div>#}
+{#                                            <table class="table table-bordered border-top m-0">#}
+{#                                                <thead>#}
+{#                                                <tr>#}
+{#                                                    <th>Sr</th>#}
+{#                                                    <th>Component</th>#}
+{#                                                    <th class="col-1">Details</th>#}
+                                                    {#                                                    <th class="col-1">R1 Marks</th>#}
+{#                                                    <th class="col-1">R2 Marks</th>#}
+{#                                                </tr>#}
+{#                                                </thead>#}
+{#                                                <tbody>#}
+{#                                                <tr>#}
+{#                                                    <td style="width: 1px">1</td>#}
+{#                                                    <td>#}
+{#                                                        <span class="badge badge-center rounded-pill bg-label-primary">{{ file.key_parameter_count }}</span>#}
+{#                                                        Teaching Load#}
+{#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        <a href="../teaching">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>{{ engine.calculateTeachingLoad }}</td>#}
+{#                                                    <td>{{ engineR2.calculateTeachingLoad }}</td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td style="width: 1px">2</td>#}
+{#                                                    <td>#}
+{##}
+{#                                                        Students Feedback#}
+{#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        <a href="../teaching">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>{{ engine.calculateStudentFeedback }}</td>#}
+{#                                                    <td>{{ engineR2.calculateStudentFeedback }}</td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td style="width: 1px">3</td>#}
+{#                                                    <td>#}
+{##}
+{#                                                        Modern Methods of Teaching#}
+{##}
+{#                                                    </td>#}
+{#                                                    <td>#}
+                                                        {#                                                            Flip Classes  <br>#}
+                                                        {#                                                            Case Study Based <br>#}
+                                                        {#                                                            Technology Integration <br>#}
+                                                        {#                                                            Design Thinking <br>#}
+                                                        {#                                                            Project based Teaching-Learning <br>#}
+                                                        {#                                                            Any other <br>#}
+{#                                                        <a href="../teaching">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>{{ file.modern_teaching_methods.marks.ro1 }}</td>#}
+{#                                                    <td>{{ file.modern_teaching_methods.marks.ro2 }}</td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td style="width: 1px">4</td>#}
+{#                                                    <td>#}
+                                                        {#                                                        <span class="badge rounded-pill bg-label-primary">4</span>#}
+{#                                                        Exam Duties#}
+{#                                                    </td>#}
+{#                                                    <td>#}
+                                                        {#                                                            Timely Invigilation <br>#}
+                                                        {#                                                            Paper Setting  <br>#}
+                                                        {#                                                            Evaluation <br>#}
+                                                        {#                                                            Result Submission#}
+{#                                                        <a href="../teaching">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ engine.calculateExaminationDuty }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculateExaminationDuty }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td style="width: 1px">5</td>#}
+{#                                                    <td>#}
+{#                                                        Books and Publications#}
+{#                                                    </td>#}
+{#                                                    <td>#}
+                                                        {#                                                            Research Based Books <br>#}
+                                                        {#                                                            TextBooks#}
+{#                                                        <a href="../teaching">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ engine.calculateBooksAndPublications }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculateBooksAndPublications }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td colspan="3" class="text-center h5">#}
+{#                                                        Grand Total For <strong>Section 1</strong>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>{{ engine.calculateTeachingMaster }}</td>#}
+{#                                                    <td>{{ engineR2.calculateTeachingMaster }}</td>#}
+{#                                                </tr>#}
+{#                                                </tbody>#}
+{#                                            </table>#}
+{##}
+{##}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="card mt-4">#}
+{#                                    <div class="card-body">#}
+{#                                        <div class="table-responsive">#}
+{#                                            <div class="col-12 my-3 d-flex justify-content-center">#}
+{#                                                <h4>Part A | Section 2 | Research and Publication / Patents</h4>#}
+{#                                            </div>#}
+{#                                            <table class="table table-bordered border-top m-0">#}
+{#                                                <thead>#}
+{#                                                <tr>#}
+{#                                                    <th>Sr</th>#}
+{#                                                    <th>Component <a#}
+{#                                                            href="{% if pagename != "staff-review-home" %}../{% endif %}grade-section-2/"><span#}
+{#                                                            class="tf-icons bx bx-paperclip"></span></a></th>#}
+{#                                                    <th class="col-1">Details</th>#}
+                                                    {#                                                    <th class="col-1">R1 Marks</th>#}
+{#                                                    <th class="col-1">R2 Marks</th>#}
+{#                                                </tr>#}
+{#                                                </thead>#}
+{#                                                <tbody>#}
+{#                                                <tr>#}
+{#                                                    <td rowspan="4" style="width: 1px">A</td>#}
+{#                                                    <td>#}
+{#                                                        Publication in Scopus journals / Web of Science journals#}
+{#                                                    </td>#}
+{##}
+{#                                                    <td>#}
+{#                                                        <a href="../research">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ engine.calculatePapers }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculatePapers }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{##}
+{#                                                <tr>#}
+{#                                                    <td>#}
+{#                                                        Conference Proceedings (only Scopus/WoS indexed ) as full papers#}
+{#                                                    </td>#}
+{##}
+{#                                                    <td>#}
+{#                                                        <a href="../research">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ engine.calculateConferences }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculateConferences }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td>#}
+{#                                                        E- publications/ articles#}
+{#                                                    </td>#}
+{##}
+{#                                                    <td>#}
+{#                                                        <a href="../research">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ engine.calculateEPublications }}#}
+                                                    {#                                                    </td>#}
+{##}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculateEPublications }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td>#}
+{#                                                        Projects#}
+{#                                                    </td>#}
+{##}
+{#                                                    <td>#}
+{#                                                        <a href="../project">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ engine.calculateProjects }}#}
+                                                    {#                                                    </td>#}
+{##}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculateProjects }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{#                                                {% if file.user.designation_abbreviation != 'assistant_prof_on_contract' %}#}
+{#                                                    <tr>#}
+{#                                                        <td style="width: 1px">B</td>#}
+{#                                                        <td>PhD Guidance</td>#}
+{##}
+{#                                                        <td>#}
+{#                                                            <a href="../phd-guidance">Details</a>#}
+{#                                                        </td>#}
+                                                        {#                                                        <td>#}
+                                                        {#                                                            {{ engine.calculatePhDGuidance }}#}
+                                                        {#                                                        </td>#}
+{#                                                        <td>#}
+{#                                                            {{ engineR2.calculatePhDGuidance }}#}
+{#                                                        </td>#}
+{#                                                    </tr>#}
+{#                                                {% endif %}#}
+{##}
+{#                                                <tr>#}
+{#                                                    <td style="width: 1px">C#}
+{#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {% if file.patents.all|length == 0 and file.user.designation_abbreviation == 'assistant_prof_on_contract' %}#}
+{#                                                            Faculty Advisor (Only for Assistant Professor On#}
+{#                                                            Contract)#}
+{#                                                        {% else %}#}
+{#                                                            Patents / Inventions#}
+{#                                                        {% endif %}#}
+{#                                                    </td>#}
+{##}
+{#                                                    <td>#}
+{#                                                        <a href="../patent">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ engine.calculateSectionD }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculateSectionD }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{##}
+{#                                                <tr>#}
+{#                                                    <td style="width: 1px">D</td>#}
+{#                                                    <td>Recognitions / Awards</td>#}
+{##}
+{#                                                    <td>#}
+{#                                                        <a href="../award">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ engine.calculateAwards }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculateAwards }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{##}
+{#                                                <tr>#}
+{#                                                    <td rowspan="3" style="width: 1px">E</td>#}
+{#                                                    <td>Academia Collaboration - MoU Signed</td>#}
+{#                                                    <td>#}
+{#                                                        <a href="../academia-collab">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ file.academia_collaboration.mou_marks.ro1 }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ file.academia_collaboration.mou_marks.ro2 }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td>Academia Collaboration - Contribution Marks</td>#}
+{#                                                    <td>#}
+{#                                                        <a href="../academia-collab">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ file.academia_collaboration.contribution_marks.ro1 }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ file.academia_collaboration.contribution_marks.ro2 }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td><strong>Academia Collaboration - Total</strong></td>#}
+{#                                                    <td>#}
+{#                                                        <a href="../academia-collab">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ engine.calculateAcademiaCollaboration }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculateAcademiaCollaboration }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td colspan="3" class="text-center h5">#}
+{#                                                        Grand Total For <strong>Section 2</strong>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ engine.calculateSection2 }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculateSection2 }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{#                                                </tbody>#}
+{#                                            </table>#}
+{##}
+{##}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="card mt-4">#}
+{#                                    <div class="card-body">#}
+{#                                        <div class="table-responsive">#}
+{#                                            <div class="col-12 my-3 d-flex justify-content-center">#}
+{#                                                <h4>Part A | Section 3 | Administrative Activities</h4>#}
+{#                                            </div>#}
+{#                                            <table class="table table-bordered border-top m-0">#}
+{#                                                <thead>#}
+{#                                                <tr>#}
+{#                                                    <th>Sr</th>#}
+{#                                                    <th>Component <a#}
+{#                                                            href="{% if pagename != "staff-review-home" %}../{% endif %}grade-section-2/"><span#}
+{#                                                            class="tf-icons bx bx-paperclip"></span></a></th>#}
+{#                                                    <th class="col-1">Details</th>#}
+                                                    {#                                                    <th class="col-1">R1 Marks</th>#}
+{##}
+{#                                                    <th class="col-1">R2 Marks</th>#}
+{#                                                </tr>#}
+{#                                                </thead>#}
+{#                                                <tbody>#}
+{#                                                <tr>#}
+{#                                                    <td style="width: 1px">A</td>#}
+{#                                                    <td>Arranging Conferences / Seminars / Conclaves</td>#}
+{##}
+{#                                                    <td>#}
+{#                                                        <a href="../arranging-conference">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ engine.calculateArrangingConferences }}#}
+                                                    {#                                                        / {{ file.configuration.section_3a_arranging_conferences_max_marks }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculateArrangingConferences }}#}
+{#                                                        / {{ file.configuration.section_3a_arranging_conferences_max_marks }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td style="width: 1px">B</td>#}
+{#                                                    <td>Being Mentor to Students</td>#}
+{##}
+{#                                                    <td><a href="../mentorship">Details</a></td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ engine.calculateMentoring }}#}
+                                                    {#                                                        / {{ file.configuration.section_3b_mentor_to_students_max_marks }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculateMentoring }}#}
+{#                                                        / {{ file.configuration.section_3b_mentor_to_students_max_marks }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td colspan="3" class="text-center h5">#}
+{#                                                        Grand Total For <strong>Section 3</strong>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ engine.calculateSection3 }}#}
+                                                    {#                                                        / {{ file.configuration.section_3_subtotal }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculateSection3 }}#}
+{#                                                        / {{ file.configuration.section_3_subtotal }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{#                                                </tbody>#}
+{##}
+{#                                            </table>#}
+{##}
+{##}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="card mt-4">#}
+{#                                    <div class="card-body">#}
+{#                                        <div class="table-responsive">#}
+{#                                            <div class="col-12 my-3 d-flex justify-content-center">#}
+{#                                                <h4>Part A | Section 4 | Extended Activities</h4>#}
+{#                                            </div>#}
+{#                                            <table class="table table-bordered border-top m-0">#}
+{#                                                <thead>#}
+{#                                                <tr>#}
+{#                                                    <th>Sr</th>#}
+{#                                                    <th>Component <a#}
+{#                                                            href="{% if pagename != "staff-review-home" %}../{% endif %}grade-section-2/"><span#}
+{#                                                            class="tf-icons bx bx-paperclip"></span></a></th>#}
+{#                                                    <th class="col-1">Details</th>#}
+                                                    {#                                                    <th class="col-1">R1 Marks</th>#}
+{##}
+{#                                                    <th class="col-1">R2 Marks</th>#}
+{#                                                </tr>#}
+{#                                                </thead>#}
+{#                                                <tbody>#}
+{#                                                <tr>#}
+{#                                                    <td style="width: 1px">A</td>#}
+{#                                                    <td>Attending Conferences / Seminars</td>#}
+{##}
+{#                                                    <td><a href="../attending-conference">Details</a></td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ engine.calculateAttendingConferences }}#}
+                                                    {#                                                        / {{ file.configuration.section_4a_arranging_conferences_max_marks }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculateAttendingConferences }}#}
+{#                                                        / {{ file.configuration.section_4a_arranging_conferences_max_marks }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td style="width: 1px">B</td>#}
+{#                                                    <td>Community Development Initiatives</td>#}
+{##}
+{#                                                    <td><a href="../community-development">Details</a></td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ engine.calculateCommunityDevelopment|floatformat:2 }}#}
+                                                    {#                                                        / {{ file.configuration.section_4b_community_development_initiatives_max_marks }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculateCommunityDevelopment|floatformat:2 }}#}
+{#                                                        / {{ file.configuration.section_4b_community_development_initiatives_max_marks }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td style="width: 1px">C</td>#}
+{#                                                    <td>Involvement in Co-Curricular Activities</td>#}
+{##}
+{#                                                    <td><a href="../extra-curricular">Details</a></td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ engine.calculateExtraCurricular }}#}
+                                                    {#                                                        / {{ file.configuration.section_4c_involvement_in_extra_curricular_activities_max_marks }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculateExtraCurricular }}#}
+{#                                                        / {{ file.configuration.section_4c_involvement_in_extra_curricular_activities_max_marks }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{##}
+{#                                                <tr>#}
+{#                                                    <td colspan="3" class="text-center h5">#}
+{#                                                        Grand Total For <strong>Section 4</strong>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ engine.calculateSection4 }}#}
+                                                    {#                                                        / {{ file.configuration.section_4a_arranging_conferences_max_marks|add:file.configuration.section_4b_community_development_initiatives_max_marks|add:file.configuration.section_4c_involvement_in_extra_curricular_activities_max_marks }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculateSection4 }}#}
+{#                                                        / {{ file.configuration.section_4a_arranging_conferences_max_marks|add:file.configuration.section_4b_community_development_initiatives_max_marks|add:file.configuration.section_4c_involvement_in_extra_curricular_activities_max_marks }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{##}
+{#                                                </tbody>#}
+{##}
+{#                                            </table>#}
+{##}
+{##}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="card mt-4">#}
+{#                                    <div class="card-body">#}
+{#                                        <div class="table-responsive">#}
+{#                                            <div class="col-12 my-3 d-flex justify-content-center">#}
+{#                                                <h4>Additional Activities</h4>#}
+{#                                            </div>#}
+{#                                            <table class="table table-bordered border-top m-0">#}
+{#                                                <thead>#}
+{#                                                <tr>#}
+{#                                                    <th style="width:1px">Sr</th>#}
+{#                                                    <th>Component <a#}
+{#                                                            href="{% if pagename != "staff-review-home" %}../{% endif %}grade-section-2/"><span#}
+{#                                                            class="tf-icons bx bx-paperclip"></span></a></th>#}
+                                                    {#                                                    <th class="col-2">R1 Grade</th>#}
+                                                    {#                                                    <th class="col-2">R2 Grade</th>#}
+{#                                                    <th class="col-1">Details</th>#}
+                                                    {#                                                    <th class="col-1">R1 Marks</th>#}
+{##}
+{#                                                    <th class="col-1">R2 Marks</th>#}
+{#                                                </tr>#}
+{#                                                </thead>#}
+{#                                                <tbody>#}
+{##}
+{#                                                <tr>#}
+{#                                                    <td>1</td>#}
+{#                                                    <td>MooC Course</td>#}
+{#                                                    <td>#}
+{#                                                        <a href="../additional">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>{{ engine.calculateMOOC }}#}
+                                                    {#                                                        / {{ file.configuration.self_development_mooc_course_marks }}<br>#}
+                                                    {#                                                        {% if file.is_mooc_available %}#}
+                                                    {#                                                            {% if file.is_mooc_available and file.mooc_course.marks.ro1_agreed %}#}
+                                                    {##}
+                                                    {#                                                                <span class="badge bg-primary bold"><strong>MooC Accepted</strong></span>#}
+                                                    {#                                                            {% else %}#}
+                                                    {#                                                                <span class="badge bg-danger bold"><strong>MooC Rejected</strong></span>#}
+                                                    {#                                                            {% endif %}#}
+                                                    {#                                                        {% else %}#}
+                                                    {#                                                            <span class="badge bg-warning bold"><strong>MooC Not Achieved</strong></span>#}
+                                                    {#                                                        {% endif %}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>{{ engineR2.calculateMOOC }}#}
+{#                                                        / {{ file.configuration.self_development_mooc_course_marks }}<br>#}
+{#                                                        {% if file.is_mooc_available %}#}
+{#                                                            {% if file.is_mooc_available and file.mooc_course.marks.ro2_agreed %}#}
+{##}
+{#                                                                <span class="badge bg-primary bold"><strong>MooC Accepted</strong></span>#}
+{#                                                            {% else %}#}
+{#                                                                <span class="badge bg-danger bold"><strong>MooC Rejected</strong></span>#}
+{#                                                            {% endif %}#}
+{#                                                        {% else %}#}
+{#                                                            <span class="badge bg-warning bold"><strong>MooC Not Achieved</strong></span>#}
+{#                                                        {% endif %}</td>#}
+{#                                                </tr>#}
+{#                                                {% if file.user.is_hod %}#}
+{#                                                    <tr>#}
+{#                                                        <td rowspan="3" style="width: 1px">+</td>#}
+{#                                                        <td>Additional marks for being Head of the Department</td>#}
+                                                        {#                                                        <td></td>#}
+                                                        {#                                                        <td></td>#}
+{#                                                        <td rowspan="3"><a href="../additional">Details</a></td>#}
+                                                        {#                                                        <td rowspan="3">#}
+                                                        {#                                                            {{ engine.calculateAdditionalMarks }}#}
+                                                        {#                                                        </td>#}
+{#                                                        <td rowspan="3">#}
+{#                                                            {{ engineR2.calculateAdditionalMarks }}#}
+{#                                                        </td>#}
+{#                                                    </tr>#}
+{#                                                    <tr>#}
+{#                                                        <td>Additional marks for faculties nominated for year round#}
+{#                                                            Placement Activity#}
+{#                                                        </td>#}
+                                                        {#                                                        <td>-</td>#}
+                                                        {#                                                        <td>-</td>#}
+{##}
+{##}
+{#                                                    </tr>#}
+{#                                                    <tr>#}
+{#                                                        <td>Additional marks for faculties nominated for year round#}
+{#                                                            Admission Activity#}
+{#                                                        </td>#}
+                                                        {#                                                        <td>-</td>#}
+                                                        {#                                                        <td>-</td>#}
+{##}
+{##}
+{#                                                    </tr>#}
+{#                                                {% else %}#}
+{#                                                    <tr>#}
+{#                                                        <td rowspan="2" style="width: 1px">+</td>#}
+{#                                                        <td>Additional marks for faculties nominated for year round#}
+{#                                                            Placement Activity#}
+{#                                                        </td>#}
+                                                        {#                                                        <td>-</td>#}
+                                                        {#                                                        <td>-</td>#}
+{#                                                        <td rowspan="2"><a href="../additional">Details</a></td>#}
+                                                        {#                                                        <td rowspan="2">#}
+                                                        {#                                                            {{ engine.calculateAdditionalMarks }}#}
+                                                        {#                                                        </td>#}
+{#                                                        <td rowspan="2">#}
+{#                                                            {{ engineR2.calculateAdditionalMarks }}#}
+{#                                                        </td>#}
+{#                                                    </tr>#}
+{#                                                    <tr>#}
+{#                                                        <td>Additional marks for faculties nominated for year round#}
+{#                                                            Admission Activity#}
+{#                                                        </td>#}
+                                                        {#                                                        <td>-</td>#}
+                                                        {#                                                        <td>-</td>#}
+{##}
+{##}
+{#                                                    </tr>#}
+{#                                                    <tr>#}
+{#                                                        <td colspan="3" class="text-center h5">#}
+{#                                                            Grand Total For <strong>Additional Activities</strong>#}
+{#                                                        </td>#}
+                                                        {#                                                        <td>#}
+                                                        {#                                                            {{ engine.calculateAdditionalTotal }}#}
+                                                        {#                                                        </td>#}
+{#                                                        <td>#}
+{#                                                            {{ engineR2.calculateAdditionalTotal }}#}
+{#                                                        </td>#}
+{#                                                    </tr>#}
+{##}
+{#                                                {% endif %}#}
+{##}
+{#                                                </tbody>#}
+{##}
+{#                                            </table>#}
+{##}
+{##}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="card mt-4">#}
+{#                                    <div class="card-body">#}
+{#                                        <div class="table-responsive">#}
+{#                                            <div class="col-12 my-3 d-flex justify-content-center">#}
+{#                                                <h4>Part B</h4>#}
+{#                                            </div>#}
+{#                                            <table class="table table-bordered border-top m-0">#}
+{#                                                <thead>#}
+{#                                                <tr>#}
+{#                                                    <th>Sr</th>#}
+{#                                                    <th>Component <a#}
+{#                                                            href="{% if pagename != "staff-review-home" %}../{% endif %}grade-section-2/"><span#}
+{#                                                            class="tf-icons bx bx-paperclip"></span></a></th>#}
+                                                    {#                                                    <th class="col-2">R1 Grade</th>#}
+{#                                                    <th class="col-2">R2 Grade</th>#}
+{#                                                    <th class="col-1">Details</th>#}
+                                                    {#                                                    <th class="col-1">R1 Marks</th>#}
+{##}
+{#                                                    <th class="col-1">R2 Marks</th>#}
+{#                                                </tr>#}
+{#                                                </thead>#}
+{#                                                <tbody>#}
+{#                                                <tr>#}
+{#                                                    <td style="width: 1px">A</td>#}
+{#                                                    <td>Senior Feedback</td>#}
+{##}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {% if file.senior_feedback_grade == 'O' %}#}
+                                                    {##}
+                                                    {#                                                            <span class="badge bg-primary bold"><strong>Outstanding</strong></span>#}
+                                                    {#                                                        {% elif  file.senior_feedback_grade == 'G' %}#}
+                                                    {#                                                            <span class="badge bg-primary bold"><strong>Good</strong></span>#}
+                                                    {##}
+                                                    {#                                                        {% elif  file.senior_feedback_grade == 'A' %}#}
+                                                    {#                                                            <span class="badge bg-primary bold"><strong>Average</strong></span>#}
+                                                    {##}
+                                                    {##}
+                                                    {#                                                        {% elif  file.senior_feedback_grade == 'U' %}#}
+                                                    {#                                                            <span class="badge bg-primary bold"><strong>Unsatisfactory</strong></span>#}
+                                                    {#                                                        {% endif %}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {% if file.senior_feedback_grade_r2 == 'O' %}#}
+{##}
+{#                                                            <span class="badge bg-primary bold"><strong>Outstanding</strong></span>#}
+{#                                                        {% elif  file.senior_feedback_grade_r2 == 'G' %}#}
+{#                                                            <span class="badge bg-primary bold"><strong>Good</strong></span>#}
+{##}
+{#                                                        {% elif  file.senior_feedback_grade_r2 == 'A' %}#}
+{#                                                            <span class="badge bg-primary bold"><strong>Average</strong></span>#}
+{##}
+{##}
+{#                                                        {% elif  file.senior_feedback_grade_r2 == 'U' %}#}
+{#                                                            <span class="badge bg-primary bold"><strong>Unsatisfactory</strong></span>#}
+{#                                                        {% endif %}#}
+{#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        <a href="../senior-feedback">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>{{ file.senior_feedback_marks.ro1 }}</td>#}
+{#                                                    <td>{{ file.senior_feedback_marks.ro2 }}</td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td rowspan="1" style="width: 1px">B</td>#}
+{#                                                    <td>Self Development</td>#}
+{##}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {% if file.self_development_grade == 'O' %}#}
+                                                    {##}
+                                                    {#                                                            <span class="badge bg-primary bold"><strong>Outstanding</strong></span>#}
+                                                    {#                                                        {% elif  file.self_development_grade == 'G' %}#}
+                                                    {#                                                            <span class="badge bg-primary bold"><strong>Good</strong></span>#}
+                                                    {##}
+                                                    {#                                                        {% elif  file.self_development_grade == 'A' %}#}
+                                                    {#                                                            <span class="badge bg-primary bold"><strong>Average</strong></span>#}
+                                                    {##}
+                                                    {##}
+                                                    {#                                                        {% elif  file.self_development_grade == 'U' %}#}
+                                                    {#                                                            <span class="badge bg-primary bold"><strong>Unsatisfactory</strong></span>#}
+                                                    {#                                                        {% endif %}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {% if file.self_development_grade_r2 == 'O' %}#}
+{##}
+{#                                                            <span class="badge bg-primary bold"><strong>Outstanding</strong></span>#}
+{#                                                        {% elif  file.self_development_grade_r2 == 'G' %}#}
+{#                                                            <span class="badge bg-primary bold"><strong>Good</strong></span>#}
+{##}
+{#                                                        {% elif  file.self_development_grade_r2 == 'A' %}#}
+{#                                                            <span class="badge bg-primary bold"><strong>Average</strong></span>#}
+{##}
+{##}
+{#                                                        {% elif  file.self_development_grade_r2 == 'U' %}#}
+{#                                                            <span class="badge bg-primary bold"><strong>Unsatisfactory</strong></span>#}
+{#                                                        {% endif %}#}
+{#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        <a href="../senior-feedback">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>{{ file.self_development_total.ro1 }}</td>#}
+{#                                                    <td>{{ file.self_development_total.ro2 }}</td>#}
+{#                                                </tr>#}
+                                                {#                                                <tr>#}
+                                                {#                                                    <td>MooC Course</td>#}
+                                                {##}
+                                                {#                                                    <td>#}
+                                                {#                                                        {% if file.is_mooc_available and file.mooc_course.marks.ro1_agreed %}#}
+                                                {##}
+                                                {#                                                            <span class="badge bg-primary bold"><strong>MooC Available</strong></span>#}
+                                                {#                                                        {% else %}#}
+                                                {#                                                            <span class="badge bg-danger bold"><strong>MooC Unavailable</strong></span>#}
+                                                {#                                                        {% endif %}#}
+                                                {#                                                    </td>#}
+                                                {#                                                    <td>#}
+                                                {#                                                        {% if file.is_mooc_available and file.mooc_course.marks.ro2_agreed %}#}
+                                                {##}
+                                                {#                                                            <span class="badge bg-primary bold"><strong>MooC Available</strong></span>#}
+                                                {#                                                        {% else %}#}
+                                                {#                                                            <span class="badge bg-danger bold"><strong>MooC Unavailable</strong></span>#}
+                                                {#                                                        {% endif %}#}
+                                                {#                                                    </td>#}
+                                                {#                                                    <td>#}
+                                                {#                                                        <a href="#">Details</a>#}
+                                                {#                                                    </td>#}
+                                                {#                                                    <td>{{ file.mooc_course.marks.ro1 }}#}
+                                                {#                                                        / {{ file.configuration.self_development_mooc_course_marks }}</td>#}
+                                                {#                                                    <td>{{ file.mooc_course.marks.ro2 }}#}
+                                                {#                                                        / {{ file.configuration.self_development_mooc_course_marks }}</td>#}
+                                                {#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td style="width: 1px">C</td>#}
+{#                                                    <td>Ability to take and successfully execute additional#}
+{#                                                        responsibilities#}
+{#                                                    </td>#}
+{##}
+                                                    {#                                                <td>#}
+                                                    {#                                                    {% if file.additional_responsibilities_grade == 'O' %}#}
+                                                    {##}
+                                                    {#                                                        <span class="badge bg-primary bold"><strong>Outstanding</strong></span>#}
+                                                    {#                                                    {% elif  file.additional_responsibilities_grade == 'G' %}#}
+                                                    {#                                                        <span class="badge bg-primary bold"><strong>Good</strong></span>#}
+                                                    {##}
+                                                    {#                                                    {% elif  file.additional_responsibilities_grade == 'A' %}#}
+                                                    {#                                                        <span class="badge bg-primary bold"><strong>Average</strong></span>#}
+                                                    {##}
+                                                    {##}
+                                                    {#                                                    {% elif  file.additional_responsibilities_grade == 'U' %}#}
+                                                    {#                                                        <span class="badge bg-primary bold"><strong>Unsatisfactory</strong></span>#}
+                                                    {#                                                    {% endif %}#}
+                                                    {#                                                </td>#}
+{#                                                    <td>#}
+{#                                                        {% if file.additional_responsibilities_grade_r2 == 'O' %}#}
+{##}
+{#                                                            <span class="badge bg-primary bold"><strong>Outstanding</strong></span>#}
+{#                                                        {% elif  file.additional_responsibilities_grade_r2 == 'G' %}#}
+{#                                                            <span class="badge bg-primary bold"><strong>Good</strong></span>#}
+{##}
+{#                                                        {% elif  file.additional_responsibilities_grade_r2 == 'A' %}#}
+{#                                                            <span class="badge bg-primary bold"><strong>Average</strong></span>#}
+{##}
+{##}
+{#                                                        {% elif  file.additional_responsibilities_grade_r2 == 'U' %}#}
+{#                                                            <span class="badge bg-primary bold"><strong>Unsatisfactory</strong></span>#}
+{#                                                        {% endif %}#}
+{#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        <a href="../senior-feedback">Details</a>#}
+{#                                                    </td>#}
+                                                    {#                                                <td>{{ file.additional_responsibilities_marks.ro1 }}</td>#}
+{#                                                    <td>{{ file.additional_responsibilities_marks.ro2 }}</td>#}
+{#                                                </tr>#}
+{#                                                <tr>#}
+{#                                                    <td colspan="4" class="text-center h5">#}
+{#                                                        Grand Total For <strong>Part B</strong>#}
+{#                                                    </td>#}
+                                                    {#                                                    <td>#}
+                                                    {#                                                        {{ engine.calculatePartB }}#}
+                                                    {#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculatePartB }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
+{#                                                </tbody>#}
+{##}
+{#                                            </table>#}
+{##}
+{##}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+                                {#                                <div class="card mt-4">#}
+                                {#                                    <div class="card-body">#}
+                                {#                                        <div class="table-responsive">#}
+                                {#                                            <div class="col-12 my-3 d-flex justify-content-center">#}
+                                {#                                                <h4>Extra</h4>#}
+                                {#                                            </div>#}
+                                {#                                            <table class="table table-bordered border-top m-0">#}
+                                {#                                                <thead>#}
+                                {#                                                <tr>#}
+                                {#                                                    <th>Sr</th>#}
+                                {#                                                    <th>Component</th>#}
+                                {#                                                    <th class="col-1">Details</th>#}
+                                {#                                                    <th class="col-1">Marks</th>#}
+                                {#                                                </tr>#}
+                                {#                                                </thead>#}
+                                {#                                                <tbody>#}
+                                {#                                                <tr>#}
+                                {#                                                    <td style="width: 1px">1</td>#}
+                                {#                                                    <td>#}
+                                {#                                                        MOOC Component#}
+                                {#                                                    </td>#}
+                                {#                                                    <td><a href="{% if pagename != "staff-review-home" %}../{% endif %}grade-mooc/">view</a></td>#}
+                                {#                                                    <td>#}
+                                {#                                                        {% if file.was_mooc_completed %}#}
+                                {#                                                            <span class="badge bg-primary bold"><strong>{{ file.mooc_marks_awarded.ro1 }}</strong></span>#}
+                                {#                                                        {% else %}#}
+                                {#                                                            <span class="badge bg-danger bold"><strong>Not Available</strong></span>#}
+                                {#                                                        {% endif %}#}
+                                {#                                                    </td>#}
+                                {#                                                </tr>#}
+                                {#                                                <tr>#}
+                                {#                                                    <td style="width: 1px">1</td>#}
+                                {#                                                    <td>#}
+                                {#                                                        Disciplinary Action#}
+                                {#                                                    </td>#}
+                                {#                                                    <td><a href="{% if pagename != "staff-review-home" %}../{% endif %}grade-section-2/">view</a>#}
+                                {#                                                    </td>#}
+                                {#                                                    <td>#}
+                                {#                                                        {% if file.disciplinary_action %}#}
+                                {#                                                            <span class="badge bg-danger bold"><strong>You chose to register some disciplinary action taken against the employee</strong></span>#}
+                                {#                                                            <br>#}
+                                {#                                                            <span class="badge bg-danger bold"><strong>#}
+                                {#                                                                5 Marks will be deducted</strong></span>#}
+                                {#                                                        {% else %}#}
+                                {#                                                            <span class="badge bg-primary bold"><strong>Not Available</strong></span>#}
+                                {#                                                        {% endif %}#}
+                                {#                                                    </td>#}
+                                {#                                                </tr>#}
+                                {#                                                <tr>#}
+                                {#                                                    <td colspan="3" class="text-center h5">#}
+                                {#                                                        Grand Total For <strong>Extras</strong>#}
+                                {#                                                    </td>#}
+                                {#                                                    <td>#}
+                                {#                                                        /#}
+                                {#                                                    </td>#}
+                                {#                                                </tr>#}
+                                {##}
+                                {#                                                </tbody>#}
+                                {#                                            </table>#}
+                                {##}
+                                {##}
+                                {#                                        </div>#}
+                                {#                                    </div>#}
+                                {#                                </div>#}
+                            </div>
+                        </div>
+                    {% endif %}
+{#                    <div class="col-12 d-flex justify-content-center">#}
+{#                        <button class="btn btn-secondary my-3 mx-auto col-2" onclick="printToPDF()">Print</button>#}
+{#                    </div>#}
+                </div>
+                <!-- / Content -->
+
+                <!-- Footer -->
+                {% include 'includes/footer.html' %}
+                <!-- / Footer -->
+
+                <div class="content-backdrop fade"></div>
+            </div>
+
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+</div>
+<!-- / Layout wrapper -->
+
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+<script src="/static/assets/vendor/libs/jquery/jquery.js"></script>
+<script src="/static/assets/vendor/libs/popper/popper.js"></script>
+<script src="/static/assets/vendor/js/bootstrap.js"></script>
+<script src="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+<script src="/static/assets/vendor/js/menu.js"></script>
+<!-- endbuild -->
+
+<!-- Vendors JS -->
+<script src="/static/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+
+<!-- Main JS -->
+<script src="/static/assets/js/main.js"></script>
+
+<!-- Page JS -->
+<script>
+    function printToPDF() {
+        var mywindow = window.open('../print/', 'page');
+
+        mywindow.print();
+
+        setTimeout(function () {
+            mywindow.close();
+        }, 1000);
+    }
+</script>
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+</body>
+</html>

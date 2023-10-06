@@ -1,0 +1,48 @@
+{
+    "is_submit": false,
+    "key_parameter_count": 1,
+    "major_parameter_count": 2,
+    "minor_parameter_count": 1,
+    "key_parameters": [
+        {
+            "Key 1": "Key 1 Description"
+        }
+    ],
+    "major_parameters": [
+        {
+            "Maj 1": "Maj 1 Description"
+        },
+        {
+            "Maj 2": "Maj 2 Description"
+        }
+    ],
+    "minor_paramters": [
+        {
+            "Min 1": "Min 1 Description"
+        }
+    ],
+    "self_development": {
+        "courses": [
+            {
+                "name": "Course 1",
+                "url": "www.google.com"
+            },
+            {
+                "name": "Course 2",
+                "url": "www.facebook.com"
+            }
+        ],
+        "count": 2
+    },
+    "mooc_completed": true,
+    "mooc_description": "LOL",
+    "other_activities_completed": true,
+    "other_activities_data": "Did Placement Training\nNew line",
+    "self_eval": {
+        "key_highlights": "1234\n4567\n567",
+        "challenges": "pdf\nsdfg\nhgfd\nnbvc",
+        "areas_of_improvement": "qaz\nroc\nuhh\nohm\n",
+        "areas_of_strength": "654321`\n23456\n09876\n12"
+    },
+    "training_taken": true
+}

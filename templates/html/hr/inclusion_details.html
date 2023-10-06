@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        class="light-style layout-menu-fixed layout-navbar-fixed layout-menu-collapsed"
+        dir="ltr"
+        data-theme="theme-default"
+        data-assets-path="/static/assets/"
+        data-template="vertical-menu-template-free"
+>
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <title>HR Analytics</title>
+    <link rel="icon" type="image/x-icon" href="../../../media/admin-interface/favicon/Pandit_Deendayal_Energy_University_logo-2.png">
+
+    <meta name="description" content=""/>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"
+    />
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="/static/assets/vendor/fonts/boxicons.css"/>
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/css/core.css" class="template-customizer-core-css"/>
+    <link rel="stylesheet" href="/static/assets/vendor/css/theme-default.css" class="template-customizer-theme-css"/>
+    <link rel="stylesheet" href="/static/assets/css/demo.css"/>
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"/>
+    <!-- Page CSS -->
+    <!-- Helpers -->
+    <script src="/static/assets/vendor/js/helpers.js"></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="/static/assets/js/config.js"></script>
+
+</head>
+<body>
+<div class="spinner-div" style="width: 100%; height: 100%; position: fixed; background: rgba(0,0,0,0.1); z-index: 1; display: none" id="backdrop-spinner">
+    <div class="spinner-border spinner-border-lg text-primary" role="status" style="position: fixed; top: 50%; left:  50%; z-index: 2">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme justify-content-between"
+             id="layout-navbar">
+            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                    <i class="bx bx-menu bx-sm"></i>
+                </a>
+            </div>
+
+            {% include 'html/hr/includes/dashboard-nav.html' %}
+        </nav>
+        <!-- Menu -->
+        {% include 'html/hr/includes/hr-dashboard-sidebar.html' %}
+        <!-- / Menu -->
+        <!-- Layout container -->
+        <div class="layout-page">
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+
+                <!-- Content -->
+                <div class="container-p-y ps-3 pe-3">
+                    <!-- Filters -->
+                    <div class="card border border-primary">
+                        <div class="d-flex align-items-end row">
+                            <div class="col-sm-7">
+                                <div class="card-body">
+                                    <h5 class="card-title text-primary">{{ title }}</h5>
+                                    <p class="mb-4 mt-5">
+                                        Below are the details for the Appraisee included in the above goalsheet
+
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-sm-5 text-center text-sm-left">
+                                <div class="card-body pb-0 px-0 px-md-4">
+                                    <img
+                                            src="/static/assets/img/illustrations/man-with-laptop-light.png"
+                                            height="140"
+                                            alt="View Badge User"
+                                            data-app-dark-img="illustrations/man-with-laptop-dark.png"
+                                            data-app-light-img="illustrations/man-with-laptop-light.png"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / Filters -->
+
+                    <!-- Navbar -->
+                    <div class="card mb-4 mt-4 p-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <!-- Search -->
+                            <div class="d-flex align-items-center" style="width: 100%;">
+                                <i class="bx bx-search fs-4 lh-0"></i>
+                                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
+                                       aria-label="Search..." id="filter-search"/>
+                                <span class="p-2 ps-4 recordCount" style="border-left: 1px solid #d9dee3; white-space: nowrap"><strong
+                                        class="strong">{{ users|length }}</strong> Records</span>
+                            </div>
+                            <!-- /Search -->
+                        </div>
+                    </div>
+                    <!-- / Navbar -->
+
+                    <!-- Striped Rows -->
+                    <div class="card">
+                        <div class="flex justify-content-between align-items-center">
+                            <h5 class="card-header d-inline-block">Reviews</h5>
+                            <div class="card-header btn-group float-end p-0" style="min-width: 150px;">
+                                <button
+                                        type="button"
+                                        class="btn m-3"
+                                        id="exportExcel"
+                                        onclick="exportToExcel()"
+                                >
+                                    <i class="bx bx-export fs-4 lh-0"></i>
+                                    &nbsp; &nbsp; Export to Excel
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover table-bordered" id="review-table">
+                                <thead>
+                                <tr class="filters" id="tbl-headers">
+                                    <th style="width: 1px">SR</th>
+                                    <th>Name</th>
+                                    <th>Details</th>
+                                    <th>Designation</th>
+                                    <th>Department</th>
+                                    <th>RO Details</th>
+                                    <th>RV Details</th>
+                                </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0" id="review-list">
+                                {#                                 {% regroup users|dictsortreversed:'ro1_id.full_name' by designation_abbreviation as sorted_users %}#}
+                                {% for user in users|dictsort:'ro1_id.username' %}
+                                    <tr class="visible count-profile">
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>
+                                            <strong>{{ user.full_name }}</strong>
+                                        </td>
+                                        <td>
+                                            <u>{{ user.username }}</u> <br>
+                                            <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                                        </td>
+                                        <td>
+                                            {% if goalsheet == "staff" %}
+                                                Staff
+                                            {% else %}
+                                                {% if user.designation_abbreviation == 'prof' %}
+                                                    Professor
+                                                {% elif user.designation_abbreviation == 'assistant_prof' %}
+                                                    Assistant Professor
+                                                {% elif user.designation_abbreviation == 'associate_prof' %}
+                                                    Associate Professor
+                                                {% elif user.designation_abbreviation == 'assistant_prof_on_contract' %}
+                                                    Assistant Professor on Contract
+
+                                                {% endif %}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {{ user.department }}
+                                        </td>
+                                        <td>
+                                            <strong>{{ user.ro1_id.full_name }}</strong> <br>
+                                            <u>{{ user.ro1_id.username }}</u> <br>
+                                            <a href="mailto:{{ user.ro1_id.email }}">{{ user.ro1_id.email }}</a>
+                                        </td>
+                                        <td>
+                                            <strong>{{ user.ro2_id.full_name }}</strong> <br>
+                                            <u>{{ user.ro2_id.username }}</u> <br>
+                                            <a href="mailto:{{ user.ro2_id.email }}">{{ user.ro2_id.email }}</a>
+                                        </td>
+
+
+                                    </tr>
+
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--/ Striped Rows -->
+
+
+                </div>
+                <!-- / Content -->
+                <!-- Footer -->
+                {% include 'includes/footer.html' %}
+                <!-- / Footer -->
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+</div>
+<script>
+</script>
+<!-- / Layout wrapper -->
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+<script src="/static/assets/vendor/libs/jquery/jquery.js"></script>
+<script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+<script src="/static/assets/vendor/libs/popper/popper.js"></script>
+<script src="/static/assets/vendor/js/bootstrap.js"></script>
+<script src="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="/static/assets/vendor/js/menu.js"></script>
+<!-- endbuild -->
+<!-- Vendors JS -->
+<!-- Main JS -->
+<script src="/static/assets/js/main.js"></script>
+<!-- Page JS -->
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script>
+    document.getElementById("filter-search").addEventListener("keyup", (e) => {
+        let input = e.target.value.toUpperCase();
+        let table = document.getElementById("review-table");
+        let tr = table.querySelectorAll("tr");
+        tr.forEach((row) => {
+            let td = row.children[1].children[0];
+            if (td) {
+                let textValue = td.innerText;
+                if (textValue.toUpperCase().indexOf(input) > -1) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            }
+        });
+    });
+
+    {#document.getElementById("apply-filter").addEventListener("click", () => {#}
+    {#    let sp = document.getElementById("backdrop-spinner");#}
+    {#    sp.style.display = "block";#}
+    {#    applyFilter()#}
+    {#    sp.style.display = "none";#}
+    {# });#}
+    {#let dds = document.getElementById("dept-dropdown-select");#}
+    {#let sts = document.getElementById("status-dropdown-select");#}
+    {#let dsgs = document.getElementById("designation-dropdown-select");#}
+    {##}
+    {#function applyFilter() {#}
+    {##}
+    {#    let table = document.getElementById("review-table");#}
+    {#    let tr = table.querySelectorAll("tr");#}
+    {#    let recordCount;#}
+    {#    tr.forEach((row) => {#}
+    {#        row.classList.remove("visible");#}
+    {#        row.classList.remove("count-profile");#}
+    {#        row.style.display = "";#}
+    {#        recordCount = 0;#}
+    {#    });#}
+    {#    if (dds.value == "ALL" && sts.value == "ALL" && dsgs.value == "ALL") {#}
+    {#        tr.forEach((row) => {#}
+    {#            row.style.display = "";#}
+    {#            row.classList.add("visible");#}
+    {#            row.classList.add("count-profile");#}
+    {#            recordCount++;#}
+    {#        });#}
+    {#    }#}
+    {#    if (dds.value == "ALL" && sts.value == "ALL" && dsgs.value != "ALL") {#}
+    {#        tr.forEach((row) => {#}
+    {#            let td = row.children[4];#}
+    {#            if (td) {#}
+    {#                let textValue = td.innerText;#}
+    {#                if (textValue.toUpperCase() === (dsgs.value)) {#}
+    {#                    row.style.display = "";#}
+    {#                    row.classList.add("visible");#}
+    {#                    row.classList.add("count-profile");#}
+    {#                    recordCount++;#}
+    {#                } else {#}
+    {#                    row.style.display = "none";#}
+    {#                }#}
+    {#            }#}
+    {#        });#}
+    {#    }#}
+    {#    if (dds.value == "ALL" && sts.value != "ALL" && dsgs.value == "ALL") {#}
+    {#        tr.forEach((row) => {#}
+    {#            let td = row.children[5];#}
+    {#            if (td) {#}
+    {#                let textValue = td.innerText;#}
+    {#                if (textValue.toUpperCase() === (sts.value)) {#}
+    {#                    row.style.display = "";#}
+    {#                    row.classList.add("visible");#}
+    {#                    row.classList.add("count-profile");#}
+    {#                    recordCount++;#}
+    {#                } else {#}
+    {#                    row.style.display = "none";#}
+    {#                }#}
+    {#            }#}
+    {#        });#}
+    {#    }#}
+    {#    if (dds.value == "ALL" && sts.value != "ALL" && dsgs.value != "ALL") {#}
+    {#        tr.forEach((row) => {#}
+    {#            let td = row.children[4];#}
+    {#            let td2 = row.children[5];#}
+    {#            if (td && td2) {#}
+    {#                let textValue = td.innerText;#}
+    {#                let textValue2 = td2.innerText;#}
+    {#                if (textValue.toUpperCase() === (dsgs.value) && textValue2.toUpperCase() === (sts.value)) {#}
+    {#                    row.style.display = "";#}
+    {#                    row.classList.add("visible");#}
+    {#                    row.classList.add("count-profile");#}
+    {#                    recordCount++;#}
+    {#                } else {#}
+    {#                    row.style.display = "none";#}
+    {#                }#}
+    {#            }#}
+    {#        });#}
+    {#    }#}
+    {#    if (dds.value != "ALL" && sts.value == "ALL" && dsgs.value == "ALL") {#}
+    {#        tr.forEach((row) => {#}
+    {#            let td = row.children[3];#}
+    {#            if (td) {#}
+    {#                let textValue = td.innerText;#}
+    {#                if (textValue.toUpperCase() === (dds.value)) {#}
+    {#                    row.style.display = "";#}
+    {#                    row.classList.add("visible");#}
+    {#                    row.classList.add("count-profile");#}
+    {#                    recordCount++;#}
+    {#                } else {#}
+    {#                    row.style.display = "none";#}
+    {#                }#}
+    {#            }#}
+    {#        });#}
+    {#    }#}
+    {#    if (dds.value != "ALL" && sts.value == "ALL" && dsgs.value != "ALL") {#}
+    {#        tr.forEach((row) => {#}
+    {#            let td = row.children[3];#}
+    {#            let td2 = row.children[4];#}
+    {#            if (td && td2) {#}
+    {#                let textValue = td.innerText;#}
+    {#                let textValue2 = td2.innerText;#}
+    {#                if (textValue.toUpperCase() === (dds.value) && textValue2.toUpperCase() === (dsgs.value)) {#}
+    {#                    row.style.display = "";#}
+    {#                    row.classList.add("visible");#}
+    {#                    row.classList.add("count-profile");#}
+    {#                    recordCount++;#}
+    {#                } else {#}
+    {#                    row.style.display = "none";#}
+    {#                }#}
+    {#            }#}
+    {#        });#}
+    {#    }#}
+    {#    if (dds.value != "ALL" && sts.value != "ALL" && dsgs.value == "ALL") {#}
+    {#        tr.forEach((row) => {#}
+    {#            let td = row.children[3];#}
+    {#            let td2 = row.children[5];#}
+    {#            if (td && td2) {#}
+    {#                let textValue = td.innerText;#}
+    {#                let textValue2 = td2.innerText;#}
+    {#                if (textValue.toUpperCase() === (dds.value) && textValue2.toUpperCase() === (sts.value)) {#}
+    {#                    row.style.display = "";#}
+    {#                    row.classList.add("visible");#}
+    {#                    row.classList.add("count-profile");#}
+    {#                    recordCount++;#}
+    {#                } else {#}
+    {#                    row.style.display = "none";#}
+    {#                }#}
+    {#            }#}
+    {#        });#}
+    {#    }#}
+    {#    if (dds.value != "ALL" && sts.value != "ALL" && dsgs.value != "ALL") {#}
+    {#        tr.forEach((row) => {#}
+    {#            let td = row.children[3];#}
+    {#            let td2 = row.children[4];#}
+    {#            let td3 = row.children[5];#}
+    {#            if (td && td2 && td3) {#}
+    {#                let textValue = td.innerText;#}
+    {#                let textValue2 = td2.innerText;#}
+    {#                let textValue3 = td3.innerText;#}
+    {#                if (textValue.toUpperCase() === (dds.value) && textValue2.toUpperCase() === (dsgs.value) && textValue3.toUpperCase() === (sts.value)) {#}
+    {#                    row.style.display = "";#}
+    {#                    row.classList.add("visible");#}
+    {#                    row.classList.add("count-profile");#}
+    {#                    recordCount++;#}
+    {#                } else {#}
+    {#                    row.style.display = "none";#}
+    {#                }#}
+    {#            }#}
+    {#        });#}
+    {#    }#}
+    {#    document.getElementById("tbl-headers").style.display = "";#}
+    {#    document.querySelector(".recordCount").children[0].innerHTML = (Number(recordCount) - 1);#}
+    {# }#}
+    {##}
+    {#applyFilter()#}
+
+    function exportToExcel() {
+        let reviewTable = document.getElementById("review-table");
+        let reviewTableRecords = reviewTable.querySelectorAll("tbody tr");
+        let exportTable = document.createElement("table");
+        let exportTableRecords = document.createElement("tbody");
+        exportTable.innerHTML = `
+            <tr class="filters" id="tbl-headers">
+                <th style="width: 1px">SR</th>
+                                    <th class="col-3">Name</th>
+                                    <th>Details</th>
+                                    <th>Designation</th>
+                                    <th>Department</th>
+                                    <th>RO Details</th>
+                                    <th>RV Details</th>
+            </tr>
+        `;
+        reviewTableRecords.forEach((record) => {
+            if (record.classList.contains("count-profile")) {
+                exportTableRecords.appendChild(record.cloneNode(true));
+            }
+        })
+        exportTable.appendChild(exportTableRecords);
+        $(exportTable).table2excel({
+            name: "HR Records",
+            filename: `staff-status.xls`,
+            {#filename: `${dds.value + "-" + dsgs.value + "-" + sts.value}.xls`,#}
+            preserveColors: false
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<aside
+        id="layout-menu"
+        class="layout-menu menu-vertical menu bg-menu-theme"
+>
+    <div class="app-brand demo">
+        <a href="{% url 'home' %}" class="app-brand-link">
+              <span class="app-brand-logo demo">
+                <img src="/static/assets/img/logos/logo-sm.png" style=" height: 55px; width: auto">
+              </span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2"
+            >APAS 3</span
+            >
+        </a>
+
+        <a
+                href="javascript:void(0);"
+                class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none"
+        >
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+        <!-- Dashboard -->
+        <li class="menu-item {% if page_name == "faculty-home" %}active{% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-alt"></i>
+                <div>Profile</div>
+            </a>
+        </li>
+
+        {#        <li class="menu-header small text-uppercase">#}
+        {#            <span class="menu-header-text">Verify Data</span>#}
+        {#        </li>#}
+        {##}
+        {#        <li class="menu-item {% if page_name == "verify-data" %} active {% endif %}">#}
+        {#            <a href="{% if page_name != "faculty-home" %}../{% endif %}verify/" class="menu-link">#}
+        {#                <i class="menu-icon tf-icons bx {% if not file.is_all_parameters_approved %}bx-time-five{% else %} bx-check-circle {% endif %}"#}
+        {#                   style="color: {% if not file.is_all_parameters_approved %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>#}
+        {#                <div>Verify Data</div>#}
+        {#            </a>#}
+        {#        </li>#}
+        <!-- Components -->
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Teaching</span>
+        </li>
+        <!-- Cards -->
+        <li class="menu-item {% if page_name == "teaching-entry" %} active {% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}teaching/" class="menu-link">
+                <i class="menu-icon tf-icons bx {% if not file.ro2_validator.teaching_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                   style="color: {% if not file.ro2_validator.teaching_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                <div data-i18n="Basic">Teaching</div>
+            </a>
+        </li>
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Research / Publication / Patents</span>
+        </li>
+        <li class="menu-item {{% if page_name == "research-entry" %} active {% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}research/" class="menu-link">
+                <i class="menu-icon tf-icons bx {% if not file.ro2_validator.research_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                   style="color: {% if not file.ro2_validator.research_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                <div data-i18n="Basic">Research / Publications</div>
+            </a>
+        </li>
+
+        <li class="menu-item {{% if page_name == "project-entry" %} active {% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}project/" class="menu-link">
+                <i class="menu-icon tf-icons bx {% if not file.ro2_validator.project_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                   style="color: {% if not file.ro2_validator.project_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                <div data-i18n="Basic">Projects</div>
+            </a>
+        </li>
+        {% if not file.user.designation_abbreviation == 'assistant_prof_on_contract' %}
+            <li class="menu-item {{% if page_name == "phd-guidance-entry" %} active {% endif %}">
+                <a href="{% if page_name != "faculty-home" %}../{% endif %}phd-guidance/" class="menu-link">
+                    <i class="menu-icon tf-icons bx {% if not file.ro2_validator.phd_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                       style="color: {% if not file.ro2_validator.phd_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                    <div data-i18n="Basic">PhD Guidance</div>
+                </a>
+            </li>
+        {% endif %}
+        <li class="menu-item {{% if page_name == "dissertation-entry" %} active {% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}dissertation/" class="menu-link">
+                <i class="menu-icon tf-icons bx {% if not file.ro2_validator.dissertation_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                   style="color: {% if not file.ro2_validator.dissertation_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                <div data-i18n="Basic">Dissertation</div>
+            </a>
+        </li>
+
+
+        <li class="menu-item {{% if page_name == "award-entry" %} active {% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}award/" class="menu-link">
+                <i class="menu-icon tf-icons bx {% if not file.ro2_validator.award_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                   style="color: {% if not file.ro2_validator.award_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                <div data-i18n="Basic">Recognition / Awards</div>
+            </a>
+        </li>
+        <li class="menu-item {{% if page_name == "consultancy-entry" %} active {% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}consultancy/" class="menu-link">
+                <i class="menu-icon tf-icons bx {% if not file.ro2_validator.consultancy_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                   style="color: {% if not file.ro2_validator.consultancy_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                <div data-i18n="Basic">Consultancy</div>
+            </a>
+        </li>
+        <li class="menu-item {{% if page_name == "academia-collab-entry" %} active {% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}academia-collab/" class="menu-link">
+                <i class="menu-icon tf-icons bx {% if not file.ro2_validator.academia_collab_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                   style="color: {% if not file.ro2_validator.academia_collab_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                <div data-i18n="Basic">Academia Collab</div>
+            </a>
+        </li>
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Administrative Activities</span>
+        </li>
+        <li class="menu-item {% if page_name == "arranging-conference-entry" %}active{% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}arranging-conference/" class="menu-link">
+                <i class="menu-icon tf-icons bx {% if not file.ro2_validator.arranging_conferences_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                   style="color: {% if not file.ro2_validator.arranging_conferences_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                <div data-i18n="Tables">Arranging Conferences</div>
+            </a>
+        </li>
+        <li class="menu-item {% if page_name == "mentorship-entry" %}active{% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}mentorship/" class="menu-link">
+                <i class="menu-icon tf-icons bx {% if not file.ro2_validator.mentorship_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                   style="color: {% if not file.ro2_validator.mentorship_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                <div data-i18n="Tables">Mentorship</div>
+            </a>
+        </li>
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Extended Activities</span>
+        </li>
+        <li class="menu-item {% if page_name == "attending-conference-entry" %}active{% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}attending-conference/" class="menu-link">
+                <i class="menu-icon tf-icons bx {% if not file.ro2_validator.attending_conferences_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                   style="color: {% if not file.ro2_validator.attending_conferences_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                <div data-i18n="Tables">Attending Conference and Seminars</div>
+            </a>
+        </li>
+        <li class="menu-item {% if page_name == "community-development-entry" %}active{% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}community-development/" class="menu-link">
+                <i class="menu-icon tf-icons bx {% if not file.ro2_validator.community_development_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                   style="color: {% if not file.ro2_validator.community_development_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                <div data-i18n="Tables">Community Development</div>
+            </a>
+        </li>
+        <li class="menu-item {% if page_name == "extra-curricular-entry" %}active{% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}extra-curricular/" class="menu-link">
+                <i class="menu-icon tf-icons bx {% if not file.ro2_validator.extra_curricular_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                   style="color: {% if not file.ro2_validator.extra_curricular_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                <div data-i18n="Tables">Extra Curricular</div>
+            </a>
+        </li>
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Over & Above</span>
+        </li>
+        <li class="menu-item {% if page_name == "additional-entry" %}active{% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}additional/" class="menu-link">
+                <i class="menu-icon tf-icons bx {% if not file.ro2_validator.additional_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                   style="color: {% if not file.ro2_validator.additional_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                <div data-i18n="Tables">Additional</div>
+            </a>
+        </li>
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Part B</span>
+        </li>
+        <li class="menu-item {% if page_name == "senior-feedback-entry" %}active{% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}senior-feedback/" class="menu-link">
+                <i class="menu-icon tf-icons bx {% if not file.ro2_validator.senior_feedback_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                   style="color: {% if not file.ro2_validator.senior_feedback_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                <div data-i18n="Tables">Senior Feedback</div>
+            </a>
+        </li>
+
+        <!-- Forms & Tables -->
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Review &amp; Submit</span>
+        </li>
+        <!-- Forms -->
+        <li class="menu-item {% if page_name == "faculty-review" %}active{% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}review/" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-chart"></i>
+                <div data-i18n="Tables">Review</div>
+            </a>
+        </li>
+        <!-- Tables -->
+
+        <li class="menu-item {% if page_name == "faculty-submit" %}active{% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}submit/" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-check-double"></i>
+                <div data-i18n="Tables">Submit</div>
+            </a>
+        </li>
+        <br><br><br><br><br>
+        <br><br><br><br><br>
+    </ul>
+</aside>

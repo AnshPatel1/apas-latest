@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        class="light-style layout-menu-fixed layout-navbar-fixed layout-menu-collapsed"
+        dir="ltr"
+        data -theme="theme-default"
+        data-assets-path="/static/assets/"
+        data-template="vertical-menu-template-free"
+>
+<head>
+    <script>
+        var file_master_data = [];
+        var file_index_list = [];
+        let key_param = {key: {{ key_param_validation.maxkey }}, value: {{ key_param_validation.maxval }}};
+        let maj_param = {key: {{ maj_param_validation.maxkey }}, value: {{ maj_param_validation.maxval }}};
+        let min_param = {key: {{ min_param_validation.maxkey }}, value: {{ min_param_validation.maxval }}};
+    </script>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <title>Staff Self-Appraisal</title>
+    <link rel="icon" type="image/x-icon" href="../../../media/admin-interface/favicon/Pandit_Deendayal_Energy_University_logo-2.png">
+
+    <meta name="description" content=""/>
+    <!-- Favicon -->
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"
+    />
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="/static/assets/vendor/fonts/boxicons.css"/>
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/css/core.css" class="template-customizer-core-css"/>
+    <link rel="stylesheet" href="/static/assets/vendor/css/theme-default.css" class="template-customizer-theme-css"/>
+    <link rel="stylesheet" href="/static/assets/css/demo.css"/>
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"/>
+    <!-- Page CSS -->
+    <!-- Helpers -->
+    <script src="/static/assets/vendor/js/helpers.js"></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="/static/assets/js/config.js"></script>
+    <style>
+        .charcount {
+            text-align: right;
+        }
+    </style>
+</head>
+<body>
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <!-- Menu -->
+        {% include 'includes/staff-dashboard-sidebar.html' %}
+        <!-- / Menu -->
+        <!-- Layout container -->
+        <div class="layout-page">
+            <!-- Navbar -->
+            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme justify-content-between"
+                 id="layout-navbar">
+                <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                    <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                        <i class="bx bx-menu bx-sm"></i>
+                    </a>
+                </div>
+
+                <div class="navbar-nav-right d-flex align-items-center justify-content-center" id="navbar-collapse">
+                    <!-- Search -->
+                    <div class="navbar-nav align-items-center">
+                        <div class="nav-item d-flex align-items-center">
+                            <i class="bx bx-user fs-4 lh-0"></i>
+                            <strong>&nbsp; &nbsp;{{ request.user.full_name }}</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-end text-danger">
+                    <i class="bx bx-arrow-back"></i>
+                    <a class="nav-item nav-link px-0" href="{% url 'home' %}">
+                        Back
+                    </a>
+                </div>
+            </nav>            <!-- / Navbar -->
+            <!-- / Navbar -->
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+
+                <!-- Content -->
+
+                {% if file.file_level == "APPRAISEE" and stage == 'appraisal' and file.ro1_validation.is_parameters_approved %}
+                    <div class="container-p-y pe-3 ps-3">
+
+                        <div class="card">
+                            <div class="card-body">
+                                <small class="text-light fw-semibold">Description</small>
+                                <dl class="row mt-md-4">
+                                    <dt class="col-sm-2">Appraisee Name</dt>
+                                    <dd class="col-sm-9">{{ file.user.full_name }}</dd>
+
+                                    <dt class="col-sm-2">RO1 Name</dt>
+                                    <dd class="col-sm-9">
+                                        <p>{{ file.user.ro1_id.full_name }}</p>
+                                    </dd>
+
+                                    <dt class="col-sm-2">RO2 Name</dt>
+                                    <dd class="col-sm-9">{{ file.user.ro2_id.full_name }}</dd>
+
+                                    <dt class="col-sm-2 text-truncate">Current Status</dt>
+                                    <dd class="col-sm-9">
+                                        {% if file.file_level == 'APPRAISEE' %}
+                                            <span class="badge bg-primary">Appraisee</span>
+                                        {% elif file.file_level == 'RO1' %}
+                                            <span class="badge bg-primary">Reviewing Officer 1</span>
+                                        {% elif file.file_level == 'RO2' %}
+                                            <span class="badge bg-primary">Reviewing Officer 2</span>
+                                        {% elif file.file_level == 'ADMIN' %}
+                                            <span class="badge bg-primary">Admin</span>
+                                        {% endif %}
+
+                                    </dd>
+
+                                    <dt class="col-sm-2">Actions Required</dt>
+                                    <dd class="col-sm-9">
+                                        <dl class="row">
+                                            {% if file.file_level == 'RO1' and not file.ro1_validation.is_parameters_approved %}
+                                                <dd class="col-sm-8">
+                                                    Please wait for the Reporting Officer to approve the parameters.
+                                                </dd>
+                                            {% endif %}
+                                            {% if file.file_level == 'RO1' and file.ro1_validation.is_parameters_approved %}
+                                                <dd class="col-sm-8">
+                                                    None<br> Please wait for the Reporting Officer to grade the file.
+                                                </dd>
+                                            {% endif %}
+                                            {% if file.file_level == 'APPRAISEE' %}
+                                                {% if file.ro1_validation.is_parameters_approved %}
+                                                    <dd class="col-sm-8">
+                                                        Please fill up the details and submit to your Reporting Officer.
+                                                    </dd>
+                                                {% else %}
+                                                    <dd class="col-sm-8">
+                                                        Please enter the parameters and submit to your Reporting Officer for approval.
+                                                    </dd>
+                                                {% endif %}
+                                            {% endif %}
+                                        </dl>
+                                        <dl class="row">
+
+                                        </dl>
+                                    </dd>
+                                </dl>
+                                {% if not file.is_all_parameters_approved and file.file_level == "APPRAISEE" %}
+                                    <div class="alert alert-danger" role="alert">Parameters aren't approved by your RO. Make
+                                        sure to submit it on time
+                                    </div>
+                                {% endif %}
+                                {% if file.is_all_parameters_approved and file.file_level == "APPRAISEE" %}
+                                    <div class="alert alert-warning" role="alert">Parameters are approved by your RO. You
+                                        can
+                                        fillup and submit your report now
+                                    </div>
+                                {% endif %}
+
+                            </div>
+                        </div>
+                        <div class="col-xl-12">
+                            <h4 class="fw-bold py-3 mb-4">
+                                <span class="text-muted fw-light"></span>
+                            </h4>
+                            <h4 class="fw-bold py-3 mb-4">
+                                <span class="text-muted fw-light">PART A /</span> Performance
+                                Parameters
+                            </h4>
+                            <div class="nav-align-top mb-4">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="nav-item">
+                                        <button
+                                                type="button"
+                                                class="nav-link active"
+                                                role="tab"
+                                                data-bs-toggle="tab"
+                                                data-bs-target="#navs-top-home"
+                                                aria-controls="navs-top-home"
+                                                aria-selected="true"
+                                        >
+                                            Key Parameter
+                                        </button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button
+                                                type="button"
+                                                class="nav-link"
+                                                role="tab"
+                                                data-bs-toggle="tab"
+                                                data-bs-target="#navs-top-profile"
+                                                aria-controls="navs-top-profile"
+                                                aria-selected="false"
+                                        >
+                                            Major Parameter
+                                        </button>
+                                    </li>
+                                    <li class="nav-item">
+                                        <button
+                                                type="button"
+                                                class="nav-link"
+                                                role="tab"
+                                                data-bs-toggle="tab"
+                                                data-bs-target="#navs-top-messages"
+                                                aria-controls="navs-top-messages"
+                                                aria-selected="false"
+                                        >
+                                            Minor Parameter
+                                        </button>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="navs-top-home" role="tabpanel">
+                                        <span class="text-muted fw-light">PART A / Performance Parameters /</span> Key
+                                        Parameters
+                                        </h4>
+                                        <div class="card">
+                                            <h5 class="card-header">Key Parameters</h5>
+                                            <div class="table-responsive text-nowrap">
+                                                <table class="table">
+                                                    <caption class="ms-4">
+                                                        Max. {{ max_key_allowed }} key parameters
+                                                    </caption>
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Brief about the work in short</th>
+                                                        <th>Details about your work</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody id="key-param-tbdy">
+                                                    {% for key_param in key_parameters %}
+                                                        <tr>
+                                                            <td style="width: 50%;">
+                                                                {% if key_param.is_approved %}
+                                                                    <textarea
+                                                                            placeholder="Enter Key Parameter"
+                                                                            class="form-control" rows="8" readonly
+                                                                            maxlength="{{ key_param_validation.maxkey }}">{{ key_param.name }}</textarea>
+                                                                    <div class="charcount">
+                                                                        <span>0</span>
+                                                                        <span>/ {{ key_param_validation.maxkey }}</span>
+                                                                    </div>
+                                                                    <div class="alert alert-success"
+                                                                         role="alert">
+                                                                        This Parameter is approved
+                                                                        <button type="button"
+                                                                                class="btn btn-success btn-sm"
+                                                                                data-bs-toggle="tooltip"
+                                                                                data-bs-offset="0,4"
+                                                                                data-bs-placement="right"
+                                                                                data-bs-html="true"
+                                                                                data-bs-original-title="<span>{{ key_param.ro_remakrs }}</span>">
+                                                                            <span class="tf-icons bx bx-info-circle"></span>
+                                                                        </button>
+                                                                    </div>
+                                                                {% endif %}
+                                                                {% if key_param.is_rejected %}
+                                                                    {#                                                                <input id="defaultInput" class="form-control"#}
+                                                                    {#                                                                       type="text"#}
+                                                                    {#                                                                       value="{{ key_param.name }}"#}
+                                                                    {##}
+                                                                    {#                                                                       placeholder="Default input"/>#}
+                                                                    {#                                                                <textarea#}
+                                                                    {#                                                                        value="{{ key_param.name }}"#}
+                                                                    {#                                                                        placeholder="Enter Key Parameters"#}
+                                                                    {#                                                                        class="form-control" rows="3"></textarea>#}
+                                                                    <textarea
+                                                                            placeholder="Enter Key Parameter"
+                                                                            class="form-control" rows="8"
+                                                                            maxlength="{{ key_param_validation.maxkey }}">{{ key_param.name }}</textarea>
+                                                                    <div class="charcount">
+                                                                        <span>0</span>
+                                                                        <span>/ {{ key_param_validation.maxkey }}</span>
+                                                                    </div>
+                                                                    <button type="button" id="tbl-btn"
+                                                                            class="rmvparam btn btn-outline-danger"
+                                                                    >
+                                                                        <span class="tf-icons bx bx-trash-alt"></span>&nbsp;
+                                                                        Remove
+                                                                    </button>
+                                                                    <div class="alert alert-danger" role="alert">
+                                                                        This Parameter is rejected. Please edit it
+                                                                        <button type="button"
+                                                                                class="btn btn-sm"
+                                                                                data-bs-toggle="tooltip"
+                                                                                title="<span>{{ key_param.ro_remakrs }}</span>"
+                                                                                data-bs-offset="0,4"
+                                                                                data-bs-placement="right"
+                                                                                data-bs-html="true">
+                                                                        <span class="tf-icons bx bx-info-circle"
+                                                                              style="color:red;"></span>
+                                                                        </button>
+                                                                    </div>
+
+                                                                {% else %}
+                                                                    {% if not key_param.is_approved %}
+                                                                        {#                                                                    <input id="defaultInput" class="form-control"#}
+                                                                        {#                                                                           type="text"#}
+                                                                        {#                                                                           value="{{ key_param.name }}"#}
+                                                                        {#                                                                           placeholder="Default input"/>#}
+                                                                        <textarea
+                                                                                placeholder="Enter Key Parameter"
+                                                                                class="form-control" rows="8" maxlength="{{ key_param_validation.maxkey }}"
+                                                                                readonly>{{ key_param.name }}</textarea>
+                                                                        <div class="charcount">
+                                                                            <span>0</span>
+                                                                            <span>/ {{ key_param_validation.maxkey }}</span>
+                                                                        </div>
+                                                                        <button type="button" id="tbl-btn"
+                                                                                class="rmvparam btn btn-outline-danger"
+                                                                        >
+                                                                            <span class="tf-icons bx bx-trash-alt"></span>&nbsp;
+                                                                            Remove
+                                                                        </button>
+
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                            </td>
+                                                            <td style="width: 50%">
+                                                                {% if file.ro1_validation.is_parameters_approved %}
+
+                                                                    <textarea
+                                                                            placeholder="Enter Details"
+                                                                            class="form-control paraminput"
+                                                                            id="exampleFormControlTextarea1" rows="10" maxlength="{{ key_param_validation.maxval }}"
+                                                                    >{% if key_param.value %}{{ key_param.value }}{% endif %}</textarea>
+                                                                    <div class="charcount">
+                                                                        <span>0</span>
+                                                                        <span>/ {{ key_param_validation.maxval }}</span>
+                                                                    </div>
+                                                                {% else %}
+
+                                                                    <textarea
+                                                                            placeholder="First All Parameters need to be approved"
+                                                                            class="form-control paraminput"
+                                                                            id="exampleFormControlTextarea1" rows="12"
+                                                                            maxlength="{{ key_param_validation.maxval }}"
+                                                                            style="width: 100%;"
+                                                                            disabled></textarea>
+                                                                    <div class="charcount">
+                                                                        <span>0</span>
+                                                                        <span>/ {{ key_param_validation.maxval }}</span>
+                                                                    </div>
+                                                                {% endif %}
+
+                                                            </td>
+                                                        </tr>
+
+                                                    {% endfor %}
+                                                    {% if key_parameter_count == 0 %}
+                                                        <tr>
+                                                            <td>
+                                                                        <textarea
+                                                                                placeholder="Enter Key Parameters"
+                                                                                class="form-control" rows="8" maxlength="{{ key_param_validation.maxkey }}"></textarea>
+                                                                <div class="charcount">
+                                                                    <span>0</span>
+                                                                    <span>/ {{ key_param_validation.maxkey }}</span>
+                                                                </div>
+                                                                <button type="button" id="tbl-btn"
+                                                                        class="rmvparam btn btn-outline-danger"
+                                                                        style="display:none">
+                                                                    <span class="tf-icons bx bx-trash-alt"></span>&nbsp;
+                                                                    Remove
+
+                                                                </button>
+                                                            </td>
+                                                            <td>
+																	<textarea
+                                                                            placeholder="First Parameters need to be approved"
+                                                                            class="form-control paraminput"
+                                                                            id="exampleFormControlTextarea1" rows="12"
+                                                                            maxlength="{{ key_param_validation.maxval }}"
+                                                                            disabled></textarea>
+                                                                <div class="charcount">
+                                                                    <span>0</span>
+                                                                    <span>/ {{ key_param_validation.maxval }}</span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    {% endif %}
+                                                    </tbody>
+                                                    <tfoot>
+                                                    <tr>
+                                                        <td>
+                                                            {% if not file.is_all_parameters_approved %}
+                                                                <button type="button" id="add-btn"
+                                                                        class="addparam btn btn-outline-primary">
+                                                                    <span class="tf-icons bx bx-plus"></span>&nbsp; Add
+
+                                                                </button>
+                                                            {% endif %}
+                                                        </td>
+                                                        <td></td>
+                                                    </tr>
+                                                    </tfoot>
+                                                </table>
+                                                <style>
+                                                    #tbl-btn {
+                                                        margin-top: 8px;
+                                                        width: 100%;
+                                                    }
+
+                                                    #add-btn {
+                                                        padding-left: 20px;
+                                                        width: 50%;
+                                                    }
+                                                </style>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="navs-top-profile" role="tabpanel">
+                                        <span class="text-muted fw-light">PART A / Performance Parameters /</span> Major
+                                        Parameters
+                                        </h4>
+                                        <div class="card">
+                                            <h5 class="card-header">Major Parameters</h5>
+                                            <div class="table-responsive text-nowrap">
+                                                <table class="table">
+                                                    <caption class="ms-4">
+                                                        Max. {{ max_major_allowed }} Major Parameters
+                                                    </caption>
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Brief about the work in short</th>
+                                                        <th>Details about your work</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody id="maj-param-tbdy">
+                                                    {% for major_param in major_parameters %}
+                                                        <tr>
+                                                            <td style="width: 50%;">
+                                                                {% if major_param.is_approved %}
+                                                                    <textarea
+                                                                            placeholder="Enter Major Parameter"
+                                                                            class="form-control" rows="8" maxlength="{{ maj_param_validation.maxkey }}"
+                                                                            readonly>{{ major_param.name }}</textarea>
+                                                                    <div class="charcount">
+                                                                        <span>0</span>
+                                                                        <span>/ {{ maj_param_validation.maxkey }}</span>
+                                                                    </div>
+
+                                                                    {#                                                                <input id="defaultInput" class="form-control"#}
+                                                                    {#                                                                       type="text"#}
+                                                                    {#                                                                       value="{{ major_param.name }}"#}
+                                                                    {#                                                                       placeholder="Default input"#}
+                                                                    {#                                                                       readonly/>#}
+                                                                    <div class="alert alert-success"
+                                                                         role="alert">
+                                                                        This Parameter is approved
+                                                                        <button type="button"
+                                                                                class="btn btn-success btn-sm"
+                                                                                data-bs-toggle="tooltip"
+                                                                                title="<span>{{ major_param.ro_remakrs }}</span>"
+                                                                                data-bs-offset="0,4"
+                                                                                data-bs-placement="right"
+                                                                                data-bs-html="true">
+                                                                            <span class="tf-icons bx bx-info-circle"></span>
+                                                                        </button>
+                                                                    </div>
+                                                                {% endif %}
+                                                                {% if major_param.is_rejected %}
+                                                                    <textarea
+                                                                            placeholder="Enter Major Parameter"
+                                                                            class="form-control" rows="8"
+                                                                            maxlength="{{ maj_param_validation.maxkey }}">{{ major_param.name }}</textarea>
+                                                                    <div class="charcount">
+                                                                        <span>0</span>
+                                                                        <span>/ {{ maj_param_validation.maxkey }}</span>
+                                                                    </div>
+                                                                    <button type="button" id="tbl-btn"
+                                                                            class="rmvparam btn btn-outline-danger"
+                                                                    >
+                                                                        <span class="tf-icons bx bx-trash-alt"></span>&nbsp;
+                                                                        Remove
+                                                                    </button>
+                                                                    <div class="alert alert-danger" role="alert">
+                                                                        This Parameter is rejected. Please edit it
+                                                                        <button type="button"
+                                                                                class="btn btn-sm"
+                                                                                data-bs-toggle="tooltip"
+                                                                                title="<span>{{ major_param.ro_remakrs }}</span>"
+                                                                                data-bs-offset="0,4"
+                                                                                data-bs-placement="right"
+                                                                                data-bs-html="true">
+                                                                        <span class="tf-icons bx bx-info-circle"
+                                                                              style="color:red;"></span>
+                                                                        </button>
+                                                                    </div>
+
+                                                                {% else %}
+                                                                    {% if not major_param.is_approved %}
+                                                                        {#                                                                    <input id="defaultInput" class="form-control"#}
+                                                                        {#                                                                           type="text"#}
+                                                                        {#                                                                           value="{{ major_param.name }}"#}
+                                                                        {#                                                                           placeholder="Default input"/>#}
+                                                                        <textarea
+                                                                                placeholder="Enter Major Parameter"
+                                                                                class="form-control" maxlength="{{ maj_param_validation.maxkey }}"
+                                                                                rows="8">{{ major_param.name }}</textarea>
+                                                                        <div class="charcount">
+                                                                            <span>0</span>
+                                                                            <span>/ {{ maj_param_validation.maxkey }}</span>
+                                                                        </div>
+
+                                                                        <button type="button" id="tbl-btn"
+                                                                                class="rmvparam btn btn-outline-danger"
+                                                                        >
+                                                                            <span class="tf-icons bx bx-trash-alt"></span>&nbsp;
+                                                                            Remove
+                                                                        </button>
+
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                            </td>
+                                                            <td>
+                                                                {% if file.is_all_parameters_approved %}
+
+                                                                    <textarea
+                                                                            placeholder="Enter Details"
+                                                                            class="form-control paraminput"
+                                                                            id="exampleFormControlTextarea1" rows="12"
+                                                                            maxlength="{{ maj_param_validation.maxval }}"
+                                                                    >{% if major_param.value %}{{ major_param.value }}{% endif %}</textarea>
+                                                                    <div class="charcount">
+                                                                        <span>0</span>
+                                                                        <span>/ {{ maj_param_validation.maxval }}</span>
+                                                                    </div>
+                                                                {% endif %}
+                                                                {% if not file.is_all_parameters_approved %}
+                                                                    <textarea
+                                                                            placeholder="First All Parameters need to be approved"
+                                                                            class="form-control paraminput"
+                                                                            id="exampleFormControlTextarea1" rows="12"
+                                                                            maxlength="{{ maj_param_validation.maxval }}"
+                                                                            disabled></textarea>
+                                                                    <div class="charcount">
+                                                                        <span>0</span>
+                                                                        <span>/ {{ maj_param_validation.maxval }}</span>
+                                                                    </div>
+                                                                {% endif %}
+
+                                                            </td>
+                                                        </tr>
+
+                                                    {% endfor %}
+                                                    {% if major_parameter_count == 0 %}
+                                                        <tr>
+                                                            <td>
+                                                            <textarea
+                                                                    placeholder="Enter Major Parameters"
+                                                                    class="form-control" rows="8" maxlength="{{ maj_param_validation.maxkey }}"></textarea>
+                                                                <div class="charcount">
+                                                                    <span>0</span>
+                                                                    <span>/ {{ maj_param_validation.maxkey }}</span>
+                                                                </div>
+
+                                                                <button type="button" id="tbl-btn"
+                                                                        class="rmvparam btn btn-outline-danger"
+                                                                        style="display:none">
+                                                                    <span class="tf-icons bx bx-trash-alt"></span>&nbsp;
+                                                                    Remove
+
+                                                                </button>
+                                                            </td>
+                                                            <td>
+																	<textarea
+                                                                            placeholder="First Parameters need to be approved"
+                                                                            class="form-control paraminput"
+                                                                            id="exampleFormControlTextarea1" rows="12"
+                                                                            maxlength="{{ maj_param_validation.maxval }}"
+                                                                            disabled></textarea>
+                                                                <div class="charcount">
+                                                                    <span>0</span>
+                                                                    <span>/ {{ maj_param_validation.maxval }}</span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    {% endif %}
+                                                    </tbody>
+                                                    <tfoot>
+                                                    <tr>
+                                                        <td>
+                                                            {% if not file.is_all_parameters_approved %}
+                                                                <button type="button" id="add-btn"
+                                                                        class="addparam btn btn-outline-primary">
+                                                                    <span class="tf-icons bx bx-plus"></span>&nbsp; Add
+
+                                                                </button>
+                                                            {% endif %}
+                                                        </td>
+                                                        <td></td>
+                                                    </tr>
+                                                    </tfoot>
+                                                </table>
+                                                <style>
+                                                    #tbl-btn {
+                                                        margin-top: 8px;
+                                                        width: 100%;
+                                                    }
+
+                                                    #add-btn {
+                                                        padding-left: 20px;
+                                                        width: 50%;
+                                                    }
+                                                </style>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade" id="navs-top-messages" role="tabpanel">
+                                        <span class="text-muted fw-light">PART A / Performance Parameters /</span> Minor
+                                        Parameters
+                                        </h4>
+                                        <div class="card">
+                                            <h5 class="card-header">Minor Parameters</h5>
+                                            <div class="table-responsive text-nowrap">
+                                                <table class="table">
+                                                    <caption class="ms-4">
+                                                        Max. {{ max_minor_allowed }} Minor Parameters
+                                                    </caption>
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Brief about the work in short</th>
+                                                        <th>Details about your work</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody id="min-param-tbdy">
+                                                    {% for minor_param in minor_parameters %}
+                                                        <tr>
+                                                            <td style="width: 50%;">
+                                                                {% if minor_param.is_approved %}
+                                                                    <textarea
+                                                                            placeholder="Enter Minor Parameter"
+                                                                            class="form-control" rows="8" maxlength="{{ min_param_validation.maxkey }}"
+                                                                            readonly>{{ minor_param.name }}</textarea>
+                                                                    <div class="charcount">
+                                                                        <span>0</span>
+                                                                        <span>/ {{ min_param_validation.maxkey }}</span>
+                                                                    </div>
+
+                                                                    <div class="alert alert-success"
+                                                                         role="alert">
+                                                                        This Parameter is approved
+                                                                        <button type="button"
+                                                                                class="btn btn-success btn-sm"
+                                                                                data-bs-toggle="tooltip"
+                                                                                title="<span>{{ minor_param.ro_remakrs }}</span>"
+                                                                                data-bs-offset="0,4"
+                                                                                data-bs-placement="right"
+                                                                                data-bs-html="true">
+                                                                            <span class="tf-icons bx bx-info-circle"></span>
+                                                                        </button>
+                                                                    </div>
+                                                                {% endif %}
+                                                                {% if minor_param.is_rejected %}
+                                                                    <textarea
+                                                                            placeholder="Enter Minor Parameter"
+                                                                            class="form-control" rows="8"
+                                                                            maxlength="{{ min_param_validation.maxkey }}">{{ minor_param.name }}</textarea>
+                                                                    <div class="charcount">
+                                                                        <span>0</span>
+                                                                        <span>/ {{ min_param_validation.maxkey }}</span>
+                                                                    </div>
+
+                                                                    <button type="button" id="tbl-btn"
+                                                                            class="rmvparam btn btn-outline-danger"
+                                                                    >
+                                                                        <span class="tf-icons bx bx-trash-alt"></span>&nbsp;
+                                                                        Remove
+                                                                    </button>
+                                                                    <div class="alert alert-danger" role="alert">
+                                                                        This Parameter is rejected. Please edit it
+                                                                        <button type="button"
+                                                                                class="btn btn-sm"
+                                                                                data-bs-toggle="tooltip"
+                                                                                title="<span>{{ minor_param.ro_remakrs }}</span>"
+                                                                                data-bs-offset="0,4"
+                                                                                data-bs-placement="right"
+                                                                                data-bs-html="true">
+                                                                        <span class="tf-icons bx bx-info-circle"
+                                                                              style="color:red;"></span>
+                                                                        </button>
+                                                                    </div>
+
+                                                                {% else %}
+                                                                    {% if not minor_param.is_approved %}
+                                                                        <textarea
+                                                                                placeholder="Enter Minor Parameter"
+                                                                                class="form-control" rows="8"
+                                                                                maxlength="{{ min_param_validation.maxkey }}">{{ minor_param.name }}</textarea>
+                                                                        <div class="charcount">
+                                                                            <span>0</span>
+                                                                            <span>/ {{ min_param_validation.maxkey }}</span>
+                                                                        </div>
+
+                                                                        <button type="button" id="tbl-btn"
+                                                                                class="rmvparam btn btn-outline-danger"
+                                                                        >
+                                                                            <span class="tf-icons bx bx-trash-alt"></span>&nbsp;
+                                                                            Remove
+                                                                        </button>
+
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                            </td>
+                                                            <td>
+                                                                {% if file.is_all_parameters_approved %}
+
+                                                                    <textarea
+                                                                            placeholder="Enter Details"
+                                                                            class="form-control paraminput"
+                                                                            id="exampleFormControlTextarea1" rows="12"
+                                                                            maxlength="{{ min_param_validation.maxval }}"
+                                                                    >{% if minor_param.value %}{{ minor_param.value }}{% endif %}</textarea>
+                                                                    <div class="charcount">
+                                                                        <span>0</span>
+                                                                        <span>/ {{ min_param_validation.maxval }}</span>
+                                                                    </div>
+                                                                {% endif %}
+                                                                {% if not file.is_all_parameters_approved %}
+                                                                    <textarea
+                                                                            placeholder="First All Parameters need to be approved"
+                                                                            class="form-control paraminput"
+                                                                            id="exampleFormControlTextarea1" rows="12"
+                                                                            disabled maxlength="{{ min_param_validation.maxval }}"></textarea>
+                                                                    <div class="charcount">
+                                                                        <span>0</span>
+                                                                        <span>/ {{ min_param_validation.maxval }}</span>
+                                                                    </div>
+                                                                {% endif %}
+                                                            </td>
+                                                        </tr>
+
+                                                    {% endfor %}
+                                                    {% if minor_parameter_count == 0 %}
+                                                        <tr>
+                                                            <td>
+                                                            <textarea
+                                                                    placeholder="Enter Minor Parameter"
+                                                                    class="form-control" rows="8" maxlength="{{ min_param_validation.maxkey }}"></textarea>
+                                                                <div class="charcount">
+                                                                    <span>0</span>
+                                                                    <span>/ {{ min_param_validation.maxkey }}</span>
+                                                                </div>
+
+                                                                <button type="button" id="tbl-btn"
+                                                                        class="rmvparam btn btn-outline-danger"
+                                                                        style="display:none">
+                                                                    <span class="tf-icons bx bx-trash-alt"></span>&nbsp;
+                                                                    Remove
+
+                                                                </button>
+                                                            </td>
+                                                            <td>
+																	<textarea
+                                                                            placeholder="First Parameters need to be approved"
+                                                                            class="form-control paraminput"
+                                                                            id="exampleFormControlTextarea1" rows="12" maxlength="{{ min_param_validation.maxval }}"
+                                                                            disabled></textarea>
+                                                                <div class="charcount">
+                                                                    <span>0</span>
+                                                                    <span>/ {{ min_param_validation.maxval }}</span>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    {% endif %}
+                                                    </tbody>
+                                                    <tfoot>
+                                                    <tr>
+                                                        <td>
+
+                                                            <button type="button" id="add-btn"
+                                                                    {% if file.is_all_parameters_approved %}
+                                                                    style="display:none" {% endif %}
+                                                                    class="addparam btn btn-outline-primary">
+                                                                <span class="tf-icons bx bx-plus"></span>&nbsp; Add
+
+                                                            </button>
+
+                                                        </td>
+                                                        <td></td>
+                                                    </tr>
+                                                    </tfoot>
+                                                </table>
+                                                <style>
+                                                    #tbl-btn {
+                                                        margin-top: 8px;
+                                                        width: 100%;
+                                                    }
+
+                                                    #add-btn {
+                                                        padding-left: 20px;
+                                                        width: 50%;
+                                                    }
+                                                </style>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% if file.ro1_validation.is_parameters_approved and stage == 'appraisal' %}
+
+                            <h4 class="fw-bold py-3 mb-4">
+                                <span class="text-muted fw-light">PART B </span> Self Development</h4>
+
+
+
+                            <div class="card">
+                                <div class="card-body self-development-container">
+                                    <h5 class="card-title">Self Development</h5>
+                                    <p class="card-text">
+                                        Have you taken training from EDX / IBM or any other relevant to job role?
+
+                                        <input class="form-check-input" type="checkbox" {% if file.training_taken %}
+                                               checked {% endif %} id="training-taken">
+                                    </p>
+                                    <div class="form-floating" id="file-input-form">
+                                        {% for p in file.self_development_parameter.all %}
+
+                                            <div class="file-container">
+                                                <script>
+                                                    file_master_data.push({
+                                                        id: {{p.id}},
+                                                        name: "{{p.name}}",
+                                                        state: "Preserve"
+                                                    });
+                                                </script>
+                                                <input
+                                                        type="text"
+                                                        name="name"
+                                                        class="course-input form-control"
+                                                        id="course-name-{{ forloop.counter }}"
+                                                        value="{{ p.name }}"
+                                                        disabled
+                                                        placeholder="Name of the Course, Course Code"
+                                                />
+                                                <div class="row mb-3">
+                                                    <div class="col-md-8">
+                                                        <div class="ms-3 mb-3">
+                                                            <small id="file-link-area-{{ forloop.counter }}">
+                                                                {% if p.file is not None %}
+                                                                    File uploaded {{ p.file.filename }} <a
+                                                                        href="{{ p.file.file.url }}"
+                                                                        target="_blank">view</a>
+                                                                {% else %}
+                                                                    No file uploaded
+                                                                {% endif %}
+                                                            </small>
+                                                        </div>
+                                                        <input type="hidden" name="file-id" value="{{ p.id }}"/>
+
+                                                    </div>
+
+
+                                                    <div class="col-md-4">
+
+                                                        <button type="button" id="tbl-btn"
+                                                                class="rmvfile btn btn-outline-danger">
+                                                            <span class="tf-icons bx bx-trash-alt"></span>&nbsp;
+                                                            Remove
+                                                        </button>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                    <div class="form-floating" id="cert-submit-area">
+                                        <div class="demo-inline-spacing">
+                                            <button class="btn btn-primary" id="file-add-btn">
+                                                Add
+                                            </button>
+                                            <button onclick="submitMultiFiles()" class="btn btn-primary">Upload
+                                            </button>
+
+                                            {% if file.mooc_file.file is not None %}
+                                                <div class="spinner-border spinner-border-sm text-primary"
+                                                     role="status"
+                                                     id='cert-file-spinner' style="display:none">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+
+
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <script>
+                                        var max_trainings = {{ config.self_development_max_trainings }};
+                                        var min_trainings = {{ config.self_development_min_trainings }};
+                                        {% if file.training_taken %}
+                                            var file_count = {{ file.self_development_parameter_count }};
+                                        {% else %}
+                                            var file_count = 0;
+                                        {% endif %}
+
+                                        {% if not file.training_taken %}
+                                            var need_to_show = true;
+                                        {% else %}
+                                            var need_to_show = false;
+                                        {% endif %}
+                                    </script>
+                                </div>
+                            </div>
+
+                            <h4 class="fw-bold py-3 mb-4">
+                                <span class="text-muted fw-light">PART C /</span> Any Other
+                                Activities
+
+                            </h4>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Other Activities</h5>
+                                    <p class="card-text">
+                                        Involvement/Roles played in activities related to University
+
+                                        <input class="form-check-input" type="checkbox" value="" id="other-activity-check"
+                                                {% if file.other_activities_parameter_available %}
+                                               checked {% endif %}/>
+                                    </p>
+                                    <div class="form-floating">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                            <textarea class="form-control" id="other-activity-text"
+                                                      rows="5"
+                                                      placeholder="Involvement/Roles played in activities related to University"
+                                                      maxlength="{{ general_textbox_max }}">{% if file.other_activities_parameter %}{{ file.other_activities_parameter }}{% endif %}</textarea>
+                                                <div class="charcount">
+                                                    <span>0</span>
+                                                    <span>/ {{ general_textbox_max }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <h4 class="fw-bold py-3 mb-4">
+                                <span class="text-muted fw-light">PART D /</span> Self Evaluation
+
+                            </h4>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">SELF EVALUATION</h5>
+                                    <p class="card-text">
+                                        Key Highlights of the year
+                                    </p>
+                                    <div>
+                                        <textarea class="form-control paraminput" id="key-highlights"
+                                                  placeholder="Enter Key Highlights"
+                                                  maxlength="{{ general_textbox_max }}"
+                                                  required
+                                                  rows="5">{% if file.key_highlights %}{{ file.key_highlights }}{% endif %}</textarea>
+                                            <div class="charcount">
+                                                <span>0</span>
+                                                <span>/ {{ general_textbox_max }}</span>
+                                            </div>
+                                    </div>
+                                    <p class="card-text">
+                                        Challenges of the year
+                                    </p>
+
+                                    <div>
+                                        <textarea class="form-control paraminput" id="challenges"
+                                                  placeholder="Enter Challenges"
+                                                  maxlength="{{ general_textbox_max }}"
+                                                  required
+                                                  rows="5">{% if file.challenges %}{{ file.challenges }}{% endif %}</textarea>
+                                            <div class="charcount">
+                                                <span>0</span>
+                                                <span>/ {{ general_textbox_max }}</span>
+                                            </div>
+                                    </div>
+                                    <p class="card-text">
+                                        Areas of Strength
+                                    </p>
+                                        <div>
+                                        <textarea class="form-control paraminput" id="areas-of-strength"
+                                                  placeholder="Enter Areas of Strength"
+                                                  maxlength="{{ general_textbox_max }}"
+                                                  required
+                                                  rows="5">{% if file.areas_of_strength %}{{ file.areas_of_strength }}{% endif %}</textarea>
+                                            <div class="charcount">
+                                                <span>0</span>
+                                                <span>/ {{ general_textbox_max }}</span>
+                                            </div>
+                                    </div>
+                                    <p class="card-text">
+                                        Areas of Improvement
+                                    </p>
+                                        <div>
+                                        <textarea class="form-control paraminput" id="areas-of-improvement"
+                                                  placeholder="Enter Areas of Improvement"
+                                                  maxlength="{{ general_textbox_max }}"
+                                                  required
+                                                  rows="5">{% if file.areas_of_improvement %}{{ file.areas_of_improvement }}{% endif %}</textarea>
+                                            <div class="charcount">
+                                                <span>0</span>
+                                                <span>/ {{ general_textbox_max }}</span>
+                                            </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4 class="fw-bold py-3 mb-4">
+                                <span class="text-muted fw-light">PART E /</span> MOOC course
+
+                            </h4>
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">MOOC</h5>
+                                    <p class="card-text">
+                                        Have you taken a MOOC Course?
+
+                                        <input class="form-check-input" type="checkbox" {% if file.was_mooc_completed %}
+                                               checked {% endif %} id="mooc-taken"/>
+                                    </p>
+
+                                    <div class="form-floating" id="mooc-div">
+                                        <input
+                                                type="text"
+                                                name="name"
+                                                value="{% if file.mooc_description %}{{ file.mooc_description }}{% endif %}"
+                                                class="form-control mooc-description"
+                                                id="mooc-description"
+                                                placeholder="Name of the Course, Course Code"
+                                                aria-describedby="floatingInputHelp"
+                                        />
+                                        <label for="mooc-description">Description</label>
+                                        <div class="row">
+                                            <div class="col-md-8">
+
+                                                <input
+                                                        class="form-control"
+                                                        type="file"
+                                                        value=""
+                                                        style="margin:10px 0px"
+                                                        placeholder="Upload File"
+                                                        id="mooc-file-input"
+                                                        accept=".pdf,image/*"
+                                                        required
+                                                />
+
+                                            </div>
+                                            <div class="col-md-4">
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                    <div class="form-floating" id="mooc-submit-area">
+                                        <div class="demo-inline-spacing">
+                                            <button onclick="submitMooc()" class="btn btn-primary">Upload</button>
+
+                                            {% if file.mooc_file.file is not None %}
+                                                <div class="spinner-border spinner-border-sm text-primary" role="status"
+                                                     id='file-spinner' style="display:none">
+                                                    <span class="visually-hidden">Loading...</span>
+                                                </div>
+                                                <small id="file-link-area">{% if file.mooc_file.file %}File uploaded
+                                                    {{ file.mooc_file.filename }} <a
+                                                            href="{{ file.mooc_file.file.url }}"
+                                                            target="_blank">view</a>{% else %}No File Uploaded{% endif %}
+                                                </small>
+
+                                            {% endif %}
+                                            <script>
+                                                let requireFileValidation = {% if file.mooc_file.file %} false {% else %} true {% endif %};
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+
+                        {% endif %}
+
+                        <hr class="my-0 mt-3">
+                        <div class="card mt-5">
+                            <h5 class="card-header">Submission</h5>
+
+                            <hr class="m-0"/>
+                            <div class="card-body">
+
+                                <p class="card-text">
+                                    If you want to submit your report, please click the "Submit" button below.
+                                    <br>
+                                    If you want to save your report and edit later, please click the "Save & Edit Later"
+                                    button below.
+
+                                </p>
+                                <div class="content-wrapper">
+                                    <!-- Content -->
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <button type="button" id="tbl-btn" class="btn btn-success submit-btn"
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-offset="0,4"
+                                                    data-bs-placement="top"
+                                                    data-bs-html="true"
+                                                    onclick="save(true)"
+                                                    title="<i class='bx bx-info-circle bx-xs' ></i> <span>Send your parameters to your RO1 for approval</span>">
+                                                <span class="tf-icons bx bx-check-circle"></span>&nbsp; Submit
+
+                                            </button>
+                                        </div>
+                                        <!-- CSRF -->
+                                        <script>
+                                            var csrf_token = "{{ csrf_token }}";
+                                        </script>
+                                        <div class="col-md-6">
+                                            <button type="button" id="tbl-btn" class="btn btn-dark save-and-cont-btn"
+                                                    data-bs-toggle="tooltip"
+                                                    data-bs-offset="0,4"
+                                                    data-bs-placement="top"
+                                                    data-bs-html="true"
+                                                    onclick="save(false)"
+                                                    title="<i class='bx bx-info-circle bx-xs' ></i> <span>Save changes, and submit later</span>">
+
+                                                <span class="tf-icons bx bx-time-five"></span>&nbsp; Save & Continue Later
+
+
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!--/ Responsive Table -->
+                    </div>
+                    {#                {% elif file.file_level == 'RO1' %}#}
+                {% else %}
+                    <div class="container-p-y pe-3 ps-3">
+
+                        <div class="card">
+                            <h5 class="card-header">Submission</h5>
+
+                            <hr class="m-0"/>
+                            <div class="card-body">
+
+                                <p>
+                                    {% if not file.ro1_validation.is_parameters_approved %}
+                                        All parameters are under review. Please wait for the supervisor to approve the parameters.<br>
+                                    {% else %}
+                                        All parameters are approved by the supervisor.<br> All details are finally submitted to your supervisor.<br>
+                                    {% endif %}
+                                    Your details are with <strong>{{ file.user.ro1_id.full_name }}</strong>. <br>
+                                    Please contact them for any concerns.
+
+                                </p>
+                            </div>
+                            <hr class="m-0"/>
+                            <div class="card-body">
+                                <small class="text-light fw-semibold">Description</small>
+                                <dl class="row mt-md-4">
+                                    <dt class="col-sm-2">Appraisee Name</dt>
+                                    <dd class="col-sm-9">{{ file.user.full_name }}</dd>
+
+                                    <dt class="col-sm-2">RO1 Name</dt>
+                                    <dd class="col-sm-9">
+                                        <p>{{ file.user.ro1_id.full_name }}</p>
+                                    </dd>
+
+                                    <dt class="col-sm-2">RO2 Name</dt>
+                                    <dd class="col-sm-9">{{ file.user.ro2_id.full_name }}</dd>
+
+                                    <dt class="col-sm-2 text-truncate">Current Status</dt>
+                                    <dd class="col-sm-9">
+                                        {% if file.file_level == 'APPRAISEE' %}
+                                            <span class="badge bg-primary">Appraisee</span>
+                                        {% elif file.file_level == 'RO1' %}
+                                            <span class="badge bg-primary">RO1</span>
+                                        {% elif file.file_level == 'RO2' %}
+                                            <span class="badge bg-primary">RO2</span>
+                                        {% elif file.file_level == 'ADMIN' %}
+                                            <span class="badge bg-primary">Admin</span>
+                                        {% endif %}
+
+                                    </dd>
+
+                                    <dt class="col-sm-2">Actions Required</dt>
+                                    <dd class="col-sm-9">
+                                        <dl class="row">
+                                            {% if file.file_level == 'RO1' and not file.ro1_validation.is_parameters_approved %}
+                                                <dd class="col-sm-8">
+                                                    Please wait for the supervisor to approve the parameters.
+                                                </dd>
+                                            {% endif %}
+                                            {% if file.file_level == 'RO1' and file.ro1_validation.is_parameters_approved %}
+                                                <dd class="col-sm-8">
+                                                    None<br> Please wait for the supervisor to grade the file.
+                                                </dd>
+                                            {% endif %}
+                                            {% if file.file_level == 'APPRAISEE' %}
+                                                {% if file.ro1_validation.is_parameters_approved %}
+                                                    <dd class="col-sm-8">
+                                                        Please fill up the details and submit to your supervisor.
+                                                    </dd>
+                                                {% else %}
+                                                    <dd class="col-sm-8">
+                                                        Please enter the parameters and submit to your supervisor for approval.
+                                                    </dd>
+                                                {% endif %}
+                                            {% endif %}
+                                        </dl>
+                                        <dl class="row">
+
+                                        </dl>
+                                    </dd>
+                                </dl>
+                                {% if not file.is_all_parameters_approved and file.file_level == "APPRAISEE" %}
+                                    <div class="alert alert-danger" role="alert">Parameters aren't approved by your RO. Make
+                                        sure to submit it on time
+                                    </div>
+                                {% endif %}
+                                {% if file.is_all_parameters_approved and file.file_level == "APPRAISEE" %}
+                                    <div class="alert alert-warning" role="alert">Parameters are approved by your RO. You can fill-up and submit your report now
+                                    </div>
+                                {% endif %}
+
+                            </div>
+                        </div>
+
+                    </div>
+                {% endif %}
+                <!-- / Content -->
+                <!-- Footer -->
+                {% include 'includes/footer.html' %}
+                <!-- / Footer -->
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+</div>
+</div>
+<script>
+    var max_possible_key_params = {{ max_key_allowed }};
+    var max_possible_major_params = {{ max_major_allowed }};
+    var max_possible_minor_params = {{ max_minor_allowed }};
+</script>
+<!-- / Layout wrapper -->
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+<script src="/static/assets/vendor/libs/jquery/jquery.js"></script>
+<script src="/static/assets/vendor/libs/popper/popper.js"></script>
+<script src="/static/assets/vendor/js/bootstrap.js"></script>
+<script src="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="/static/assets/vendor/js/menu.js"></script>
+<!-- endbuild -->
+<!-- Vendors JS -->
+<!-- Main JS -->
+<script src="/static/assets/js/main.js"></script>
+<!-- Page JS -->
+
+{% if stage == 'appraisal' %}
+    <script src="/static/assets/js/staff/staff_phase_2_entry.js"></script>
+{% endif %}
+
+{% if stage == 'parameter_approval' %}
+    <script src="/static/assets/js/staff/staff_init.js"></script>
+{% endif %}
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script>
+    let inevent = new Event("input");
+    let txtarea = document.querySelectorAll("textarea");
+    txtarea.forEach((txtarea) => {
+        txtarea.addEventListener("input", charactercount);
+        txtarea.dispatchEvent(inevent);
+    });
+
+    function charactercount(e) {
+        let span = e.target.parentElement.querySelector(".charcount").children[0];
+        span.innerText = e.target.value.length;
+    }
+</script>
+</body>
+</html>

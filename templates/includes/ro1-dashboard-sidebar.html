@@ -1,0 +1,93 @@
+<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+    <div class="app-brand demo">
+        <a href="{% url 'home' %}" class="app-brand-link">
+              <span class="app-brand-logo demo">
+                <img src="/static/assets/img/logos/logo-sm.png" alt="Brand Logo" class="img-fluid"  style=" height: 55px; width: auto">
+              </span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2" style="text-transform: uppercase;">APAS</span>
+        </a>
+
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Account</span>
+        </li>
+        <!-- Dashboard -->
+        <li class="menu-item {% if pagename == 'ro1-dashboard' %}active{% else %}{% endif %}">
+            <a href="{% if not pagename == 'ro1-dashboard' %}../{% else %}{% endif %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Analytics">Dashboard</div>
+            </a>
+        </li>
+{#        <li class="menu-item {% if pagename == 'ro1-profile' %}active{% endif %}">#}
+{#            <a href="{% if pagename != "ro1-dashboard" %}../{% endif %}profile/" class="menu-link">#}
+{#                <i class="menu-icon tf-icons bx bx-user"></i>#}
+{#                <div data-i18n="Analytics">Profile</div>#}
+{#            </a>#}
+{#        </li>#}
+
+
+        <!-- Components -->
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Staff Appraisal</span></li>
+        <!-- Cards -->
+        <li class="menu-item {% if pagename == 'ro1-review-main' %}active{% endif %}">
+            <a href="{% if pagename != "ro1-dashboard" %}../{% endif %}review/" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-table"></i>
+                <div data-i18n="Analytics">Review Staff</div>
+            </a>
+        </li>
+
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Faculty Appraisal</span></li>
+        <!-- Cards -->
+        <li class="menu-item {% if pagename == 'ro1-review-faculty' %}active{% endif %}">
+            <a href="{% if pagename != "ro1-dashboard" %}../{% endif %}review-faculty/" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-table"></i>
+                <div data-i18n="Analytics">Review Faculty</div>
+            </a>
+        </li>
+
+        <!-- Forms & Tables -->
+
+
+        {#        <li class="menu-header small text-uppercase">#}
+        {#            <span class="menu-header-text">Misc</span>#}
+        {#        </li>#}
+        {#        <li class="menu-item">#}
+        {#            <a#}
+        {#                    href="https://github.com/themeselection/sneat-html-admin-template-free/issues"#}
+{#                    target="_blank"#}
+{#                    class="menu-link"#}
+{#            >#}
+{#                <i class="menu-icon tf-icons bx bx-support"></i>#}
+{#                <div data-i18n="Support">Support</div>#}
+{#            </a>#}
+{#        </li>#}
+{#        <li class="menu-item">#}
+{#            <a#}
+{#                    href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"#}
+{#                    target="_blank"#}
+{#                    class="menu-link"#}
+{#            >#}
+{#                <i class="menu-icon tf-icons bx bx-file"></i>#}
+{#                <div data-i18n="Documentation">Documentation</div>#}
+{#            </a>#}
+{#        </li>#}
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Logout</span></li>
+        <!-- Tables -->
+        <li class="menu-item">
+            <a href="{% if pagename != "ro1-dashboard" %}../{% endif %}../../logout/" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-log-out" style="color: red"></i>
+                <div data-i18n="Tables" style="color: red">Logout</div>
+            </a>
+        </li>
+
+    </ul>
+</aside>

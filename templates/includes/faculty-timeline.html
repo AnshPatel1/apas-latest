@@ -1,0 +1,176 @@
+<div class="card">
+    <div class="card-title">
+        <h5 class="card-header">Faculty Appraisal Cycle Timeline</h5>
+
+    </div>
+    <hr class="my-0"/>
+    <div class="card-body">
+        <section class="timeline_area section_padding_130">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Timeline Area-->
+                        <div class="apland-timeline-area">
+                            <!-- Single Timeline Content-->
+                            <div class="single-timeline-area">
+                                <div class="timeline-date wow fadeInLeft"
+                                     data-wow-delay="0.1s"
+                                     style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                                    <p>Phase 1</p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <div class="single-timeline-content {% if cycle.name == 'verification'%} active {% endif %} d-flex wow fadeInLeft"
+                                             data-wow-delay="0.3s"
+                                             style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                            <div class="timeline-icon"><i
+                                                    class="fa-regular fa-check"
+                                                    aria-hidden="true"></i></div>
+                                            <div class="timeline-text">
+                                                <h6>Verification Stage</h6>
+                                                <p>This stage is to verify only the prepopulated parameters and get it rectified
+                                                    in case of any discrepancies</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <div class="single-timeline-content {% if cycle.name == 'appraisal'%} active {% endif %} d-flex wow fadeInLeft"
+                                             data-wow-delay="0.5s"
+                                             style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">
+                                            <div class="timeline-icon"><i
+                                                    class="fa-solid fa-pencil"
+                                                    aria-hidden="true"></i>
+                                            </div>
+                                            <div class="timeline-text">
+                                                <h6>Self Appraisal</h6>
+                                                <p>This stage is to fill in the remaining parameters other than the prepopulated parameters as a part of your self
+                                                    appraisal</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <div class="single-timeline-content {% if file.file_level != 'APPRAISEE'%} active {% endif %} d-flex wow fadeInLeft"
+                                             data-wow-delay="0.7s"
+                                             style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">
+                                            <div class="timeline-icon"><i
+                                                    class="fa-solid fa-paper-plane"
+                                                    aria-hidden="true"></i></div>
+                                            <div class="timeline-text">
+                                                <h6>Submission</h6>
+                                                <p>All parameters are submitted to the respecting Reporting Officers.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="single-timeline-area">
+                                <div class="timeline-date wow fadeInLeft"
+                                     data-wow-delay="0.1s"
+                                     style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                                    <p>Phase 2</p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <div class="single-timeline-content {% if cycle.name == 'r1_approval' and file.file_level == 'RO1' %} active {% endif %} d-flex wow fadeInLeft"
+                                             data-wow-delay="0.3s"
+                                             style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                            <div class="timeline-icon"><i
+                                                    class="fa-solid fa-pencil"
+                                                    aria-hidden="true"></i>
+                                            </div>
+                                            <div class="timeline-text">
+                                                <h6>Reporting Officer Evaluation</h6>
+                                                <p>This stage is for the Reporting Officers to evaluate your self appraisal submission.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <div class="single-timeline-content {% if cycle.name == 'r1_approval' and file.file_level == 'RO2' %} active {% endif %} d-flex wow fadeInLeft"
+                                             data-wow-delay="0.3s"
+                                             style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                            <div class="timeline-icon"><i
+                                                    class="fa-solid fa-check-double"
+                                                    aria-hidden="true"></i>
+                                            </div>
+                                            <div class="timeline-text">
+                                                <h6>Submit to Reviewing Officer</h6>
+                                                <p>Your self-appraisal is verified by your Reporting Officer and is now sent to be reviewed by your
+                                                    Reviewing Officer.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="single-timeline-area">
+                                <div class="timeline-date wow fadeInLeft"
+                                     data-wow-delay="0.1s"
+                                     style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                                    <p>Phase 3</p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <div class="single-timeline-content {% if cycle.name == 'r2_approval' and file.file_level == 'RO2' %} active {% endif %} d-flex wow fadeInLeft"
+                                             data-wow-delay="0.3s"
+                                             style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                            <div class="timeline-icon"><i
+                                                    class="fa-solid fa-pencil"
+                                                    aria-hidden="true"></i>
+                                            </div>
+                                            <div class="timeline-text">
+                                                <h6>Reviewing Officer Evaluation</h6>
+                                                <p>This stage is for the Reviewing Officers to evaluate your self appraisal submission alongwith the Reporting Officer's
+                                                    Evaluation</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <div class="single-timeline-content {% if cycle.name == 'r2_approval' and file.file_level == 'HR' %} active {% endif %} d-flex wow fadeInLeft"
+                                             data-wow-delay="0.3s"
+                                             style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                            <div class="timeline-icon"><i
+                                                    class="fa-solid fa-check-double"
+                                                    aria-hidden="true"></i>
+                                            </div>
+                                            <div class="timeline-text">
+                                                <h6>Final Submission</h6>
+                                                <p>The evaluation by the Reviewing Officer shall be considered full and final.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="single-timeline-area">
+                                <div class="timeline-date wow fadeInLeft"
+                                     data-wow-delay="0.1s"
+                                     style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                                    <p>Phase 4</p>
+                                </div>
+                                <div class="row">
+
+
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <div class="single-timeline-content {% if file.file_level == 'HR' %} active {% endif %} d-flex wow fadeInLeft"
+                                             data-wow-delay="0.7s"
+                                             style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">
+                                            <div class="timeline-icon"><i
+                                                    class="fa-brands fa-gg"
+                                                    aria-hidden="true"></i></div>
+                                            <div class="timeline-text">
+                                                <h6>Result Declaration</h6>
+                                                <p>The results are published at this stage and are available at status section on the
+                                                    sidebar for your kind reference.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

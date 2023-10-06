@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+
+<!-- =========================================================
+* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
+==============================================================
+
+* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
+* Created by: ThemeSelection
+* License: You must have a valid license purchased in order to legally use the theme for your project.
+* Copyright ThemeSelection (https://themeselection.com)
+
+=========================================================
+ -->
+<!-- beautify ignore:start -->
+<html
+        lang="en"
+        class="light-style layout-menu-fixed layout-navbar-fixed layout-menu-collapsed"
+        dir="ltr"
+        data-theme="theme-default"
+        data-assets-path="/static/assets/"
+        data-template="vertical-menu-template-free"
+>
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>
+        Review Self Evaluation
+    </title>
+        <link rel="icon" type="image/x-icon" href="../../../../media/admin-interface/favicon/Pandit_Deendayal_Energy_University_logo-2.png">
+
+    <meta name="description" content=""/>
+
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"
+    />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="/static/assets/vendor/fonts/boxicons.css"/>
+
+    <!-- Core CSS -->
+    <link
+            rel="stylesheet"
+            href="/static/assets/vendor/css/core.css"
+            class="template-customizer-core-css"
+    />
+    <link
+            rel="stylesheet"
+            href="/static/assets/vendor/css/theme-default.css"
+            class="template-customizer-theme-css"
+    />
+    <link rel="stylesheet" href="/static/assets/css/demo.css"/>
+
+    <!-- Vendors CSS -->
+    <link
+            rel="stylesheet"
+            href="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"
+    />
+
+    <!-- Helpers -->
+    <script src="/static/assets/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="/static/assets/js/config.js"></script>
+</head>
+
+<body>
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <!-- Menu -->
+        {% include 'includes/staff-profile-sidebar-r2.html' %}
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme justify-content-between"
+                 id="layout-navbar">
+                <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                    <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                        <i class="bx bx-menu bx-sm"></i>
+                    </a>
+                </div>
+
+                <div class="navbar-nav-right d-flex align-items-center justify-content-center" id="navbar-collapse">
+                    <!-- Search -->
+                    {% include 'html/r2/includes/navbar-nav-content.html' %}
+                </div>
+                <div class="d-flex align-items-center justify-content-end text-danger">
+                    <i class="bx bx-arrow-back"></i>
+                    <a class="nav-item nav-link px-0" href="{% url 'ro2_review_main' %}">
+                        Back
+                    </a>
+                </div>
+            </nav>
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <!-- Content -->
+
+                <div class="container-p-y ps-3 pe-3">
+
+
+                    {% include 'html/r2/includes/description-accordion.html' %}
+                    {#                    {% if file.is_all_parameters_approved and file.file_level == "RO2" and not file.ro2_grading_done %}#}
+                    <hr class="m-0 mt-4 mb-4"/>
+                    <div class="card mt-3">
+                        <h5 class="card-header">Self Evaluation / <strong>Key Highlights</strong></h5>
+                        <div class="card-body ps ps--active-y" id="vertical-example">
+                            <p>
+                                {{ file.key_highlights|linebreaksbr }}
+                            </p>
+                            <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+                                <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                            </div>
+                            <div class="ps__rail-y" style="top: 0px; height: 233px; right: 0px;">
+                                <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 47px;"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card mt-3">
+                        <h5 class="card-header">Self Evaluation / <strong>Challenges</strong></h5>
+                        <div class="card-body ps ps--active-y" id="vertical-example">
+                            <p>
+                                {{ file.challenges|linebreaksbr }}
+                            </p>
+                            <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+                                <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                            </div>
+                            <div class="ps__rail-y" style="top: 0px; height: 233px; right: 0px;">
+                                <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 47px;"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card mt-3">
+                        <h5 class="card-header">Self Evaluation / <strong>Areas of Strength</strong></h5>
+                        <div class="card-body ps ps--active-y" id="vertical-example">
+                            <p>
+                                {{ file.areas_of_strength|linebreaksbr }}
+                            </p>
+                            <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+                                <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                            </div>
+                            <div class="ps__rail-y" style="top: 0px; height: 233px; right: 0px;">
+                                <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 47px;"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="card mt-3">
+                        <h5 class="card-header">Self Evaluation / <strong>Areas of Imporvement</strong></h5>
+                        <div class="card-body ps ps--active-y" id="vertical-example">
+                            <p>
+                                {{ file.areas_of_improvement|linebreaksbr }}
+                            </p>
+                            <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
+                                <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                            </div>
+                            <div class="ps__rail-y" style="top: 0px; height: 233px; right: 0px;">
+                                <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 47px;"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                    {#                    {% endif %}#}
+                </div>
+                <!-- / Content -->
+
+                <!-- Footer -->
+                {% include 'includes/footer.html' %}
+                <!-- / Footer -->
+
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+</div>
+<!-- / Layout wrapper -->
+
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+<script src="/static/assets/vendor/libs/jquery/jquery.js"></script>
+<script src="/static/assets/vendor/libs/popper/popper.js"></script>
+<script src="/static/assets/vendor/js/bootstrap.js"></script>
+<script src="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+<script src="/static/assets/vendor/js/menu.js"></script>
+<!-- endbuild -->
+
+<!-- Main JS -->
+<script src="/static/assets/js/main.js"></script>
+
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script type="text/javascript">
+    window.CSRF_TOKEN = "{{ csrf_token }}";
+</script>
+<script>
+
+    function save(is_submit) {
+        let keytbdy = document.getElementById("key-tbody");
+        let majtbdy = document.getElementById("maj-tbody");
+        let mintbdy = document.getElementById("min-tbody");
+        let keytr = keytbdy.querySelectorAll("tr");
+        let majtr = majtbdy.querySelectorAll("tr");
+        let mintr = mintbdy.querySelectorAll("tr");
+        let keyarr = [];
+        let majarr = [];
+        let minarr = [];
+
+
+        for (let i = 0; i < keytr.length; i++) {
+
+            let tempObj = {};
+            tempObj.remarks = keytr[i].children[2].children[0].value;
+            let chkbox = keytr[i].children[3].querySelectorAll('input[name="key' + (i + 1) + '"]');
+            for (let i = 0; i < chkbox.length; i++) {
+                if (chkbox[0].checked) {
+                    tempObj.status = true;
+                }
+                if (chkbox[1].checked) {
+                    tempObj.status = false;
+                }
+            }
+            keyarr.push(tempObj);
+        }
+
+
+        for (let i = 0; i < majtr.length; i++) {
+            let tempObj = {};
+            tempObj.remarks = majtr[i].children[2].children[0].value;
+            let chkbox = majtr[i].children[3].querySelectorAll('input[name="maj' + (i + 1) + '"]');
+            for (let i = 0; i < chkbox.length; i++) {
+                if (chkbox[0].checked) {
+                    tempObj.status = true;
+                }
+                if (chkbox[1].checked) {
+                    tempObj.status = false;
+                }
+            }
+            majarr.push(tempObj);
+        }
+
+
+        for (let i = 0; i < mintr.length; i++) {
+            let tempObj = {};
+            tempObj.remarks = mintr[i].children[2].children[0].value;
+            let chkbox = mintr[i].children[3].querySelectorAll('input[name="min' + (i + 1) + '"]');
+            for (let i = 0; i < chkbox.length; i++) {
+                if (chkbox[0].checked) {
+                    tempObj.status = true;
+                }
+                if (chkbox[1].checked) {
+                    tempObj.status = false;
+                }
+            }
+            minarr.push(tempObj);
+        }
+        let obj = {
+            key: keyarr,
+            maj: majarr,
+            min: minarr
+        }
+        if (is_submit) {
+            obj.is_submit = true;
+        } else {
+            obj.is_submit = false;
+        }
+        // post obj to /save
+        let fd = new FormData();
+        fd.append("data", JSON.stringify(obj));
+        fd.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+
+        $.ajax({
+            type: "POST",
+            url: window.location.href + "save/",
+            data: fd,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                alert(data);
+            },
+            failure: function (errMsg) {
+                alert(errMsg);
+            }
+        });
+    }
+</script>
+</body>
+</html>

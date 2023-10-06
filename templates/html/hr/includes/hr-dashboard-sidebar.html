@@ -1,0 +1,135 @@
+<aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+    <div class="app-brand demo">
+        <a href="{% url 'home' %}" class="app-brand-link">
+              <span class="app-brand-logo demo">
+                <img src="/static/assets/img/logos/logo-sm.png" alt="Brand Logo" class="img-fluid"
+                     style=" height: 55px; width: auto">
+              </span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2" style="text-transform: uppercase;">APAS</span>
+        </a>
+
+        <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+
+
+        <li class="menu-header small text-uppercase">
+            <span class="menu-header-text">Account</span>
+        </li>
+        <!-- Dashboard -->
+        <li class="menu-item {% if pagename == 'hr_home' %}active{% else %}{% endif %}">
+            <a href="{% url 'hr-home' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-home-circle"></i>
+                <div data-i18n="Analytics">Dashboard</div>
+            </a>
+        </li>
+        {#        <li class="menu-item {% if pagename == 'ro2-profile' %}active{% endif %}">#}
+        {#            <a href="{% if pagename != "ro2-dashboard" %}../{% endif %}profile/" class="menu-link">#}
+        {#                <i class="menu-icon tf-icons bx bx-user"></i>#}
+        {#                <div data-i18n="Analytics">Profile</div>#}
+        {#            </a>#}
+        {#        </li>#}
+
+
+        <!-- Components -->
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Analytics</span></li>
+        <!-- Cards -->
+        <li class="menu-item {% if pagename == 'staff_review' %}active{% endif %}">
+            <a href="{% url 'hr-staff' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-table"></i>
+                <div data-i18n="Analytics">Staff Review</div>
+            </a>
+        </li>
+        <li class="menu-item {% if pagename == 'staff-track' %}active{% endif %}">
+            <a href="{% url 'hr-staff-track' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-adjust"></i>
+                <div data-i18n="Analytics">Staff Grade</div>
+            </a>
+        </li>
+        <li class="menu-item {% if pagename == 'foet-track' %}active{% endif %}">
+            <a href="{% url 'hr-foet-track' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-adjust"></i>
+                <div data-i18n="Analytics">FoET Grade</div>
+            </a>
+        </li>
+        <li class="menu-item {% if pagename == 'fols-track' %}active{% endif %}">
+            <a href="{% url 'hr-fols-track' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-adjust"></i>
+                <div data-i18n="Analytics">FoLS Grade</div>
+            </a>
+        </li>
+        <li class="menu-item {% if pagename == 'foem-track' %}active{% endif %}">
+            <a href="{% url 'hr-foem-track' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-adjust"></i>
+                <div data-i18n="Analytics">FoM Grade</div>
+            </a>
+        </li>
+        <li class="menu-item {% if pagename == 'math-track' %}active{% endif %}">
+            <a href="{% url 'hr-math-track' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-adjust"></i>
+                <div data-i18n="Analytics">Math Grade</div>
+            </a>
+        </li>
+        <li class="menu-item {% if pagename == 'science-track' %}active{% endif %}">
+            <a href="{% url 'hr-science-track' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-adjust"></i>
+                <div data-i18n="Analytics">Science Grade</div>
+            </a>
+        </li>
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Tally</span></li>
+        <!-- Cards -->
+        <li class="menu-item {% if pagename == 'hr-tally' %}active{% endif %}">
+            <a href="{% url 'hr-tally' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-line-chart"></i>
+                <div data-i18n="Analytics">Tally Bulk Upload</div>
+            </a>
+        </li>
+        {#        <li class="menu-item {% if pagename == 'faculty_review' %}active{% endif %}">#}
+        {#            <a href="{% if pagename != "hr_home" %}../{% endif %}review/" class="menu-link">#}
+        {#                <i class="menu-icon tf-icons bx bx-table"></i>#}
+        {#                <div data-i18n="Analytics">Staff Review</div>#}
+        {#            </a>#}
+        {#        </li>#}
+
+        <!-- Forms & Tables -->
+
+
+        {#        <li class="menu-header small text-uppercase">#}
+        {#            <span class="menu-header-text">Misc</span>#}
+        {#        </li>#}
+        {#        <li class="menu-item">#}
+        {#            <a#}
+        {#                    href="https://github.com/themeselection/sneat-html-admin-template-free/issues"#}
+        {#                    target="_blank"#}
+        {#                    class="menu-link"#}
+        {#            >#}
+        {#                <i class="menu-icon tf-icons bx bx-support"></i>#}
+        {#                <div data-i18n="Support">Support</div>#}
+        {#            </a>#}
+        {#        </li>#}
+        {#        <li class="menu-item">#}
+        {#            <a#}
+        {#                    href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"#}
+        {#                    target="_blank"#}
+        {#                    class="menu-link"#}
+        {#            >#}
+        {#                <i class="menu-icon tf-icons bx bx-file"></i>#}
+        {#                <div data-i18n="Documentation">Documentation</div>#}
+        {#            </a>#}
+        {#        </li>#}
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Logout</span></li>
+        <!-- Tables -->
+        <li class="menu-item">
+            <a href="{% if pagename != "ro2-dashboard" %}../{% endif %}../../logout/" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-log-out" style="color: red"></i>
+                <div data-i18n="Tables" style="color: red">Logout</div>
+            </a>
+        </li>
+
+    </ul>
+</aside>

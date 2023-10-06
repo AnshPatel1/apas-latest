@@ -1,0 +1,56 @@
+<div class="accordion">
+    <div class="card accordion-item mt-3">
+        <h2 class="accordion-header" id="headingOne">
+            <button
+                    type="button"
+                    class="accordion-button collapsed"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordionOne"
+                    aria-expanded="false"
+                    aria-controls="accordionOne"
+            >
+                Description
+            </button>
+        </h2>
+
+        <div
+                id="accordionOne"
+                class="accordion-collapse collapse"
+                data-bs-parent="#accordionExample"
+                style=""
+        >
+            <div class="accordion-body">
+                <dl class="row mt-md-4">
+                    <dt class="col-sm-2">Appraisee Name</dt>
+                    <dd class="col-sm-9">
+                        {{ file.user.full_name }}
+                    </dd>
+
+                    <dt class="col-sm-2">RO1 Name</dt>
+                    <dd class="col-sm-9">
+                        {{ file.user.ro1_id.full_name }}
+                    </dd>
+
+                    <dt class="col-sm-2">RO2 Name</dt>
+                    <dd class="col-sm-9">
+                        {{ file.user.ro2_id.full_name }}
+                    </dd>
+
+                    <dt class="col-sm-2 text-truncate">Current Status</dt>
+                    <dd class="col-sm-9">
+                        {% if not file.has_verified_data %}
+                            <span class="badge bg-label-warning me-1">Verification Pending</span>
+                        {% elif file.has_verified_data and file.file_level == 'APPRAISEE' %}
+                            <span class="badge bg-label-danger me-1">Faculty Input & Submission Pending</span>
+{#                        {% endif %}#}
+                        {% elif file.has_verified_data and file.file_level != 'APPRAISEE' %}
+                            <span class="badge bg-success me-1">Appraisal Submitted.</span><br><br>
+                            <span class="badge bg-secondary me-1">No Actions Required</span>
+                        {% endif %}
+                    </dd>
+
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

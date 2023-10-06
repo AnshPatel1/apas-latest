@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<!-- =========================================================
+* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
+==============================================================
+
+* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
+* Created by: ThemeSelection
+* License: You must have a valid license purchased in order to legally use the theme for your project.
+* Copyright ThemeSelection (https://themeselection.com)
+
+=========================================================
+ -->
+<!-- beautify ignore:start -->
+<html
+        lang="en"
+        class="light-style layout-menu-fixed layout-navbar-fixed layout-menu-collapsed"
+        dir="ltr"
+        data-theme="theme-default"
+        data-assets-path="/static/assets/"
+        data-template="vertical-menu-template-free"
+>
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>
+        Review Staff Grade
+    </title>
+    <link rel="icon" type="image/x-icon" href="../../../../media/admin-interface/favicon/Pandit_Deendayal_Energy_University_logo-2.png">
+
+    <meta name="description" content=""/>
+
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"
+    />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="/static/assets/vendor/fonts/boxicons.css"/>
+    <link rel="stylesheet" href="/static/assets/vendor/css/tm2.css"/>
+    <script src="https://kit.fontawesome.com/5fbd3e2d5f.js" crossorigin="anonymous"></script>
+
+    <!-- Core CSS -->
+    <link
+            rel="stylesheet"
+            href="/static/assets/vendor/css/core.css"
+            class="template-customizer-core-css"
+    />
+    <link
+            rel="stylesheet"
+            href="/static/assets/vendor/css/theme-default.css"
+            class="template-customizer-theme-css"
+    />
+    <link rel="stylesheet" href="/static/assets/css/demo.css"/>
+
+    <!-- Vendors CSS -->
+    <link
+            rel="stylesheet"
+            href="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"
+    />
+
+    <link
+            rel="stylesheet"
+            href="/static/assets/vendor/libs/apex-charts/apex-charts.css"
+    />
+    <style media="print">
+        @page {
+            size: landscape;
+        }
+    </style>
+    <!-- Page CSS -->
+
+    <!-- Helpers -->
+    <script src="/static/assets/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="/static/assets/js/config.js"></script>
+</head>
+
+<body>
+
+
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <!-- Menu -->
+
+        {% include 'includes/staff-profile-sidebar.html' %}
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme justify-content-between"
+                 id="layout-navbar">
+                <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                    <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                        <i class="bx bx-menu bx-sm"></i>
+                    </a>
+                </div>
+
+                <div class="navbar-nav-right d-flex align-items-center justify-content-center" id="navbar-collapse">
+                    <!-- Search -->
+                    {% include 'html/r1/includes/navbar-nav-content.html' %}
+                </div>
+                <div class="d-flex align-items-center justify-content-end text-danger">
+                    <i class="bx bx-arrow-back"></i>
+                    <a class="nav-item nav-link px-0" href="{% url 'ro1_review_main' %}">
+                        Back
+                    </a>
+                </div>
+            </nav>
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+
+                <!-- Content -->
+                <div class="container-p-y ps-3 pe-3">
+
+                    {% include 'html/r1/includes/description-accordion.html' %}
+                    {#                    {% if file.is_all_parameters_approved and file.file_level == "RO1" and not file.ro1_grading_done %}#}
+                    <hr class="m-0 mt-4 mb-4"/>
+
+                    {% if can_submit %}
+                        <div class="row justify-content-center invoice-preview">
+                            <!-- Invoice -->
+                            <div class="col-xxl mb-md-0 mb-4">
+                                <div class="card invoice-preview-card">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between flex-xl-row flex-md-column flex-sm-row flex-column p-sm-3 p-0">
+                                            <div class="mb-xl-0 mb-4">
+                                                <div class="d-flex svg-illustration mb-3 gap-2">
+                                                    <span class="app-brand-logo demo mb-5">
+
+                                                        <img src="https://pdpu.ac.in/pdeubtech2022/images/logos/logo.png" alt="PDEU" class="logo-lg"
+                                                             style="width: 300px; height: auto;"/>
+
+                                                    </span>
+
+                                                    <span class="app-brand-text demo text-body fw-bolder"></span>
+                                                </div>
+                                                <p class="mb-1">Pandit Deendayal Energy University</p>
+                                                <p class="mb-1">Raisan, Gandhinagar</p>
+                                                <p class="mb-0">Gujarat, India</p>
+                                            </div>
+                                            <div>
+                                                <h4>Staff File #{{ file.id }}</h4>
+                                                <div class="mb-2">
+                                                    <span class="me-1">Date Issues:</span>
+                                                    <span class="fw-semibold">{% now "jS F Y H:i" %}</span>
+                                                </div>
+                                                <div>
+                                                    <span class="me-1">Date Due:</span>
+                                                    <span class="fw-semibold">29/08/2020</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr class="my-0">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between flex-xl-row flex-md-column flex-column">
+                                            <div class="col-4 pe-2 ps-2 mb-4">
+                                                <h5 class="pb-2"><b>Staff (Appraisee) Details</b></h5>
+
+                                                <table>
+                                                    <tbody>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Name:</td>
+                                                        <td><b>{{ file.user.full_name }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Email:</td>
+                                                        <td><b>{{ file.user.email }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Designation:</td>
+                                                        <td><b>{{ file.user.designation }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Department:</td>
+                                                        <td><b>{{ file.user.department }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">School:</td>
+                                                        <td><b>{{ file.user.school }}</b></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+                                            <div class="col-4 ps-2 pe-2 mb-4">
+                                                <h5 class="pb-2"><b>RO1 Details</b></h5>
+
+                                                <table>
+                                                    <tbody>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Name:</td>
+                                                        <td><b>{{ file.user.ro1_id.full_name }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Email:</td>
+                                                        <td><b>{{ file.user.ro1_id.email }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Designation:</td>
+                                                        <td><b>{{ file.user.ro1_id.designation }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Department:</td>
+                                                        <td><b>{{ file.user.ro1_id.department }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">School:</td>
+                                                        <td><b>{{ file.user.ro1_id.school }}</b></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="col-4 ps-2">
+                                                <h5 class="pb-2"><b>RO2 Details</b></h5>
+
+                                                <table>
+                                                    <tbody>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Name:</td>
+                                                        <td><b>{{ file.user.ro2_id.full_name }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Email:</td>
+                                                        <td><b>{{ file.user.ro2_id.email }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Designation:</td>
+                                                        <td><b>{{ file.user.ro2_id.designation }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">Department:</td>
+                                                        <td><b>{{ file.user.ro2_id.department }}</b></td>
+                                                    </tr>
+                                                    <tr class="mb-3">
+                                                        <td class="pe-3">School:</td>
+                                                        <td><b>{{ file.user.ro2_id.school }}</b></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <div class="col-12 mt-5 d-flex justify-content-center">
+                                                    <h4 style="font-weight: bold;">GRAND TOTAL</h4>
+                                                </div>
+                                                <table class="table table-bordered border-top m-0">
+                                                    <thead>
+                                                    <tr>
+                                                        <th class="col-sm-1">Sr</th>
+                                                        <th>Section</th>
+                                                        <th>Inclusion</th>
+                                                        <th class="col-2">Total Marks</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>Section 1</td>
+                                                        <td>
+                                                            Key Parameters, Major Parameters, Minor Parameters, Self Development, and Other Activities
+                                                        </td>
+                                                        <td>{{ section_1_total }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td>Section 2</td>
+                                                        <td>Productivity, Quality of Work, Domain Expertise, Teamwork, Key Skills</td>
+
+                                                        <td>{{ section_2_total }}</td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td rowspan="2">3</td>
+                                                        <td rowspan="2">Extra</td>
+                                                        <td>MooC Component (Over and above)</td>
+                                                        <td>{% if file.was_mooc_completed %}{{ file.mooc_marks_awarded.ro1 }}{% else %}
+                                                            0{% endif %}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Disciplinary Action Taken (Deductible Marks)</td>
+                                                        <td>{% if file.disciplinary_action %}-{{ config.disciplinary_action_deductable }}{% else %}
+                                                            0{% endif %}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="3" style="text-align: center"><strong>Grand Total <a href="{% if pagename != "staff-review-home" %}../{% endif %}staff-review-all/">view bifurcation</a></strong></td>
+                                                        <td>{{ grand_total }}</td>
+                                                    </tr>
+
+
+                                                    </tbody>
+                                                </table>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <span class="fw-semibold">Note:</span>
+                                                <span>It is a computer-generated report summary. Please confirm it before final submit. Contact IT Cell for any concerns.</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /Invoice -->
+                            <!-- Invoice Actions -->
+
+                            <!-- /Invoice Actions -->
+                        </div>
+{#                        <button class="btn btn-secondary m-2" onclick="printOnClick()">Print</button>#}
+                    {% endif %}
+                 {% if file.is_all_parameters_approved and file.file_level == "RO1" and not file.ro1_grading_done %}
+                        <div class="card mt-4" style="width: 100%">
+                            <h5 class="card-header">Final Submission</h5>
+
+                            <hr class="m-0"/>
+                            <div class="card-body">
+                                <p class="card-text">
+                                    If you want to submit your report, please click the "Final Submit"
+                                    button below.
+                                </p>
+                                <div class="content-wrapper">
+                                    <!-- Content -->
+                                    <div class="row">
+                                        <script>
+                                            var csrf_token = "{{ csrf_token }}";
+                                        </script>
+
+                                        <div class="col-md-12">
+
+                                            <!-- Button trigger modal -->
+                                            <button
+                                                    type="button"
+                                                    class="btn btn-success btn-lg w-100"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#modalCenter"
+
+                                            >
+                                                <i class="fa-solid fa-check-double me-3"></i>
+                                                Final Submit
+                                            </button>
+
+                                            <!-- Modal -->
+                                            <div class="modal fade" id="modalCenter" tabindex="-1" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="modalCenterTitle">Final Submit to Reviewing Officer?
+{#                                                                <strong>{{ file.user.ro2_id.designation }}</strong>?#}
+                                                            </h5>
+                                                            <button
+                                                                    type="button"
+                                                                    class="btn-close"
+                                                                    data-bs-dismiss="modal"
+                                                                    aria-label="Close"
+                                                            ></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>
+                                                                Are you sure you want to submit the rating of Mr/Mrs. <strong>{{ file.user.full_name }}</strong>?
+                                                                <br>
+                                                                <br>
+                                                                <b>Once you submit the rating, it won't be edited.</b>
+                                                                <br>
+                                                                <br>
+
+{#                                                            <h4>TOTAL MARKS: <strong class="text-primary">{{ grand_total }}</strong></h4>#}
+{##}
+{#                                                            <h4>GRADE GIVEN: <strong class="text-primary">{{ grade }}</strong></h4>#}
+                                                            <br><br>
+{#                                                            <label for="i-agree-submit" class="form-label">type "I AGREE" to confirm</label>#}
+{#                                                            <input#}
+{#                                                                    type="text"#}
+{#                                                                    id="i-agree-submit"#}
+{#                                                                    onchange="check()"#}
+{#                                                                    class="form-control"#}
+{#                                                                    placeholder="I agree"#}
+{#                                                            />#}
+                                                            <input
+                                                                    type="checkbox"
+                                                                    id="i-agree-submit"
+                                                                    onchange="checkCheck()"
+                                                                    class="form-check-input"
+                                                            />
+                                                            <label for="i-agree-submit" class="form-label">If you agree the above then you may click the checkbox and submit</label>
+
+                                                            </p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">
+                                                                Cancel
+                                                            </button>
+                                                            <button type="button" id="final-submit-btn" class="btn btn-primary" onclick="submit()">Final Submit</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                </div>
+                <!-- / Content -->
+
+                <!-- Footer -->
+                {% include 'includes/footer.html' %}
+                <!-- / Footer -->
+
+                <div class="content-backdrop fade"></div>
+            </div>
+
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+</div>
+<!-- / Layout wrapper -->
+
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+<script src="/static/assets/vendor/libs/jquery/jquery.js"></script>
+<script src="/static/assets/vendor/libs/popper/popper.js"></script>
+<script src="/static/assets/vendor/js/bootstrap.js"></script>
+<script src="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+<script src="/static/assets/vendor/js/menu.js"></script>
+<!-- endbuild -->
+
+<!-- Vendors JS -->
+<script src="/static/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+
+<!-- Main JS -->
+<script src="/static/assets/js/main.js"></script>
+
+<!-- Page JS -->
+<script>
+    function submit() {
+        let fd = new FormData();
+        fd.append("submit", true);
+        fd.append("csrfmiddlewaretoken", "{{ csrf_token }}");
+        $.ajax({
+            type: "POST",
+            url: window.location.href + "save/",
+            data: fd,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+                alert("Submitted Successfully to RO2 {{ file.user.ro2_id.full_name }}");
+            },
+            failure: function (errMsg) {
+                alert("Error Couldn't Process Request. Please try again or come back later");
+            }
+        });
+        location.reload();
+    }
+
+    document.getElementById("final-submit-btn").disabled = true;
+    // add onchange event listener to a input type text
+    {#document.getElementById("i-agree-submit").addEventListener("input", function () {#}
+    {#    // check if the value of input is equal to "I agree"#}
+    {#    if (this.value.toLowerCase() === "i agree") {#}
+    {#        // if yes, then enable the button#}
+    {#        document.getElementById("final-submit-btn").disabled = false;#}
+    {#        this.style.borderColor = "green";#}
+    {#    } else {#}
+    {#        this.style.borderColor = "red";#}
+    {#        // if not, then disable the button#}
+    {#        document.getElementById("final-submit-btn").disabled = true;#}
+    {#    }#}
+    {# });#}
+    function checkCheck(){
+        if (document.getElementById("i-agree-submit").checked){
+            document.getElementById("final-submit-btn").disabled = false;
+        }else{
+            document.getElementById("final-submit-btn").disabled = true;
+        }
+    }
+</script>
+
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+</body>
+</html>

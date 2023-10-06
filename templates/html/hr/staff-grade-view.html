@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        class="light-style layout-menu-fixed layout-navbar-fixed layout-menu-collapsed"
+        dir="ltr"
+        data-theme="theme-default"
+        data-assets-path="/static/assets/"
+        data-template="vertical-menu-template-free"
+>
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <title>HR Analytics</title>
+    <link rel="icon" type="image/x-icon"
+          href="../../../media/admin-interface/favicon/Pandit_Deendayal_Energy_University_logo-2.png">
+
+    <meta name="description" content=""/>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"
+    />
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="/static/assets/vendor/fonts/boxicons.css"/>
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/css/core.css" class="template-customizer-core-css"/>
+    <link rel="stylesheet" href="/static/assets/vendor/css/theme-default.css" class="template-customizer-theme-css"/>
+    <link rel="stylesheet" href="/static/assets/css/demo.css"/>
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"/>
+    <!-- Page CSS -->
+    <!-- Helpers -->
+    <script src="/static/assets/vendor/js/helpers.js"></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="/static/assets/js/config.js"></script>
+
+</head>
+<body>
+<div class="spinner-div"
+     style="width: 100%; height: 100%; position: fixed; background: rgba(0,0,0,0.1); z-index: 1; display: none"
+     id="backdrop-spinner">
+    <div class="spinner-border spinner-border-lg text-primary" role="status"
+         style="position: fixed; top: 50%; left:  50%; z-index: 2">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme justify-content-between"
+             id="layout-navbar">
+            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                    <i class="bx bx-menu bx-sm"></i>
+                </a>
+            </div>
+
+            {% include 'html/hr/includes/dashboard-nav.html' %}
+        </nav>
+        <!-- Menu -->
+        {% include 'html/hr/includes/hr-dashboard-sidebar.html' %}
+        <!-- / Menu -->
+        <!-- Layout container -->
+        <div class="layout-page">
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+
+                <!-- Content -->
+                <div class="container-p-y ps-3 pe-3">
+                    {#                    <div class="card mb-4">#}
+                    {#                        <div class="card-title">#}
+                    {#                            <h4 class="m-4">Selection</h4>#}
+                    {#                            <hr class="my-0">#}
+                    {#                        </div>#}
+                    {#                        <div class="card-body">#}
+                    {#                            <div class="row">#}
+                    {#                                <div class="col-md-6">#}
+                    {##}
+                    {#                                    <form action="" method="post">#}
+                    {#                                        <div#}
+                    {#                                                style="margin: 0px"#}
+                    {#                                                class="btn-group"#}
+                    {#                                                role="group"#}
+                    {#                                                aria-label="Basic radio toggle button group"#}
+                    {#                                        >#}
+                    {#                                            <input#}
+                    {#                                                    type="radio"#}
+                    {#                                                    class="btn-check"#}
+                    {#                                                    name="selection"#}
+                    {#                                                    value="staff"#}
+                    {#                                                    {% if selection != "faculty" %}checked{% endif %}#}
+                    {#                                                    id="selection-staff"#}
+                    {#                                                    autocomplete="off"#}
+                    {#                                            />#}
+                    {#                                            <label#}
+                    {#                                                    class="btn btn-outline-dark"#}
+                    {#                                                    for="selection-staff"#}
+                    {#                                            >Staff</label#}
+                    {#                                            >#}
+                    {#                                            <input#}
+                    {#                                                    type="radio"#}
+                    {#                                                    class="btn-check"#}
+                    {#                                                    name="selection"#}
+                    {#                                                    value="faculty"#}
+                    {#                                                    id="selection-faculty"#}
+                    {#                                                    {% if selection == "faculty" %}checked{% endif %}#}
+                    {#                                                    autocomplete="off"#}
+                    {#                                            />#}
+                    {#                                            <label#}
+                    {#                                                    class="btn btn-outline-dark"#}
+                    {#                                                    for="selection-faculty"#}
+                    {#                                            >Faculty</label#}
+                    {#                                            >#}
+                    {#                                        </div>#}
+                    {#                                        {% csrf_token %}#}
+                    {#                                        <input type="submit" class="btn btn-info ms-5 rounded-3" name="submit" value="Apply">#}
+                    {#                                    </form>#}
+                    {#                                </div>#}
+                    {#                                <div class="alert alert-secondary mt-4">Please select Staff/Faculty and click <span class="badge bg-info">Apply</span> to filter the list.#}
+                    {#                                    (selected is blacked out)#}
+                    {#                                </div>#}
+                    {#                            </div>#}
+                    {#                        </div>#}
+                    {#                    </div>#}
+                    <!-- Filters -->
+                    <div class="card mb-4">
+                        <div class="card-title">
+                            <h4 class="m-4">Filters</h4>
+                            <hr class="my-0">
+                        </div>
+                        <div class="card-body"
+                             style="display: flex; flex-wrap: wrap; align-items: center; gap:10px; width: 100%;">
+                            <table class="table table-hover table-bordered">
+                                <thead>
+                                <tr class="filters" id="tbl-headers">
+                                    <th>Officer</th>
+                                    <th class="col-2">Outstanding</th>
+                                    <th class="col-2">Good</th>
+                                    <th class="col-2">Average</th>
+                                    <th class="col-2">Below Average</th>
+                                </tr>
+                                </thead>
+                                <tr>
+                                    <td>Reporting Officer R1</td>
+                                    <td>{{ count.r1.o }}</td>
+                                    <td>{{ count.r1.g }}</td>
+                                    <td>{{ count.r1.a }}</td>
+                                    <td>{{ count.r1.b }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Reviewing Officer R2</td>
+                                    <td>{{ count.r2.o }}</td>
+                                    <td>{{ count.r2.g }}</td>
+                                    <td>{{ count.r2.a }}</td>
+                                    <td>{{ count.r2.b }}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                    <!-- / Filters -->
+
+                    <!-- Navbar -->
+                    <div class="card mb-4 p-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <!-- Search -->
+                            <div class="d-flex align-items-center" style="width: 100%;">
+                                <i class="bx bx-search fs-4 lh-0"></i>
+                                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
+                                       aria-label="Search..." id="filter-search"/>
+                                <span class="p-2 ps-4 recordCount"
+                                      style="border-left: 1px solid #d9dee3; white-space: nowrap"><strong
+                                        class="strong"></strong> Records</span>
+                            </div>
+                            <!-- /Search -->
+                        </div>
+                    </div>
+                    <!-- / Navbar -->
+
+                    <!-- Striped Rows -->
+                    <div class="card">
+                        <div class="flex justify-content-between align-items-center">
+                            <h5 class="card-header d-inline-block">Reviews</h5>
+                            <div class="card-header btn-group float-end p-0" style="min-width: 150px;">
+                                <button
+                                        type="button"
+                                        class="btn m-3"
+                                        id="exportExcel"
+                                        onclick="exportToExcel()"
+                                >
+                                    <i class="bx bx-export fs-4 lh-0"></i>
+                                    &nbsp; &nbsp; Export to Excel
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="review-table">
+                                <thead>
+                                <tr class="filters" id="tbl-headers">
+                                    <th class="col-3">Name</th>
+                                    <th>RO-1</th>
+                                    <th>RO-2</th>
+                                    <th>Dept.</th>
+                                    <th>Designation.</th>
+                                    <th>RO Grade</th>
+                                    <th>RO Percent</th>
+                                    <th>RV Grade</th>
+                                    <th>RV Percent</th>
+                                </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0" id="review-list">
+                                {% for file in files %}
+                                    <tr>
+                                        <td>
+                                            <strong class="ms-3">{{ file.user.full_name }}</strong>
+                                        </td>
+                                        <td>{{ file.user.ro1_id.full_name }}</td>
+                                        <td>
+                                            {{ file.user.ro2_id.full_name }}
+                                        </td>
+                                        <td>{{ file.user.department }}</td>
+                                        <td>{{ file.user.designation }}</td>
+                                        <td>
+                                            <strong>{{ file.grade_received_ro1 }}</strong>
+                                        </td>
+                                        <td>
+                                            {{ file.total_marks.ro1 }}
+                                        </td>
+                                        <td>
+                                            <strong>{{ file.grade_received_ro2 }}</strong>
+                                        </td>
+                                        <td>
+                                            {{ file.total_marks.ro2 }}
+                                        </td>
+                                    </tr>
+
+                                {% endfor %}
+                                {% for user in pending_files %}
+                                    <tr class="visible">
+                                        <td>
+                                            <strong class="ms-3">{{ user.full_name }}</strong>
+                                        </td>
+                                        <td>{{ user.ro1_id.full_name }}</td>
+                                        <td>
+                                            {{ user.ro2_id.full_name }}
+                                        </td>
+                                        <td>{{ user.department }}</td>
+                                        <td>{{ user.designation|upper }}</td>
+                                        <td>
+                                            <span class="badge bg-label-danger me-1">Login Pending</span>
+
+                                        </td>
+                                        <td>
+
+                                            Not Approved
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--/ Striped Rows -->
+
+
+                </div>
+                <!-- / Content -->
+                <!-- Footer -->
+                {% include 'includes/footer.html' %}
+                <!-- / Footer -->
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+</div>
+<script>
+</script>
+<!-- / Layout wrapper -->
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+<script src="/static/assets/vendor/libs/jquery/jquery.js"></script>
+<script src="https://cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+<script src="/static/assets/vendor/libs/popper/popper.js"></script>
+<script src="/static/assets/vendor/js/bootstrap.js"></script>
+<script src="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="/static/assets/vendor/js/menu.js"></script>
+<!-- endbuild -->
+<!-- Vendors JS -->
+<!-- Main JS -->
+<script src="/static/assets/js/main.js"></script>
+<!-- Page JS -->
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script>
+    document.getElementById("filter-search").addEventListener("keyup", (e) => {
+        let input = e.target.value.toUpperCase();
+        let table = document.getElementById("review-table");
+        let tr = table.querySelectorAll("tr");
+        tr.forEach((row) => {
+            let td = row.children[0].children[0];
+            if (td) {
+                let textValue = td.innerText;
+                if (textValue.toUpperCase().indexOf(input) > -1 && row.classList.contains("visible")) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            }
+        });
+    });
+
+    function applyFilter() {
+
+        let table = document.getElementById("review-table");
+        let tr = table.querySelector("tbody").querySelectorAll("tr");
+        let recordCount = 0;
+        tr.forEach((row) => {
+            row.classList.add("visible");
+            row.classList.add("count-profile");
+            recordCount++;
+        });
+
+
+        document.getElementById("tbl-headers").style.display = "";
+        document.querySelector(".recordCount").children[0].innerHTML = String(Number(recordCount) - 1);
+    }
+
+    applyFilter();
+
+
+    function exportToExcel() {
+        let reviewTable = document.getElementById("review-table");
+        let reviewTableRecords = reviewTable.querySelectorAll("tbody tr");
+        let exportTable = document.createElement("table");
+        let exportTableRecords = document.createElement("tbody");
+        exportTable.innerHTML = `
+            <tr class="filters" id="tbl-headers">
+                <th class="col-3">Name</th>
+                <th>RO-1</th>
+                <th>RO-2</th>
+                <th>Dept.</th>
+                <th>Designation.</th>
+                <th>RO Grade</th>
+                <th>RO Percent</th>
+                <th>RV Grade</th>
+                <th>RV Percent</th>
+            </tr>
+        `;
+        reviewTableRecords.forEach((record) => {
+            if (record.classList.contains("count-profile")) {
+                exportTableRecords.appendChild(record.cloneNode(true));
+            }
+        })
+        exportTable.appendChild(exportTableRecords);
+        $(exportTable).table2excel({
+            name: "HR Records",
+            filename: `staff-status.xls`,
+            {#filename: `${dds.value + "-" + dsgs.value + "-" + sts.value}.xls`,#}
+            preserveColors: false
+        });
+    }
+</script>
+{#<script src="/static/assets/vendor/libs/tablefilter/tablefilter.js"></script>#}
+{#<script>#}
+{#    var filtersConfig = {#}
+{#        // instruct TableFilter location to import ressources from#}
+{#        base_path: '/static/assets/vendor/libs/tablefilter/',#}
+{#        col_1: 'select',#}
+{#        col_2: 'select',#}
+{#        col_3: 'select',#}
+{#        col_4: 'select',#}
+{#        col_5: 'select',#}
+{#        col_6: 'none',#}
+{#        style: {#}
+{#          color: 'blue',#}
+{#        },#}
+{##}
+{#        col_types: [#}
+{#            'string', 'string', 'string',#}
+{#            'string', 'string', 'string',#}
+{#            'string', 'string', 'string',#}
+{#            'string', 'string', 'string',#}
+{#            'string', 'string', 'string'#}
+{#        ]#}
+{#    };#}
+{##}
+{#    var tf = new TableFilter('review-table', filtersConfig);#}
+{#    tf.init();#}
+{##}
+{#    inputs = document.getElementsByClassName('fltrow')[0].querySelectorAll('.flt');#}
+{#    inputs.forEach((input) => {#}
+{#        if (input.type == 'text') {#}
+{#            input.classList.add('form-input');#}
+{#        }#}
+{#    });#}
+{##}
+{#    selects = document.getElementsByClassName('fltrow')[0].querySelectorAll('select');#}
+{#    selects.forEach((select) => {#}
+{#        select.classList.add('form-select');#}
+{#        // wrap all select in a div with class btn-group#}
+{#        let div = document.createElement('div');#}
+{#        div.classList.add('btn-group');#}
+{#        select.parentNode.insertBefore(div, select);#}
+{#        div.appendChild(select);#}
+{#    });#}
+{##}
+{#    // clear styles of the first element with classname fltrow#}
+{#document.getElementsByClassName('fltrow')[0].classList.remove('fltrow');#}
+{##}
+{#</script>#}
+</body>
+</html>

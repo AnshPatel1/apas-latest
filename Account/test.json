@@ -1,0 +1,65 @@
+{
+    "is_submit": false,
+    "key_parameter_count": 5,
+    "major_parameter_count": 2,
+    "minor_parameter_count": 2,
+    "key_parameters": [
+        {
+            "{'key': 'ghj'}": "sdgsdg"
+        },
+        {
+            "{'key': 'ugh'}": "sdgdsg"
+        },
+        {
+            "alenfoialsfasfsdg": "None"
+        },
+        {
+            "{'key': 'None'}sdgdsgdsg": "None"
+        },
+        {
+            "{'key': 'None'dgsdgdsg": "None"
+        }
+    ],
+    "major_parameters": [
+        {
+            "{'key': 'None'}": "None"
+        },
+        {
+            "{'key': ' n mn, ,m'}": "sgsgsdg"
+        }
+    ],
+    "minor_paramters": [
+        {
+            "23456": "None"
+        },
+        {
+            "": "gddgxdg"
+        }
+    ],
+    "self_development": {
+        "courses": [
+            {
+                "name": "",
+                "url": ""
+            },
+            {
+                "name": "",
+                "url": ""
+            }
+        ],
+        "count": 2
+    },
+    "mooc_completed": false,
+    "mooc_description": "",
+    "other_activities_completed": false,
+    "other_activities_data": "",
+    "self_eval": {
+        "key_highlights": "",
+        "challenges": "",
+        "areas_of_improvement": "",
+        "areas_of_strength": ""
+    },
+    "training_taken": true
+}
+
+

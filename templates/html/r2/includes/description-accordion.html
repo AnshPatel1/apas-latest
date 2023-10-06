@@ -1,0 +1,128 @@
+<div class="accordion">
+    <div class="card accordion-item mt-3">
+        <h2 class="accordion-header" id="headingOne">
+            <button
+                    type="button"
+                    class="accordion-button collapsed"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#accordionOne"
+                    aria-expanded="false"
+                    aria-controls="accordionOne"
+            >
+                Description
+            </button>
+        </h2>
+
+        <div
+                id="accordionOne"
+                class="accordion-collapse collapse"
+                data-bs-parent="#accordionExample"
+                style=""
+        >
+            <div class="accordion-body">
+                <dl class="row mt-md-4">
+                    <dt class="col-sm-2">Appraisee Name</dt>
+                    <dd class="col-sm-9">
+                        {{ file.user.full_name }}
+                    </dd>
+
+                    <dt class="col-sm-2">RO1 Name</dt>
+                    <dd class="col-sm-9">
+                        {{ file.user.ro1_id.full_name }}
+                    </dd>
+
+                    <dt class="col-sm-2">RO2 Name</dt>
+                    <dd class="col-sm-9">
+                        {{ file.user.ro2_id.full_name }}
+                    </dd>
+
+                    <dt class="col-sm-2 text-truncate">Current Status</dt>
+                    <dd class="col-sm-9">
+                        {% if file.ro1_validation.is_parameters_approved and file.file_level == 'RO1' %}
+                            <span class="badge bg-label-warning me-1">Appraisal Action Pending</span>
+                        {% endif %}
+                        {% if file.ro1_validation.is_parameters_approved and file.file_level == 'APPRAISEE' %}
+                            <span class="badge bg-label-danger me-1">Staff Input Pending</span>
+                        {% endif %}
+                        {% if not file.ro1_validation.is_parameters_approved and file.file_level == 'RO1' %}
+                            <span class="badge bg-label-warning me-1">Parameter Approval Pending</span>
+                        {% endif %}
+                        {% if not file.ro1_validation.is_parameters_approved and file.file_level == 'APPRAISEE' %}
+                            <span class="badge bg-label-danger me-1">Staff Parameter Input Pending</span>
+                        {% endif %}
+                        {% if file.ro2_grading_done %}
+                            <span class="badge bg-secondary me-1">
+                                        None</span>
+
+                        {% endif %}
+                    </dd>
+
+                    <dt class="col-sm-2">Actions Required</dt>
+                    <dd class="col-sm-9">
+                        <dl class="row">
+                            {% if not file.ro1_validation.is_parameters_approved and stage == 'parameter_approval' %}
+                                <dd class="col-sm-8">
+                                    <i class="menu-icon tf-icons bx bx-time-five"
+                                       style="color: rgb(220, 53, 69)"></i>
+                                    Approve Parameters
+                                </dd>
+                            {% endif %}
+                            {% if not file.ro1_validation.is_parameters_valid and stage == 'r1_approval' %}
+                                <dd class="col-sm-8">
+                                    <i class="menu-icon tf-icons bx bx-time-five"
+                                       style="color: rgb(220, 53, 69)"></i>
+                                    Grade Parameters
+                                </dd>
+                            {% endif %}
+                            {% if not file.ro1_validation.is_training_valid and file.training_taken %}
+                                <dd class="col-sm-8">
+                                    <i class="menu-icon tf-icons bx bx-time-five"
+                                       style="color: rgb(220, 53, 69)"></i>
+                                    Grade Trainings
+                                </dd>
+                            {% endif %}
+
+                            {% if not file.ro1_validation.is_other_activities_valid and file.other_activities_parameter_available %}
+                                <dd class="col-sm-8">
+                                    <i class="menu-icon tf-icons bx bx-time-five"
+                                       style="color: rgb(220, 53, 69)"></i>
+                                    Grade Other Activities
+                                </dd>
+                            {% endif %}
+                            {% if not file.ro1_validation.is_mooc_valid and file.was_mooc_completed %}
+                                <dd class="col-sm-8">
+                                    <i class="menu-icon tf-icons bx bx-time-five"
+                                       style="color: rgb(220, 53, 69)"></i>
+                                    Grade MooC
+                                </dd>
+                            {% endif %}
+                            {% if not file.ro1_validation.is_section_2_valid and stage == 'r1_approval' %}
+                                <dd class="col-sm-8">
+                                    <i class="menu-icon tf-icons bx bx-time-five"
+                                       style="color: rgb(220, 53, 69)"></i>
+                                    Grade Section 2
+                                </dd>
+                            {% endif %}
+                            {% if can_submit and stage == 'r1_approval' %}
+                                <dd class="col-sm-8">
+                                    <a href="{% if pagename != "staff-review-home" %}../{% endif %}staff-final-submit">
+                                        <span class="badge bg-success me-1">
+                                        Submit Now. Click Here
+                                    </a>
+                                </dd>
+                            {% endif %}
+                            {% if file.ro2_grading_done %}
+                                <dd class="col-sm-8">
+                                    <span class="badge bg-success me-1">
+                                        Successfully Submitted</span>
+
+                                </dd>
+                            {% endif %}
+
+                        </dl>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1139 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        class="light-style layout-menu-fixed layout-navbar-fixed layout-menu-collapsed"
+        dir="ltr"
+        data-theme="theme-default"
+        data-assets-path="/static/assets/"
+        data-template="vertical-menu-template-free"
+>
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>HR - Tally Data</title>
+    <link rel="icon" type="image/x-icon" href="../../../media/admin-interface/favicon/Pandit_Deendayal_Energy_University_logo-2.png">
+    <meta name="description" content=""/>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <script src="https://kit.fontawesome.com/5fbd3e2d5f.js" crossorigin="anonymous"></script>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"
+    />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="/static/assets/vendor/fonts/boxicons.css"/>
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/css/core.css" class="template-customizer-core-css"/>
+    <link rel="stylesheet" href="/static/assets/vendor/css/theme-default.css" class="template-customizer-theme-css"/>
+    <link rel="stylesheet" href="/static/assets/css/demo.css"/>
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"/>
+
+    <link rel="stylesheet" href="/static/assets/vendor/libs/apex-charts/apex-charts.css"/>
+
+    <!-- Page CSS -->
+
+    <link rel="stylesheet" href="/static/assets/vendor/css/tm2.css"/>
+
+    <!-- Helpers -->
+    <script src="/static/assets/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="/static/assets/js/config.js"></script>
+    {#    <script src="/static/assets/js/show-spinner.js"></script>#}
+
+</head>
+<body>
+
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <!-- Menu -->
+
+        {% include 'html/hr/includes/hr-dashboard-sidebar.html' %}
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+
+            <!-- Navbar -->
+            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme justify-content-between"
+                 id="layout-navbar">
+                <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                    <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                        <i class="bx bx-menu bx-sm"></i>
+                    </a>
+                </div>
+
+                {% include 'html/hr/includes/dashboard-nav.html' %}
+            </nav>            <!-- / Navbar -->
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <!-- Content -->
+
+                <div class="container-p-y pe-3 ps-3">
+                    <div class="row">
+                        <div class="col-12 mb-4 h-100">
+                            <div class="card border">
+                                <div class="d-flex align-items-end row">
+                                    <div class="col-12">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-primary">Tally Bulk-Upload Data</h5>
+                                            <div class="table-responsive">
+                                                <table class="table table-hover table-bordered" id="review-table">
+                                                    <thead>
+                                                    <tr class="filters" id="tbl-headers">
+                                                        <th style="width: 1px">PARAMETER</th>
+                                                        <th style="width: 1px">FOET (TOTAL: {{ count.FOET.total_appraisee }})</th>
+                                                        <th style="width: 1px">FOLS (TOTAL: {{ count.SLS.total_appraisee }})</th>
+                                                        <th style="width: 1px">FOM (TOTAL: {{ count.SOM.total_appraisee }})</th>
+                                                        <th style="width: 1px">MATH (TOTAL: {{ count.MATHS.total_appraisee }})</th>
+                                                        <th style="width: 1px">SCIENCE (TOTAL: {{ count.SCIENCE.total_appraisee }})</th>
+                                                        {#                                                        <th style="width: 1px"><strong>TOTAL</strong></th>#}
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody class="table-border-bottom-0" id="review-list">
+                                                    <tr class="visible count-profile">
+                                                        <td>ACADEMIA COLLABORATION</td>
+                                                        <td>
+                                                            {{ count.FOET.academia_collaboration }} / {{ count.FOET.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SLS.academia_collaboration }} / {{ count.SLS.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SOM.academia_collaboration }} / {{ count.SOM.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.MATHS.academia_collaboration }} / {{ count.MATHS.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SCIENCE.academia_collaboration }} / {{ count.SCIENCE.total_appraisee }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="visible count-profile">
+                                                        <td>ADDITIONAL MARKS</td>
+                                                        <td>
+                                                            {{ count.FOET.additional_marks }} / {{ count.FOET.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SLS.additional_marks }} / {{ count.SLS.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SOM.additional_marks }} / {{ count.SOM.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.MATHS.additional_marks }} / {{ count.MATHS.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SCIENCE.additional_marks }} / {{ count.SCIENCE.total_appraisee }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="visible count-profile">
+                                                        <td>CO CURRICULAR /<BR>
+                                                            EXTRA CURRICULAR
+                                                        </td>
+                                                        <td>
+                                                            {{ count.FOET.co_curricular }} / {{ count.FOET.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SLS.co_curricular }} / {{ count.SLS.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SOM.co_curricular }} / {{ count.SOM.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.MATHS.co_curricular }} / {{ count.MATHS.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SCIENCE.co_curricular }} / {{ count.SCIENCE.total_appraisee }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="visible count-profile">
+                                                        <td>STUDENT FEEDBACK</td>
+                                                        <td>
+                                                            {{ count.FOET.student_feedback }} / {{ count.FOET.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SLS.student_feedback }} / {{ count.SLS.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SOM.student_feedback }} / {{ count.SOM.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.MATHS.student_feedback }} / {{ count.MATHS.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SCIENCE.student_feedback }} / {{ count.SCIENCE.total_appraisee }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="visible count-profile">
+                                                        <td>EXAM DUTY</td>
+                                                        <td>
+                                                            {{ count.FOET.exam_duty }} / {{ count.FOET.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SLS.exam_duty }} / {{ count.SLS.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SOM.exam_duty }} / {{ count.SOM.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.MATHS.exam_duty }} / {{ count.MATHS.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SCIENCE.exam_duty }} / {{ count.SCIENCE.total_appraisee }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="visible count-profile">
+                                                        <td>TEACHING LOAD</td>
+                                                        <td>
+                                                            {{ count.FOET.teaching_load }} / {{ count.FOET.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SLS.teaching_load }} / {{ count.SLS.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SOM.teaching_load }} / {{ count.SOM.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.MATHS.teaching_load }} / {{ count.MATHS.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SCIENCE.teaching_load }} / {{ count.SCIENCE.total_appraisee }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="visible count-profile">
+                                                        <td>INTERNATIONAL ADMISSION (SLS)</td>
+                                                        <td>
+                                                            N/A
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SLS.international_admission }} / {{ count.SLS.total_appraisee }}
+                                                        </td>
+                                                        <td>
+                                                            N/A
+                                                        </td>
+                                                        <td>
+                                                            N/A
+                                                        </td>
+                                                        <td>
+                                                            N/A
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="bg-label-secondary">
+                                                        <td colspan="6" class="text-center">UNBOUNDED DATA BELOW</td>
+                                                    </tr>
+                                                    <tr class="visible count-profile">
+                                                        <td>BOOKS</td>
+                                                        <td>
+                                                            {{ count.FOET.books }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SLS.books }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SOM.books }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.MATHS.books }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SCIENCE.books }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="visible count-profile">
+                                                        <td>AWARDS</td>
+                                                        <td>
+                                                            {{ count.FOET.awards }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SLS.awards }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SOM.awards }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.MATHS.awards }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SCIENCE.awards }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="visible count-profile">
+                                                        <td>CONSULTANCY</td>
+                                                        <td>
+                                                            {{ count.FOET.consultancy }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SLS.consultancy }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SOM.consultancy }}
+                                                        </td>
+                                                        <td>
+                                                            N/A
+                                                        </td>
+                                                        <td>
+                                                            N/A
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="visible count-profile">
+                                                        <td>PATENT</td>
+                                                        <td>
+                                                            {{ count.FOET.patent }}
+                                                        </td>
+                                                        <td>
+                                                            N/A
+                                                        </td>
+                                                        <td>
+                                                            N/A
+                                                        </td>
+                                                        <td>
+                                                            N/A
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SCIENCE.patent }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="visible count-profile">
+                                                        <td>PhD GUIDANCE</td>
+                                                        <td>
+                                                            {{ count.FOET.phd_guidance }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SLS.phd_guidance }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SOM.phd_guidance }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.MATHS.phd_guidance }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SCIENCE.phd_guidance }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="visible count-profile">
+                                                        <td>PROJECT</td>
+                                                        <td>
+                                                            {{ count.FOET.project }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SLS.project }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SOM.project }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.MATHS.project }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SCIENCE.project }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="visible count-profile">
+                                                        <td>PAPER / CONFERENCES / E-PUBS</td>
+                                                        <td>
+                                                            {{ count.FOET.publication }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SLS.publication }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SOM.publication }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.MATHS.publication }}
+                                                        </td>
+                                                        <td>
+                                                            {{ count.SCIENCE.publication }}
+                                                        </td>
+                                                    </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {#                    {% include "html/staff/includes/staff-timeline.html" %}#}
+                    <!--/ Total Revenue -->
+
+                </div>
+            </div>
+            <!-- / Content -->
+
+            <!-- Footer -->
+            {% include "includes/footer.html" %}
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade m-0"></div>
+        </div>
+        <!-- Content wrapper -->
+    </div>
+    <!-- / Layout page -->
+</div>
+
+<!-- Overlay -->
+<div class="layout-overlay layout-menu-toggle"></div>
+</div>
+<!-- / Layout wrapper -->
+
+
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+<script src="/static/assets/vendor/libs/jquery/jquery.js"></script>
+<script src="/static/assets/vendor/libs/popper/popper.js"></script>
+<script src="/static/assets/vendor/js/bootstrap.js"></script>
+<script src="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+<script src="/static/assets/vendor/js/menu.js"></script>
+<!-- endbuild -->
+
+<!-- Vendors JS -->
+<script src="/static/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+
+<!-- Main JS -->
+<script src="/static/assets/js/main.js"></script>
+
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script>
+    // --------------------------------------------------------------------
+    {#const valueToPercent = (val) => (val * 100) / {{ total_time }} 10;#}
+    {#let days = {{ time_left }} 10;#}
+    {#// Growth Chart - Radial Bar Chart#}
+    {#// --------------------------------------------------------------------#}
+    {#var options = {#}
+    {#    chart: {#}
+    {#        height: 280,#}
+    {#        type: "radialBar",#}
+    {#        max: 58#}
+    {#    },#}
+    {#    radialBar: {#}
+    {#        range: [0, 1000] // [startValue, endValue]#}
+    {#    },#}
+    {#    series: [valueToPercent(days)],#}
+    {#    colors: ["#797bff"],#}
+    {#    plotOptions: {#}
+    {#        radialBar: {#}
+    {#            hollow: {#}
+    {#                margin: 0,#}
+    {#                size: "70%",#}
+    {#                background: "#fff"#}
+    {#            },#}
+    {#            track: {#}
+    {#                dropShadow: {#}
+    {#                    enabled: true,#}
+    {#                    top: 2,#}
+    {#                    left: 0,#}
+    {#                    blur: 4,#}
+    {#                    opacity: 0.15#}
+    {#                }#}
+    {#            },#}
+    {#            dataLabels: {#}
+    {#                name: {#}
+    {#                    offsetY: -10,#}
+    {#                    color: "#697a7d",#}
+    {#                    fontSize: "20px"#}
+    {#                },#}
+    {#                value: {#}
+    {#                    color: "#697a7d",#}
+    {#                    fontSize: "30px",#}
+    {#                    show: true,#}
+    {#                    formatter: function () {#}
+    {#                        return days;#}
+    {#                    }#}
+    {#                }#}
+    {#            }#}
+    {#        }#}
+    {#    },#}
+    {#    stroke: {#}
+    {#        lineCap: "round"#}
+    {#    },#}
+    {#    labels: ["Days Remaining"]#}
+    {# };#}
+    {#var chart = new ApexCharts(document.querySelector("#daysChart"), options);#}
+    {#chart.render();#}
+
+    let selectChart = document.getElementById("selectProgressChart");
+    selectChart.addEventListener("change", renderProgessChart);
+    selectChart.dispatchEvent(new Event("change"));
+
+    function renderProgessChart() {
+        let select = document.getElementById("selectProgressChart");
+        let charts = document.querySelectorAll(".progressChart");
+        let value = select.value;
+        charts.forEach((ch) => {
+            ch.classList.add("d-none");
+        })
+        switch (value) {
+            case "staff":
+                document.getElementById("staffChart").classList.remove("d-none");
+                break;
+            case "foet":
+                document.getElementById("foetChart").classList.remove("d-none");
+                break;
+            case "sls":
+                document.getElementById("slsChart").classList.remove("d-none");
+                break;
+            case "spm":
+                document.getElementById("spmChart").classList.remove("d-none");
+                break;
+            case "maths":
+                document.getElementById("mathsChart").classList.remove("d-none");
+                break;
+            case "science":
+                document.getElementById("scienceChart").classList.remove("d-none");
+                break;
+            default:
+                document.getElementById("staffChart").classList.remove("d-none");
+                break;
+        }
+    }
+
+
+    var optionsForFoet = {
+        series: [{{ count.foet.login_pending }}, {{ count.foet.unverified }}, {{ count.foet.self_appraisal_pending }}, {{ count.foet.r1_pending }}, {{ count.foet.r1_done }}, {{ count.foet.r2_done }}],
+        labels: ['Login Pending', 'Data Verification Pending', 'Appraisal Not Submitted', 'Self Appraisal Submitted', 'RO1 Graded', 'RO2 Graded'],
+        colors: ['#EF6F6C', '#B78CFFFC', '#FF9F1C', '#3E92CC', '#1B998B', '#06A77D'],
+        chart: {
+            type: 'donut',
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: 200
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }],
+        dataLabels: {
+            enabled: false,
+        },
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    outside: false,
+                },
+                donut: {
+                    labels: {
+                        show: true,
+                        name: {
+                            show: true
+                        },
+                        value: {
+                            show: true
+                        }
+                    }
+                },
+            }
+        },
+        legend: {
+            show: true,
+            position: 'bottom',
+            onItemClick: {
+                toggleDataSeries: true
+            },
+            onItemHover: {
+                highlightDataSeries: true
+            },
+        },
+    };
+    var chartForFoet = new ApexCharts(document.querySelector("#foetChart"), optionsForFoet);
+    chartForFoet.render();
+
+    var optionsForSpm = {
+        series: [{{ count.som.login_pending }}, {{ count.som.unverified }}, {{ count.som.self_appraisal_pending }}, {{ count.som.r1_pending }}, {{ count.som.r1_done }}, {{ count.som.r2_done }}],
+        labels: ['Login Pending', 'Data Verification Pending', 'Appraisal Not Submitted', 'Self Appraisal Submitted', 'RO1 Graded', 'RO2 Graded'],
+        colors: ['#EF6F6C', '#B78CFFFC', '#FF9F1C', '#3E92CC', '#1B998B', '#06A77D'],
+        chart: {
+            type: 'donut',
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: 200
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }],
+        dataLabels: {
+            enabled: false,
+        },
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    outside: false,
+                },
+                donut: {
+                    labels: {
+                        show: true,
+                        name: {
+                            show: true
+                        },
+                        value: {
+                            show: true
+                        }
+                    }
+                },
+            }
+        },
+        legend: {
+            show: true,
+            position: 'bottom',
+            onItemClick: {
+                toggleDataSeries: true
+            },
+            onItemHover: {
+                highlightDataSeries: true
+            },
+        },
+    };
+    var chartForSpm = new ApexCharts(document.querySelector("#spmChart"), optionsForSpm);
+    chartForSpm.render();
+
+    var optionsForSls = {
+        series: [{{ count.sls.login_pending }}, {{ count.sls.unverified }}, {{ count.sls.self_appraisal_pending }}, {{ count.sls.r1_pending }}, {{ count.sls.r1_done }}, {{ count.sls.r2_done }}],
+        labels: ['Login Pending', 'Data Verification Pending', 'Appraisal Not Submitted', 'Self Appraisal Submitted', 'RO1 Graded', 'RO2 Graded'],
+        colors: ['#EF6F6C', '#B78CFFFC', '#FF9F1C', '#3E92CC', '#1B998B', '#06A77D'],
+        chart: {
+            type: 'donut',
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: 200
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }],
+        dataLabels: {
+            enabled: false,
+        },
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    outside: false,
+                },
+                donut: {
+                    labels: {
+                        show: true,
+                        name: {
+                            show: true
+                        },
+                        value: {
+                            show: true
+                        }
+                    }
+                },
+            }
+        },
+        legend: {
+            show: true,
+            position: 'bottom',
+            onItemClick: {
+                toggleDataSeries: true
+            },
+            onItemHover: {
+                highlightDataSeries: true
+            },
+        },
+    };
+    var chartForSls = new ApexCharts(document.querySelector("#slsChart"), optionsForSls);
+    chartForSls.render();
+
+    var optionsForMaths = {
+        series: [{{ count.math.login_pending }}, {{ count.math.unverified }}, {{ count.math.self_appraisal_pending }}, {{ count.math.r1_pending }}, {{ count.math.r1_done }}, {{ count.math.r2_done }}],
+        labels: ['Login Pending', 'Data Verification Pending', 'Appraisal Not Submitted', 'Self Appraisal Submitted', 'RO1 Graded', 'RO2 Graded'],
+        colors: ['#EF6F6C', '#B78CFFFC', '#FF9F1C', '#3E92CC', '#1B998B', '#06A77D'],
+        chart: {
+            type: 'donut',
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: 200
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }],
+        dataLabels: {
+            enabled: false,
+        },
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    outside: false,
+                },
+                donut: {
+                    labels: {
+                        show: true,
+                        name: {
+                            show: true
+                        },
+                        value: {
+                            show: true
+                        }
+                    }
+                },
+            }
+        },
+        legend: {
+            show: true,
+            position: 'bottom',
+            onItemClick: {
+                toggleDataSeries: true
+            },
+            onItemHover: {
+                highlightDataSeries: true
+            },
+        },
+    };
+    var chartForMaths = new ApexCharts(document.querySelector("#mathsChart"), optionsForMaths);
+    chartForMaths.render();
+
+    var optionsForScience = {
+        series: [{{ count.science.login_pending }}, {{ count.science.unverified }}, {{ count.science.self_appraisal_pending }}, {{ count.science.r1_pending }}, {{ count.science.r1_done }}, {{ count.science.r2_done }}],
+        labels: ['Login Pending', 'Data Verification Pending', 'Appraisal Not Submitted', 'Self Appraisal Submitted', 'RO1 Graded', 'RO2 Graded'],
+        colors: ['#EF6F6C', '#B78CFFFC', '#FF9F1C', '#3E92CC', '#1B998B', '#06A77D'],
+        chart: {
+            type: 'donut',
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: 200
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }],
+        dataLabels: {
+            enabled: false,
+        },
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    outside: false,
+                },
+                donut: {
+                    labels: {
+                        show: true,
+                        name: {
+                            show: true
+                        },
+                        value: {
+                            show: true
+                        }
+                    }
+                },
+            }
+        },
+        legend: {
+            show: true,
+            position: 'bottom',
+            onItemClick: {
+                toggleDataSeries: true
+            },
+            onItemHover: {
+                highlightDataSeries: true
+            },
+        },
+    };
+    var chartForScience = new ApexCharts(document.querySelector("#scienceChart"), optionsForScience);
+    chartForScience.render();
+
+    var optionsForStaff = {
+        series: [{{ count.staff.login_pending }}, {{ count.staff.unverified }}, {{ count.staff.self_appraisal_pending }}, {{ count.staff.r1_pending }}, {{ count.staff.r1_done }}, {{ count.staff.r2_done }}],
+        labels: ['Login Pending', 'Goalsheet Approval Pending', 'Appraisal Not Submitted', 'Self Appraisal Submitted', 'RO1 Graded', 'RO2 Graded'],
+        colors: ['#EF6F6C', '#B78CFFFC', '#FF9F1C', '#3E92CC', '#1B998B', '#06A77D'],
+        chart: {
+            type: 'donut',
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                    width: 200
+                },
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }],
+        dataLabels: {
+            enabled: false,
+        },
+        plotOptions: {
+            pie: {
+                dataLabels: {
+                    outside: false,
+                },
+                donut: {
+                    labels: {
+                        show: true,
+                        name: {
+                            show: true
+                        },
+                        value: {
+                            show: true
+                        }
+                    }
+                },
+            }
+        },
+        legend: {
+            show: true,
+            position: 'bottom',
+            onItemClick: {
+                toggleDataSeries: true
+            },
+            onItemHover: {
+                highlightDataSeries: true
+            },
+        },
+    };
+    var chartForStaff = new ApexCharts(document.querySelector("#staffChart"), optionsForStaff);
+    chartForStaff.render();
+
+
+    var optionsForCalendar = {
+        series: [
+            {
+                name: 'Staff',
+                data: [
+                    {
+                        x: 'Verification / Approval',
+                        y: [
+                            new Date('{{ staff_config.parameter_approval_start_date }}').getTime(),
+                            new Date('{{ staff_config.parameter_approval_end_date }}').getTime()
+                        ]
+                    },
+                    {#{#}
+                    {#    x: 'Parameter Approval',#}
+                    {#    y: [#}
+                    {#        new Date('{{ staff_config.parameter_approval_start_date }}').getTime(),#}
+                    {#        new Date('{{ staff_config.parameter_approval_start_date }}').getTime()#}
+                    {#    ]#}
+                    {# },#}
+                    {
+                        x: 'Self Appraisal',
+                        y: [
+                            new Date('{{ staff_config.appraisal_start_date }}').getTime(),
+                            new Date('{{ staff_config.appraisal_end_date }}').getTime()
+                        ]
+                    },
+                    {
+                        x: 'RO1 Review',
+                        y: [
+                            new Date('{{ staff_config.r1_approval_start_date }}').getTime(),
+                            new Date('{{ staff_config.r1_approval_end_date }}').getTime()
+                        ]
+                    },
+                    {
+                        x: 'RO2 Review',
+                        y: [
+                            new Date('{{ staff_config.r2_approval_start_date }}').getTime(),
+                            new Date('{{ staff_config.r2_approval_end_date }}').getTime()
+                        ]
+                    }
+                ]
+            },
+            {
+                name: 'FoET',
+                data: [
+                    {#{#}
+                    {#    x: 'Goalsheet Submission',#}
+                    {#    y: [#}
+                    {#        new Date('2019-03-02').getTime(),#}
+                    {#        new Date('2019-03-05').getTime()#}
+                    {#    ]#}
+                    {# },#}
+                    {
+                        x: 'Verification / Approval',
+                        y: [
+                            new Date('{{ foet_config.verification_start_date }}').getTime(),
+                            new Date('{{ foet_config.verification_end_date }}').getTime()
+                        ],
+                        {#goals: [#}
+                        {#  {#}
+                        {#    name: 'Break',#}
+                        {#    value: new Date('2019-03-10').getTime(),#}
+                        {#    strokeColor: '#CD2F2A'#}
+                        {#  }#}
+                        {#]#}
+                    },
+                    {
+                        x: 'Self Appraisal',
+                        y: [
+                            new Date('{{ foet_config.appraisal_start_date }}').getTime(),
+                            new Date('{{ foet_config.appraisal_end_date }}').getTime()
+                        ]
+                    },
+                    {
+                        x: 'RO1 Review',
+                        y: [
+                            new Date('{{ foet_config.r1_approval_start_date }}').getTime(),
+                            new Date('{{ foet_config.r1_approval_end_date }}').getTime()
+                        ]
+                    },
+                    {
+                        x: 'RO2 Review',
+                        y: [
+                            new Date('{{ foet_config.r2_approval_start_date }}').getTime(),
+                            new Date('{{ foet_config.r2_approval_end_date }}').getTime()
+                        ]
+                    }
+                ]
+            },
+            {
+                name: 'SLS',
+                data: [
+                    {#{#}
+                    {#    x: 'Goalsheet Submission',#}
+                    {#    y: [#}
+                    {#        new Date('2019-03-02').getTime(),#}
+                    {#        new Date('2019-03-05').getTime()#}
+                    {#    ]#}
+                    {# },#}
+                    {
+                        x: 'Verification / Approval',
+                        y: [
+                            new Date('{{ sls_config.verification_start_date }}').getTime(),
+                            new Date('{{ sls_config.verification_end_date }}').getTime()
+                        ],
+                        {#goals: [#}
+                        {#  {#}
+                        {#    name: 'Break',#}
+                        {#    value: new Date('2019-03-10').getTime(),#}
+                        {#    strokeColor: '#CD2F2A'#}
+                        {#  }#}
+                        {#]#}
+                    },
+                    {
+                        x: 'Self Appraisal',
+                        y: [
+                            new Date('{{ sls_config.appraisal_start_date }}').getTime(),
+                            new Date('{{ sls_config.appraisal_end_date }}').getTime()
+                        ]
+                    },
+                    {
+                        x: 'RO1 Review',
+                        y: [
+                            new Date('{{ sls_config.r1_approval_start_date }}').getTime(),
+                            new Date('{{ sls_config.r1_approval_end_date }}').getTime()
+                        ]
+                    },
+                    {
+                        x: 'RO2 Review',
+                        y: [
+                            new Date('{{ sls_config.r2_approval_start_date }}').getTime(),
+                            new Date('{{ sls_config.r2_approval_end_date }}').getTime()
+                        ]
+                    }
+                ]
+            },
+            {
+                name: 'SOM',
+                data: [
+                    {#{#}
+                    {#    x: 'Goalsheet Submission',#}
+                    {#    y: [#}
+                    {#        new Date('2019-03-02').getTime(),#}
+                    {#        new Date('2019-03-05').getTime()#}
+                    {#    ]#}
+                    {# },#}
+                    {
+                        x: 'Verification / Approval',
+                        y: [
+                            new Date('{{ som_config.verification_start_date }}').getTime(),
+                            new Date('{{ som_config.verification_end_date }}').getTime()
+                        ],
+                        {#goals: [#}
+                        {#  {#}
+                        {#    name: 'Break',#}
+                        {#    value: new Date('2019-03-10').getTime(),#}
+                        {#    strokeColor: '#CD2F2A'#}
+                        {#  }#}
+                        {#]#}
+                    },
+                    {
+                        x: 'Self Appraisal',
+                        y: [
+                            new Date('{{ som_config.appraisal_start_date }}').getTime(),
+                            new Date('{{ som_config.appraisal_end_date }}').getTime()
+                        ]
+                    },
+                    {
+                        x: 'RO1 Review',
+                        y: [
+                            new Date('{{ som_config.r1_approval_start_date }}').getTime(),
+                            new Date('{{ som_config.r1_approval_end_date }}').getTime()
+                        ]
+                    },
+                    {
+                        x: 'RO2 Review',
+                        y: [
+                            new Date('{{ som_config.r2_approval_start_date }}').getTime(),
+                            new Date('{{ som_config.r2_approval_end_date }}').getTime()
+                        ]
+                    }
+                ]
+            },
+            {
+                name: 'Maths',
+                data: [
+                    {#{#}
+                    {#    x: 'Goalsheet Submission',#}
+                    {#    y: [#}
+                    {#        new Date('2019-03-02').getTime(),#}
+                    {#        new Date('2019-03-05').getTime()#}
+                    {#    ]#}
+                    {# },#}
+                    {
+                        x: 'Verification / Approval',
+                        y: [
+                            new Date('{{ math_config.verification_start_date }}').getTime(),
+                            new Date('{{ math_config.verification_end_date }}').getTime()
+                        ],
+                        {#goals: [#}
+                        {#  {#}
+                        {#    name: 'Break',#}
+                        {#    value: new Date('2019-03-10').getTime(),#}
+                        {#    strokeColor: '#CD2F2A'#}
+                        {#  }#}
+                        {#]#}
+                    },
+                    {
+                        x: 'Self Appraisal',
+                        y: [
+                            new Date('{{ math_config.appraisal_start_date }}').getTime(),
+                            new Date('{{ math_config.appraisal_end_date }}').getTime()
+                        ]
+                    },
+                    {
+                        x: 'RO1 Review',
+                        y: [
+                            new Date('{{ math_config.r1_approval_start_date }}').getTime(),
+                            new Date('{{ math_config.r1_approval_end_date }}').getTime()
+                        ]
+                    },
+                    {
+                        x: 'RO2 Review',
+                        y: [
+                            new Date('{{ math_config.r2_approval_start_date }}').getTime(),
+                            new Date('{{ math_config.r2_approval_end_date }}').getTime()
+                        ]
+                    }
+                ]
+            },
+            {
+                name: 'Science',
+                data: [
+                    {#{#}
+                    {#    x: 'Goalsheet Submission',#}
+                    {#    y: [#}
+                    {#        new Date('2019-03-02').getTime(),#}
+                    {#        new Date('2019-03-05').getTime()#}
+                    {#    ]#}
+                    {# },#}
+                    {
+                        x: 'Verification / Approval',
+                        y: [
+                            new Date('{{ science_config.verification_start_date }}').getTime(),
+                            new Date('{{ science_config.verification_end_date }}').getTime()
+                        ],
+                        {#goals: [#}
+                        {#  {#}
+                        {#    name: 'Break',#}
+                        {#    value: new Date('2019-03-10').getTime(),#}
+                        {#    strokeColor: '#CD2F2A'#}
+                        {#  }#}
+                        {#]#}
+                    },
+                    {
+                        x: 'Self Appraisal',
+                        y: [
+                            new Date('{{ science_config.appraisal_start_date }}').getTime(),
+                            new Date('{{ science_config.appraisal_end_date }}').getTime()
+                        ]
+                    },
+                    {
+                        x: 'RO1 Review',
+                        y: [
+                            new Date('{{ science_config.r1_approval_start_date }}').getTime(),
+                            new Date('{{ science_config.r1_approval_end_date }}').getTime()
+                        ]
+                    },
+                    {
+                        x: 'RO2 Review',
+                        y: [
+                            new Date('{{ science_config.r2_approval_start_date }}').getTime(),
+                            new Date('{{ science_config.r2_approval_end_date }}').getTime()
+                        ]
+                    }
+                ]
+            }
+        ],
+        chart: {
+            height: 450,
+            type: 'rangeBar'
+        },
+        plotOptions: {
+            bar: {
+                horizontal: true,
+                barHeight: '80%'
+            }
+        },
+        xaxis: {
+            type: 'datetime'
+        },
+        stroke: {
+            width: 1
+        },
+        fill: {
+            type: 'solid',
+            opacity: 0.6
+        },
+        legend: {
+            position: 'top',
+            horizontalAlign: 'left'
+        }
+    };
+
+    var chartForCalendar = new ApexCharts(document.querySelector("#calendar-chart"), optionsForCalendar);
+    chartForCalendar.render();
+</script>
+</body>
+</html>

@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<!-- =========================================================
+* Sneat - Bootstrap 5 HTML Admin Template - Pro | v1.0.0
+==============================================================
+
+* Product Page: https://themeselection.com/products/sneat-bootstrap-html-admin-template/
+* Created by: ThemeSelection
+* License: You must have a valid license purchased in order to legally use the theme for your project.
+* Copyright ThemeSelection (https://themeselection.com)
+
+=========================================================
+ -->
+<!-- beautify ignore:start -->
+<html
+        lang="en"
+        class="light-style layout-menu-fixed layout-navbar-fixed layout-menu-collapsed"
+        dir="ltr"
+        data-theme="theme-default"
+        data-assets-path="/static/assets/"
+        data-template="vertical-menu-template-free"
+>
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <title>R2 - Review</title>
+    <link rel="icon" type="image/x-icon"
+          href="/media/admin-interface/favicon/Pandit_Deendayal_Energy_University_logo-2.png">
+
+    <meta name="description" content=""/>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"
+    />
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="/static/assets/vendor/fonts/boxicons.css"/>
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/css/core.css" class="template-customizer-core-css"/>
+    <link rel="stylesheet" href="/static/assets/vendor/css/theme-default.css" class="template-customizer-theme-css"/>
+    <link rel="stylesheet" href="/static/assets/css/demo.css"/>
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"/>
+    <!-- Page CSS -->
+    <!-- Helpers -->
+    <script src="/static/assets/vendor/js/helpers.js"></script>
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="/static/assets/js/config.js"></script>
+</head>
+<body>
+<div class="spinner-div"
+     style="width: 100%; height: 100%; position: fixed; background: rgba(0,0,0,0.1); z-index: 1; display: none"
+     id="backdrop-spinner">
+    <div class="spinner-border spinner-border-lg text-primary" role="status"
+         style="position: fixed; top: 50%; left:  50%; z-index: 2">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme justify-content-between"
+             id="layout-navbar">
+            <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                    <i class="bx bx-menu bx-sm"></i>
+                </a>
+            </div>
+
+            <div class="navbar-nav-right d-flex align-items-center justify-content-center" id="navbar-collapse">
+                <!-- Search -->
+                <div class="navbar-nav align-items-center">
+                    <div class="nav-item d-flex align-items-center">
+                        <i class="bx bx-user fs-4 lh-0"></i>
+                        <strong>&nbsp; &nbsp;{{ request.user.full_name }}</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex align-items-center justify-content-end text-danger">
+                <i class="bx bx-arrow-back"></i>
+                <a class="nav-item nav-link px-0" href="{% url 'home' %}">
+                    Back
+                </a>
+            </div>
+        </nav>
+        <!-- Menu -->
+        {% include 'includes/ro1-dashboard-sidebar.html' %}
+        <!-- / Menu -->
+        <!-- Layout container -->
+        <div class="layout-page">
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+
+                <!-- Content -->
+                <div class="container-p-y ps-3 pe-3">
+
+                    <!-- Filters -->
+                    <div class="card mb-4">
+                        <div class="card-body"
+                             style="display: flex; flex-wrap: wrap; align-items: center; gap:10px; width: 100%;">
+                            <div class="btn-group col-2" style="min-width: 150px;">
+                                <select class="form-select" aria-label="Default select example"
+                                        id="dept-dropdown-select">
+                                    <option value="ALL" selected>Department</option>
+                                    {% for i in departments %}
+                                        <option value="{{ i|upper }}">{{ i }}</option>
+                                    {% endfor %}
+                                </select>
+                                <!-- <button
+                                    type="button"
+                                    class="btn btn-outline-secondary dropdown-toggle"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
+                                    Primary
+                                </button> -->
+                                <!-- <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="javascript:void(0);">Action</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);">Another action</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);">Something else here</a></li>
+                                </ul> -->
+                            </div>
+                            <div class="btn-group col-2" style="min-width: 150px;">
+                                <select class="form-select" aria-label="Default select example"
+                                        id="designation-dropdown-select">
+                                    <option value="ALL" selected>Designation</option>
+                                    {% for i in designations %}
+                                        <option value="{{ i|upper }}">{{ i|upper }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="btn-group col-2" style="min-width: 150px;">
+                                <select class="form-select" aria-label="Default select example"
+                                        id="status-dropdown-select">
+                                    <option value="ALL" selected>Status</option>
+                                    <option value="REVIEW PENDING">REVIEW PENDING</option>
+                                    <option value="REVIEW DONE">REVIEW DONE</option>
+                                    <option value="APPRAISAL NOT SUBMITTED">APPRAISAL NOT SUBMITTED</option>
+                                    <option value="R1 REVIEW PENDING">R1 REVIEW PENDING</option>
+                                    <option value="LOGIN PENDING">LOGIN PENDING</option>
+
+                                </select>
+                                <!-- <button
+                                    type="button"
+                                    class="btn btn-outline-secondary dropdown-toggle"
+                                    data-bs-toggle="dropdown"
+                                    aria-expanded="false"
+                                >
+                                    Primary
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="javascript:void(0);">Action</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);">Another action</a></li>
+                                    <li><a class="dropdown-item" href="javascript:void(0);">Something else here</a></li>
+                                </ul> -->
+                            </div>
+                            <div class="btn-group col-2 " style="min-width: 150px;">
+                                <button
+                                        type="button"
+                                        class="btn btn-outline-primary"
+                                        onclick="applyFilter()"
+                                >
+                                    Apply Filters
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- / Filters -->
+
+                    <!-- Navbar -->
+                    <div class="card mb-4 p-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <!-- Search -->
+                            <div class="d-flex align-items-center" style="width: 100%;">
+                                <i class="bx bx-search fs-4 lh-0"></i>
+                                <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
+                                       aria-label="Search..." id="filter-search"/>
+                            </div>
+                            <!-- /Search -->
+                        </div>
+                    </div>
+                    <!-- / Navbar -->
+
+                    <!-- Striped Rows -->
+                    <div class="card">
+                        <h5 class="card-header">Reviews</h5>
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="review-table">
+                                <thead>
+                                <tr>
+                                    <th class="col-3">Name</th>
+                                    <th>RO-1</th>
+                                    <th>RO-2</th>
+                                    <th>Dept.</th>
+                                    <th>Designation.</th>
+                                    <th>Status</th>
+                                    <th class="col-2">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody class="table-border-bottom-0" id="review-list">
+                                {% for file in sot_files %}
+                                    <tr class="visible">
+                                        <td>
+                                            <strong class="ms-3">{{ file.user.full_name }}</strong>
+                                        </td>
+                                        <td>{{ file.user.ro1_id.full_name }}</td>
+                                        <td>
+                                            {{ file.user.ro2_id.full_name }}
+                                        </td>
+                                        <td>{{ file.user.department }}</td>
+                                        <td>{{ file.user.designation }}</td>
+                                        <td>
+                                            {% if file.file_level == 'RO2' %}
+                                                <span class="badge bg-warning">Review Pending</span>
+                                            {% elif file.file_level == 'APPRAISEE' %}
+                                                <span class="badge bg-label-danger">APPRAISAL NOT SUBMITTED</span>
+                                            {% elif file.file_level == 'RO1' %}
+                                                <span class="badge bg-label-danger">R1 REVIEW PENDING</span>
+                                            {% elif file.file_level == 'RO2' or file.file_level == 'HR' %}
+                                                <span class="badge bg-success">Review Done</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if file.file_level == 'RO2' and cycles.foet.name == 'r2_approval' %}
+                                                <a href="{{ request.host }}/ro2/faculty/{{ file.user.id }}/review/">
+                                                    <button type="button" id="add-btn" class=" btn btn-outline-primary">
+                                                        <span class="tf-icons bx bx-edit-alt"></span>&nbsp; Review
+                                                    </button>
+                                                </a>
+                                            {% else %}
+                                                <a href="{{ request.host }}/ro2/faculty/{{ file.user.id }}/review/"
+                                                        {% if file.file_level != 'APPRAISEE' and file.file_level != 'RO1' and cycles.foet.name != 'verification' and cycles.foet.name != 'appraisal' and cycles.foet.name != 'r1_approval' %}{% else %}
+                                                   style="pointer-events: none;"{% endif %}>
+                                                    <button type="button" id="add-btn" class=" btn btn-outline-primary"
+                                                            {% if file.file_level != 'APPRAISEE' and file.file_level != 'RO1' and cycles.foet.name != 'verification' and cycles.foet.name != 'appraisal' and cycles.foet.name != 'r1_approval' %}{% else %}disabled{% endif %}>
+                                                        <span class="tf-icons bx bx-edit-alt"></span>&nbsp; View
+                                                    </button>
+                                                </a>
+                                            {% endif %}
+
+                                        </td>
+                                    </tr>
+
+                                {% endfor %}
+                                {% for file in sls_files %}
+                                    <tr class="visible">
+                                        <td>
+                                            <strong class="ms-3">{{ file.user.full_name }}</strong>
+                                        </td>
+                                        <td>{{ file.user.ro1_id.full_name }}</td>
+                                        <td>
+                                            {{ file.user.ro2_id.full_name }}
+                                        </td>
+                                        <td>{{ file.user.department }}</td>
+                                        <td>{{ file.user.designation }}</td>
+                                        <td>
+                                            {% if file.file_level == 'RO2' %}
+                                                <span class="badge bg-warning">Review Pending</span>
+                                            {% elif file.file_level == 'APPRAISEE' %}
+                                                <span class="badge bg-label-danger">APPRAISAL NOT SUBMITTED</span>
+                                            {% elif file.file_level == 'RO1' %}
+                                                <span class="badge bg-label-danger">R1 REVIEW PENDING</span>
+                                            {% elif file.file_level == 'RO2' or file.file_level == 'HR' %}
+                                                <span class="badge bg-success">Review Done</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if file.file_level == 'RO2' and cycles.sls.name == 'r2_approval' %}
+                                                <a href="{{ request.host }}/ro2/faculty/{{ file.user.id }}/review/">
+                                                    <button type="button" id="add-btn" class=" btn btn-outline-primary">
+                                                        <span class="tf-icons bx bx-edit-alt"></span>&nbsp; Review
+                                                    </button>
+                                                </a>
+                                            {% else %}
+                                                <a href="{{ request.host }}/ro2/faculty/{{ file.user.id }}/review/"
+                                                   {% if file.file_level != 'APPRAISEE' and file.file_level != 'RO1' and cycles.sls.name != 'verification' and cycles.sls.name != 'appraisal' and cycles.sls.name != 'r1_approval' %}{% else %}style="pointer-events: none;"{% endif %}>
+                                                    <button type="button" id="add-btn" class=" btn btn-outline-primary"
+                                                            {% if file.file_level != 'APPRAISEE' and file.file_level != 'RO1' and cycles.sls.name != 'verification' and cycles.sls.name != 'appraisal' and cycles.sls.name != 'r1_approval' %}{% else %}disabled{% endif %}>
+                                                        <span class="tf-icons bx bx-edit-alt"></span>&nbsp; View
+                                                    </button>
+                                                </a>
+                                            {% endif %}
+
+                                        </td>
+                                    </tr>
+
+                                {% endfor %}
+                                {% for file in som_files %}
+                                    <tr class="visible">
+                                        <td>
+                                            <strong class="ms-3">{{ file.user.full_name }}</strong>
+                                        </td>
+                                        <td>{{ file.user.ro1_id.full_name }}</td>
+                                        <td>
+                                            {{ file.user.ro2_id.full_name }}
+                                        </td>
+                                        <td>{{ file.user.department }}</td>
+                                        <td>{{ file.user.designation }}</td>
+                                        <td>
+                                            {% if file.file_level == 'RO2' %}
+                                                <span class="badge bg-warning">Review Pending</span>
+                                            {% elif file.file_level == 'APPRAISEE' %}
+                                                <span class="badge bg-label-danger">APPRAISAL NOT SUBMITTED</span>
+                                            {% elif file.file_level == 'RO1' %}
+                                                <span class="badge bg-label-danger">R1 REVIEW PENDING</span>
+                                            {% elif file.file_level == 'RO2' or file.file_level == 'HR' %}
+                                                <span class="badge bg-success">Review Done</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if file.file_level == 'RO2' and cycles.som.name == 'r2_approval' %}
+                                                <a href="{{ request.host }}/ro2/faculty/{{ file.user.id }}/review/">
+                                                    <button type="button" id="add-btn" class=" btn btn-outline-primary">
+                                                        <span class="tf-icons bx bx-edit-alt"></span>&nbsp; Review
+                                                    </button>
+                                                </a>
+                                            {% else %}
+                                                <a href="{{ request.host }}/ro2/faculty/{{ file.user.id }}/review/"
+                                                   {% if file.file_level != 'APPRAISEE' and file.file_level != 'RO1' and cycles.som.name != 'verification' and cycles.som.name != 'appraisal' and cycles.som.name != 'r1_approval' %}{% else %}style="pointer-events: none;"{% endif %}>
+                                                    <button type="button" id="add-btn" class=" btn btn-outline-primary"
+                                                            {% if file.file_level != 'APPRAISEE' and file.file_level != 'RO1' and cycles.som.name != 'verification' and cycles.som.name != 'appraisal' and cycles.som.name != 'r1_approval' %}{% else %}disabled{% endif %}>
+                                                        <span class="tf-icons bx bx-edit-alt"></span>&nbsp; View
+                                                    </button>
+                                                </a>
+                                            {% endif %}
+
+                                        </td>
+                                    </tr>
+
+                                {% endfor %}
+                                {% for file in math_files %}
+                                    <tr class="visible">
+                                        <td>
+                                            <strong class="ms-3">{{ file.user.full_name }}</strong>
+                                        </td>
+                                        <td>{{ file.user.ro1_id.full_name }}</td>
+                                        <td>
+                                            {{ file.user.ro2_id.full_name }}
+                                        </td>
+                                        <td>{{ file.user.department }}</td>
+                                        <td>{{ file.user.designation }}</td>
+                                        <td>
+                                            {% if file.file_level == 'RO2' %}
+                                                <span class="badge bg-warning">Review Pending</span>
+                                            {% elif file.file_level == 'APPRAISEE' %}
+                                                <span class="badge bg-label-danger">APPRAISAL NOT SUBMITTED</span>
+                                            {% elif file.file_level == 'RO1' %}
+                                                <span class="badge bg-label-danger">R1 REVIEW PENDING</span>
+                                            {% elif file.file_level == 'RO2' or file.file_level == 'HR' %}
+                                                <span class="badge bg-success">Review Done</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if file.file_level == 'RO2' and cycles.math.name == 'r2_approval' %}
+                                                <a href="{{ request.host }}/ro2/faculty/{{ file.user.id }}/review/">
+                                                    <button type="button" id="add-btn" class=" btn btn-outline-primary">
+                                                        <span class="tf-icons bx bx-edit-alt"></span>&nbsp; Review
+                                                    </button>
+                                                </a>
+                                            {% else %}
+                                                <a href="{{ request.host }}/ro2/faculty/{{ file.user.id }}/review/"
+                                                   {% if file.file_level != 'APPRAISEE' and file.file_level != 'RO1' and cycles.math.name != 'verification' and cycles.math.name != 'appraisal' and cycles.math.name != 'r1_approval' %}{% else %}style="pointer-events: none;"{% endif %}>
+                                                    <button type="button" id="add-btn" class=" btn btn-outline-primary"
+                                                            {% if file.file_level != 'APPRAISEE' and file.file_level != 'RO1' and cycles.math.name != 'verification' and cycles.math.name != 'appraisal' and cycles.math.name != 'r1_approval' %}{% else %}disabled{% endif %}>
+                                                        <span class="tf-icons bx bx-edit-alt"></span>&nbsp; View
+                                                    </button>
+                                                </a>
+                                            {% endif %}
+
+                                        </td>
+                                    </tr>
+
+                                {% endfor %}
+                                {% for file in science_files %}
+                                    <tr class="visible">
+                                        <td>
+                                            <strong class="ms-3">{{ file.user.full_name }}</strong>
+                                        </td>
+                                        <td>{{ file.user.ro1_id.full_name }}</td>
+                                        <td>
+                                            {{ file.user.ro2_id.full_name }}
+                                        </td>
+                                        <td>{{ file.user.department }}</td>
+                                        <td>{{ file.user.designation }}</td>
+                                        <td>
+                                            {% if file.file_level == 'RO2' %}
+                                                <span class="badge bg-warning">Review Pending</span>
+                                            {% elif file.file_level == 'APPRAISEE' %}
+                                                <span class="badge bg-label-danger">APPRAISAL NOT SUBMITTED</span>
+                                            {% elif file.file_level == 'RO1' %}
+                                                <span class="badge bg-label-danger">R1 REVIEW PENDING</span>
+                                            {% elif file.file_level == 'RO2' or file.file_level == 'HR' %}
+                                                <span class="badge bg-success">Review Done</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if file.file_level == 'RO2' and cycles.science.name == 'r2_approval' %}
+                                                <a href="{{ request.host }}/ro2/faculty/{{ file.user.id }}/review/">
+                                                    <button type="button" id="add-btn" class=" btn btn-outline-primary">
+                                                        <span class="tf-icons bx bx-edit-alt"></span>&nbsp; Review
+                                                    </button>
+                                                </a>
+                                            {% else %}
+                                                <a href="{{ request.host }}/ro2/faculty/{{ file.user.id }}/review/"
+                                                   {% if file.file_level != 'APPRAISEE' and file.file_level != 'RO1' and cycles.science.name != 'verification' and cycles.science.name != 'appraisal' and cycles.science.name != 'r1_approval' %}{% else %}style="pointer-events: none;"{% endif %}>
+                                                    <button type="button" id="add-btn" class=" btn btn-outline-primary"
+                                                            {% if file.file_level != 'APPRAISEE' and file.file_level != 'RO1' and cycles.science.name != 'verification' and cycles.science.name != 'appraisal' and cycles.science.name != 'r1_approval' %}{% else %}disabled{% endif %}>
+                                                        <span class="tf-icons bx bx-edit-alt"></span>&nbsp; View
+                                                    </button>
+                                                </a>
+                                            {% endif %}
+
+                                        </td>
+                                    </tr>
+
+                                {% endfor %}
+                                {% for user in pending_files %}
+                                    <tr class="visible">
+                                        <td>
+                                            <strong class="ms-3">{{ user.full_name }}</strong>
+                                        </td>
+                                        <td>{{ user.ro1_id.full_name }}</td>
+                                        <td>
+                                            {{ user.ro2_id.full_name }}
+                                        </td>
+                                        <td>{{ user.department }}</td>
+                                        <td>{{ user.designation }}</td>
+                                        <td>
+                                            <span class="badge bg-label-danger me-1">Login Pending</span>
+
+                                        </td>
+                                        <td>
+
+                                            <button type="button" id="add-btn" class="btn btn-outline-primary" disabled>
+                                                <span class="tf-icons bx bx-edit-alt"></span>&nbsp; Verify
+                                            </button>
+
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!--/ Striped Rows -->
+
+
+                </div>
+                <!-- / Content -->
+                <!-- Footer -->
+                {% include 'includes/footer.html' %}
+                <!-- / Footer -->
+                <div class="content-backdrop fade"></div>
+            </div>
+            <!-- Content wrapper -->
+        </div>
+        <!-- / Layout page -->
+    </div>
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+</div>
+<script>
+</script>
+<!-- / Layout wrapper -->
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+<script src="/static/assets/vendor/libs/jquery/jquery.js"></script>
+<script src="/static/assets/vendor/libs/popper/popper.js"></script>
+<script src="/static/assets/vendor/js/bootstrap.js"></script>
+<script src="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="/static/assets/vendor/js/menu.js"></script>
+<!-- endbuild -->
+<!-- Vendors JS -->
+<!-- Main JS -->
+<script src="/static/assets/js/main.js"></script>
+<!-- Page JS -->
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script>
+    document.getElementById("filter-search").addEventListener("keyup", (e) => {
+        let input = e.target.value.toUpperCase();
+        let table = document.getElementById("review-table");
+        let tr = table.querySelectorAll("tr");
+        tr.forEach((row) => {
+            let td = row.children[0].children[0];
+            if (td) {
+                let textValue = td.innerText;
+                if (textValue.toUpperCase().indexOf(input) > -1 && row.classList.contains("visible")) {
+                    row.style.display = "";
+                } else {
+                    row.style.display = "none";
+                }
+            }
+        });
+    });
+
+    function applyFilter() {
+
+        let dds = document.getElementById("dept-dropdown-select");
+        let sts = document.getElementById("status-dropdown-select");
+        let dsgs = document.getElementById("designation-dropdown-select");
+        let table = document.getElementById("review-table");
+        let tr = table.querySelectorAll("tr");
+
+        tr.forEach((row) => {
+            row.classList.remove("visible");
+            row.style.display = "";
+        });
+        if (dds.value == "ALL" && sts.value == "ALL" && dsgs.value == "ALL") {
+            tr.forEach((row) => {
+                row.style.display = "";
+                row.classList.add("visible");
+            });
+        }
+        if (dds.value == "ALL" && sts.value == "ALL" && dsgs.value != "ALL") {
+            tr.forEach((row) => {
+                let td = row.children[4];
+                if (td) {
+                    let textValue = td.innerText;
+                    if (textValue.toUpperCase() === (dsgs.value)) {
+                        row.style.display = "";
+                        row.classList.add("visible");
+                    } else {
+                        row.style.display = "none";
+                    }
+                }
+            });
+        }
+        if (dds.value == "ALL" && sts.value != "ALL" && dsgs.value == "ALL") {
+            tr.forEach((row) => {
+                let td = row.children[5];
+                if (td) {
+                    let textValue = td.innerText;
+                    if (textValue.toUpperCase() === (sts.value)) {
+                        row.style.display = "";
+                        row.classList.add("visible");
+                    } else {
+                        row.style.display = "none";
+                    }
+                }
+            });
+        }
+        if (dds.value == "ALL" && sts.value != "ALL" && dsgs.value != "ALL") {
+            tr.forEach((row) => {
+                let td = row.children[4];
+                let td2 = row.children[5];
+                if (td && td2) {
+                    let textValue = td.innerText;
+                    let textValue2 = td2.innerText;
+                    if (textValue.toUpperCase() === (dsgs.value) && textValue2.toUpperCase() === (sts.value)) {
+                        row.style.display = "";
+                        row.classList.add("visible");
+                    } else {
+                        row.style.display = "none";
+                    }
+                }
+            });
+        }
+        if (dds.value != "ALL" && sts.value == "ALL" && dsgs.value == "ALL") {
+            tr.forEach((row) => {
+                let td = row.children[3];
+                if (td) {
+                    let textValue = td.innerText;
+                    if (textValue.toUpperCase() === (dds.value)) {
+                        row.style.display = "";
+                        row.classList.add("visible");
+                    } else {
+                        row.style.display = "none";
+                    }
+                }
+            });
+        }
+        if (dds.value != "ALL" && sts.value == "ALL" && dsgs.value != "ALL") {
+            tr.forEach((row) => {
+                let td = row.children[3];
+                let td2 = row.children[4];
+                if (td && td2) {
+                    let textValue = td.innerText;
+                    let textValue2 = td2.innerText;
+                    if (textValue.toUpperCase() === (dds.value) && textValue2.toUpperCase() === (dsgs.value)) {
+                        row.style.display = "";
+                        row.classList.add("visible");
+                    } else {
+                        row.style.display = "none";
+                    }
+                }
+            });
+        }
+        if (dds.value != "ALL" && sts.value != "ALL" && dsgs.value == "ALL") {
+            tr.forEach((row) => {
+                let td = row.children[3];
+                let td2 = row.children[5];
+                if (td && td2) {
+                    let textValue = td.innerText;
+                    let textValue2 = td2.innerText;
+                    if (textValue.toUpperCase() === (dds.value) && textValue2.toUpperCase() === (sts.value)) {
+                        row.style.display = "";
+                        row.classList.add("visible");
+                    } else {
+                        row.style.display = "none";
+                    }
+                }
+            });
+        }
+        if (dds.value != "ALL" && sts.value != "ALL" && dsgs.value != "ALL") {
+            tr.forEach((row) => {
+                let td = row.children[3];
+                let td2 = row.children[4];
+                let td3 = row.children[5];
+                if (td && td2 && td3) {
+                    let textValue = td.innerText;
+                    let textValue2 = td2.innerText;
+                    let textValue3 = td3.innerText;
+                    if (textValue.toUpperCase() === (dds.value) && textValue2.toUpperCase() === (dsgs.value) && textValue3.toUpperCase() === (sts.value)) {
+                        row.style.display = "";
+                        row.classList.add("visible");
+                    } else {
+                        row.style.display = "none";
+                    }
+                }
+            });
+        }
+    }
+</script>
+</body>
+</html>

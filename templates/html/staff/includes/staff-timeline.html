@@ -1,0 +1,197 @@
+<div class="card">
+    <div class="card-title">
+        <h5 class="card-header">Staff Appraisal Cycle Timeline</h5>
+
+    </div>
+    <hr class="my-0"/>
+    <div class="card-body">
+        <section class="timeline_area section_padding_130">
+            <div class="container">
+
+                <div class="row">
+                    <div class="col-12">
+                        <!-- Timeline Area-->
+                        <div class="apland-timeline-area">
+                            <!-- Single Timeline Content-->
+                            <div class="single-timeline-area">
+                                <div class="timeline-date wow fadeInLeft"
+                                     data-wow-delay="0.1s"
+                                     style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                                    <p>Phase 1</p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <div class="single-timeline-content {% if stage == 'parameter_approval' and file.file_level == 'APPRAISEE' and not file.ro1_validation.is_parameters_approved %} active {% endif %} d-flex wow fadeInLeft"
+                                             data-wow-delay="0.3s"
+                                             style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                            <div class="timeline-icon"><i
+                                                    class="fa-regular fa-paper-plane"
+                                                    aria-hidden="true"></i></div>
+                                            <div class="timeline-text">
+                                                <h6>Submission Of Goalsheet By Appraisee</h6>
+{#                                                <p>The staff member will submit key, major#}
+{#                                                    and#}
+{#                                                    minor parameters and send it to RO1 for#}
+{#                                                    approval. Make sure to submit it and get it approved#}
+{#                                                    by {{ cycle.parameter_approval_end_date }}.</p>#}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <div class="single-timeline-content {% if stage == 'parameter_approval' and file.file_level == 'RO1' or file.ro1_validation.is_parameters_approved %} active {% endif %} d-flex wow fadeInLeft"
+                                             data-wow-delay="0.5s"
+                                             style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">
+                                            <div class="timeline-icon"><i
+                                                    class="fa-solid fa-rotate"
+                                                    aria-hidden="true"></i>
+                                            </div>
+                                            <div class="timeline-text">
+                                                <h6>Approval of Goalsheet by Reporting Officer</h6>
+{#                                                <p>RO1 needs to accept or reject the#}
+{#                                                    parameters#}
+{#                                                    and send the control back to the staff#}
+{#                                                    member.</p>#}
+                                            </div>
+                                        </div>
+                                    </div>
+{#                                    <div class="col-12 col-md-6 col-lg-4">#}
+{#                                        <div class="single-timeline-content {% if stage == 'parameter_approval' and file.ro1_validation.is_parameters_approved and file.file_level == 'APPRAISEE' %} active {% endif %} d-flex wow fadeInLeft"#}
+{#                                             data-wow-delay="0.7s"#}
+{#                                             style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">#}
+{#                                            <div class="timeline-icon"><i#}
+{#                                                    class="fa-solid fa-check"#}
+{#                                                    aria-hidden="true"></i></div>#}
+{#                                            <div class="timeline-text">#}
+{#                                                <h6>Completion of Phase 1</h6>#}
+{#                                                <p>All parameters are approved by RO1. Staff#}
+{#                                                    can#}
+{#                                                    now fill up other details {{ cycle.appraisal_start_date }} onwards as Phase 2 starts.</p>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+                                </div>
+                            </div>
+                            <!-- Single Timeline Content-->
+                            <div class="single-timeline-area">
+                                <div class="timeline-date wow fadeInLeft"
+                                     data-wow-delay="0.1s"
+                                     style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                                    <p>Phase 2</p>
+                                </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <div class="single-timeline-content {% if file.file_level == "APPRAISEE" and stage == 'appraisal' %} active {% endif %} d-flex wow fadeInLeft"
+                                             data-wow-delay="0.3s"
+                                             style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                            <div class="timeline-icon"><i
+                                                    class="fa-solid fa-paper-plane"
+                                                    aria-hidden="true"></i></div>
+                                            <div class="timeline-text">
+                                                <h6>Self Appraisal</h6>
+{#                                                <p>Submit all the details before {{ cycle.appraisal_end_date }}</p>#}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <div class="single-timeline-content {% if file.file_level == "RO1" and not file.ro1_grading_done and stage == 'r1_approval' %} active {% endif %} d-flex wow fadeInLeft"
+                                             data-wow-delay="0.3s"
+                                             style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">
+                                            <div class="timeline-icon"><i
+                                                    class="fa-solid fa-pencil"
+                                                    aria-hidden="true"></i></div>
+                                            <div class="timeline-text">
+                                                <h6>Rating Done by Reporting Officer</h6>
+{#                                                <p>Your RO1 is grading your self-appraisal details.</p>#}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <div class="single-timeline-content {% if file.file_level == 'RO2' and cycle == 'r1_approval' and file.ro1_grading_done %} active {% endif %} d-flex wow fadeInLeft"
+                                             data-wow-delay="0.5s"
+                                             style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">
+                                            <div class="timeline-icon"><i
+                                                    class="fa-solid fa-angles-right"
+                                                    aria-hidden="true"></i>
+                                            </div>
+                                            <div class="timeline-text">
+                                                <h6>Rating Done by Reviewing Officer</h6>
+{#                                                <p>RO1 is done giving marks and now RO2 will process#}
+{#                                                    after {{ cycle.r2_approval_start_date }}</p>#}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Single Timeline Content-->
+{#                            <div class="single-timeline-area">#}
+{#                                <div class="timeline-date wow fadeInLeft"#}
+{#                                     data-wow-delay="0.1s"#}
+{#                                     style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">#}
+{#                                    <p>Phase 3</p>#}
+{#                                </div>#}
+{#                                <div class="row">#}
+{#                                    <div class="col-12 col-md-6 col-lg-4">#}
+{#                                        <div class="single-timeline-content {% if cycle == 'r2_approval' and file.file_level == 'RO2' and not file.ro2_grading_done %} active {% endif %} d-flex wow fadeInLeft"#}
+{#                                             data-wow-delay="0.3s"#}
+{#                                             style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">#}
+{#                                            <div class="timeline-icon"><i#}
+{#                                                    class="fa-solid fa-pencil"#}
+{#                                                    aria-hidden="true"></i>#}
+{#                                            </div>#}
+{#                                            <div class="timeline-text">#}
+{#                                                <h6>RO2 Grading</h6>#}
+{#                                                <p>RO2 is processing your self-appraisal request and will conclude#}
+{#                                                    by {{ cycle.r2_approval_end_date }}.</p>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{##}
+{#                                   <div class="col-12 col-md-6 col-lg-4">#}
+{#                                        <div class="single-timeline-content {% if file.file_level == 'HR' and not file.is_finalized %} active {% endif %} d-flex wow fadeInLeft"#}
+{#                                             data-wow-delay="0.3s"#}
+{#                                             style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">#}
+{#                                            <div class="timeline-icon"><i#}
+{#                                                    class="fa-solid fa-check-double"#}
+{#                                                    aria-hidden="true"></i>#}
+{#                                            </div>#}
+{#                                            <div class="timeline-text">#}
+{#                                                <h6>Final Submission</h6>#}
+{#                                                <p>Your marks are verified by your Reporting Officer and the Director. Marks and grade obtained can be checked once the process for all employees is done.</p>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+                            <div class="single-timeline-area">
+                                <div class="timeline-date wow fadeInLeft"
+                                     data-wow-delay="0.1s"
+                                     style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">
+                                    <p>Phase 3</p>
+                                </div>
+                                <div class="row">
+
+
+                                    <div class="col-12 col-md-6 col-lg-4">
+                                        <div class="single-timeline-content {% if file.file_level == 'HR' and file.is_finalized %} active {% endif %} d-flex wow fadeInLeft"
+                                             data-wow-delay="0.7s"
+                                             style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">
+                                            <div class="timeline-icon"><i
+                                                    class="fa-brands fa-gg"
+                                                    aria-hidden="true"></i></div>
+                                            <div class="timeline-text">
+                                                <h6>Result Declaration</h6>
+{#                                                <p>The results are published at this stage and are available at status section on the#}
+{#                                                    sidebar.</p>#}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+</div>

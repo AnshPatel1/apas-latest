@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        class="light-style layout-menu-fixed layout-menu-collapsed"
+        dir="ltr"
+        data-theme="theme-default"
+        data-assets-path="/static/assets/"
+        data-template="vertical-menu-template-free"
+>
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>Dashboard</title>
+
+    <link rel="icon" type="image/x-icon" href="/media/admin-interface/favicon/Pandit_Deendayal_Energy_University_logo-2.png">
+
+    <meta name="description" content=""/>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <script src="https://kit.fontawesome.com/5fbd3e2d5f.js" crossorigin="anonymous"></script>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"
+    />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="/static/assets/vendor/fonts/boxicons.css"/>
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/css/core.css" class="template-customizer-core-css"/>
+    <link rel="stylesheet" href="/static/assets/vendor/css/theme-default.css" class="template-customizer-theme-css"/>
+    <link rel="stylesheet" href="/static/assets/css/demo.css"/>
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"/>
+
+    <link rel="stylesheet" href="/static/assets/vendor/libs/apex-charts/apex-charts.css"/>
+
+    <!-- Page CSS -->
+
+    <link rel="stylesheet" href="/static/assets/vendor/css/tm2.css"/>
+
+
+    <!-- Helpers -->
+    <script src="/static/assets/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="/static/assets/js/config.js"></script>
+</head>
+
+<body>
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <!-- Menu -->
+
+        {% include 'html/r1/faculty/maths/includes/sidebar.html' %}
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+
+          {% include 'html/r1/faculty/maths/includes/navbar.html' %}
+            <!-- / Navbar -->
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <!-- Content -->
+
+                <div class="container-p-y pe-3 ps-3">
+                    <div class="row">
+                        <div class="col-lg-12 mb-4">
+                            <div class="card border border-primary">
+                                <div class="d-flex align-items-end row">
+                                    <div class="col-sm-7">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-primary">Important Announcement 📢</h5>
+                                            <p class="mb-4 mt-5">
+                                                {% if stage == 'parameter_approval' %}
+                                                    You need to submit and get your parameters approved by
+                                                    <span class="fw-bold">{{ cycle.parameter_approval_end_date }}</span>.
+                                                    <br>
+                                                    Officers are requested to complete their process by then.
+                                                {% elif stage == 'appraisal' %}
+                                                    Current appraisal cycle is in progress. You may enter the parameters and submit it <br> It will end by
+                                                    <span class="fw-bold">{{ cycle.appraisal_end_date }}</span>.
+
+                                                {% elif stage == 'r1_approval' %}
+                                                    R1 approval is in progress. and will end by <span class="fw-bold">{{ cycle.r1_approval_end_date }}</span>.<br>
+                                                    Officers are requested to complete their process by then.
+                                                {% elif stage == 'r2_approval' %}
+                                                    R1 Cycle is completed and
+                                                    R2 Cycle is in progress. and it will end by
+                                                    <span class="fw-bold">{{ cycle.r2_approval_end_date }}</span>.<br>
+                                                {% elif stage == 'completed' %}
+                                                    R1 and R2 cycle is completed. <br>
+                                                    Results will be published soon.
+                                                {% else %}
+                                                    Cycle hasn't started yet.
+                                                    It will start on {{ cycle.parameter_approval_start_date }}
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5 text-center text-sm-left">
+                                        <div class="card-body pb-0 px-0 px-md-4">
+                                            <img
+                                                    src="/static/assets/img/illustrations/man-with-laptop-light.png"
+                                                    height="140"
+                                                    alt="View Badge User"
+                                                    data-app-dark-img="illustrations/man-with-laptop-dark.png"
+                                                    data-app-light-img="illustrations/man-with-laptop-light.png"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-8 custom-100">
+                            <div class="card custom-100">
+                                <div class="card-header">
+                                    <div class="card-title">
+                                        <h4 class="text-primary">Appraisal Cycle</h4>
+                                    </div>
+                                </div>
+                                <hr class="my-0"/>
+                                <div class="card-body custom-100">
+                                    <dl class="row mt-md-4">
+                                        <dt class="col-sm-2">Appraisee Name</dt>
+                                        <dd class="col-sm-9">{{ file.user.full_name }}</dd>
+
+                                        <dt class="col-sm-2">RO1 Name</dt>
+                                        <dd class="col-sm-9">
+                                            <p>{{ file.user.ro1_id.full_name }}</p>
+                                        </dd>
+
+                                        <dt class="col-sm-2">RO2 Name</dt>
+                                        <dd class="col-sm-9">{{ file.user.ro2_id.full_name }}</dd>
+
+                                        <dt class="col-sm-2 text-truncate">Current Status</dt>
+                                        <dd class="col-sm-9">
+                                            {% if file.file_level == 'APPRAISEE' %}
+                                                <span class="badge bg-primary">Appraisee</span>
+                                            {% elif file.file_level == 'RO1' %}
+                                                <span class="badge bg-primary">RO1</span>
+                                            {% elif file.file_level == 'RO2' %}
+                                                <span class="badge bg-primary">RO2</span>
+                                            {% elif file.file_level == 'ADMIN' %}
+                                                <span class="badge bg-primary">Admin</span>
+                                            {% endif %}
+
+                                        </dd>
+
+                                        <dt class="col-sm-2">Actions Required</dt>
+                                        <dd class="col-sm-9">
+                                            <dl class="row">
+                                                {% if file.file_level == 'RO1' and not file.ro1_validation.is_parameters_approved %}
+                                                    <dd class="col-sm-8">
+                                                        Please wait for the supervisor to approve the parameters.
+                                                    </dd>
+                                                {% endif %}
+                                                {% if file.file_level == 'RO1' and file.ro1_validation.is_parameters_approved %}
+                                                    <dd class="col-sm-8">
+                                                        None<br> Please wait for the supervisor to grade the file.
+                                                    </dd>
+                                                {% endif %}
+                                                {% if file.file_level == 'APPRAISEE' %}
+                                                    {% if file.ro1_validation.is_parameters_approved %}
+                                                        <dd class="col-sm-8">
+                                                            Please fill up the details and submit to your supervisor.
+                                                        </dd>
+                                                    {% else %}
+                                                        <dd class="col-sm-8">
+                                                            Please enter the parameters and submit to your supervisor for approval.
+                                                        </dd>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </dl>
+                                            <dl class="row">
+
+                                            </dl>
+                                        </dd>
+                                    </dl>
+
+                                    <div class="card-body">
+                                        {#                                    copilot give me an alert#}
+                                        {% if stage == "parameter_approval" %}
+                                            <div class="alert alert-success">All Parameters are approved by your supervisor. Come back
+                                                after {{ cycle.appraisal_start_date }}</div>
+                                        {% endif %}
+                                        {% if stage == "appraisal" and file.file_level != "APPRAISEE" %}
+                                            <div class="alert alert-success">You have submitted all your details. Please wait for further instructions</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Total Revenue -->
+                        <div class="col-4">
+                            <div class="card" style="height: 100%">
+                                <div class="card-title">
+                                    <h4 class="card-header">Days Remaining</h4>
+                                </div>
+                                <hr class="my-0"/>
+                                <div class="row row-bordered g-0">
+                                    <div class="col-md-11">
+                                        <div class="card-body">
+                                            <div id="growthChart"></div>
+                                            <div class="text-center fw-semibold pt-3 mb-2">
+                                                {% if stage == 'parameter_approval' %}
+                                                    {{ time_left }} Days Remaining for Submission and Approval of Parameters</div>
+                                                {% elif stage == 'appraisal' %}
+                                                    {{ time_left }} Days Remaining for Submission of Details for Appraisal</div>
+                                                {% elif stage == 'r1_approval' %}
+                                                    {{ time_left }} Days Remaining for Reporting Officers to process your data</div>
+                                                {% elif stage == 'r2_approval' %}
+                                                    {{ time_left }} Days Remaining for Directors to process your data</div>
+                                                {% endif %}
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row me-0 pe-0">
+
+
+            <div class="col-lg-12 mt-4 pe-0">
+                {% include 'includes/faculty-timeline.html' %}
+{#                <div class="card">#}
+{#                    <div class="card-title">#}
+{#                        <h5 class="card-header">Staff Appraisal Cycle Timeline</h5>#}
+{##}
+{#                    </div>#}
+{#                    <hr class="my-0"/>#}
+{#                    <div class="card-body">#}
+{#                        <section class="timeline_area section_padding_130">#}
+{#                            <div class="container">#}
+{##}
+{#                                <div class="row">#}
+{#                                    <div class="col-12">#}
+{#                                        <!-- Timeline Area-->#}
+{#                                        <div class="apland-timeline-area">#}
+{#                                            <!-- Single Timeline Content-->#}
+{#                                            <div class="single-timeline-area">#}
+{#                                                <div class="timeline-date wow fadeInLeft"#}
+{#                                                     data-wow-delay="0.1s"#}
+{#                                                     style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">#}
+{#                                                    <p>Phase 1</p>#}
+{#                                                </div>#}
+{#                                                <div class="row">#}
+{#                                                    <div class="col-12 col-md-6 col-lg-4">#}
+{#                                                        <div class="single-timeline-content active d-flex wow fadeInLeft"#}
+{#                                                             data-wow-delay="0.3s"#}
+{#                                                             style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">#}
+{#                                                            <div class="timeline-icon"><i#}
+{#                                                                    class="fa-regular fa-check"#}
+{#                                                                    aria-hidden="true"></i></div>#}
+{#                                                            <div class="timeline-text">#}
+{#                                                                <h6>Verify Data</h6>#}
+{#                                                                <p>You need to verify the data in our records and get it rectified in case of any discrepancy#}
+{#                                                                    by {{ cycle.parameter_approval_end_date }}.</p>#}
+{#                                                            </div>#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                    <div class="col-12 col-md-6 col-lg-4">#}
+{#                                                        <div class="single-timeline-content {% if stage == 'parameter_approval' and file.file_level == 'RO1' %} active {% endif %} d-flex wow fadeInLeft"#}
+{#                                                             data-wow-delay="0.5s"#}
+{#                                                             style="visibility: visible; animation-delay: 0.5s; animation-name: fadeInLeft;">#}
+{#                                                            <div class="timeline-icon"><i#}
+{#                                                                    class="fa-solid fa-pencil"#}
+{#                                                                    aria-hidden="true"></i>#}
+{#                                                            </div>#}
+{#                                                            <div class="timeline-text">#}
+{#                                                                <h6>Appraisal Process</h6>#}
+{#                                                                <p>Fill up the required data after the verification for the actual appraisal process#}
+{#                                                                    by {{ cycle.parameter_approval_end_date }}.</p>#}
+{#                                                            </div>#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                    <div class="col-12 col-md-6 col-lg-4">#}
+{#                                                        <div class="single-timeline-content {% if stage == 'parameter_approval' and file.ro1_validation.is_parameters_approved and file.file_level == 'APPRAISEE' %} active {% endif %} d-flex wow fadeInLeft"#}
+{#                                                             data-wow-delay="0.7s"#}
+{#                                                             style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">#}
+{#                                                            <div class="timeline-icon"><i#}
+{#                                                                    class="fa-solid fa-paper-plane"#}
+{#                                                                    aria-hidden="true"></i></div>#}
+{#                                                            <div class="timeline-text">#}
+{#                                                                <h6>Submission</h6>#}
+{#                                                                <p>All parameters are submitted to the respecting Reporting Officers.</p>#}
+{#                                                            </div>#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            <div class="single-timeline-area">#}
+{#                                                <div class="timeline-date wow fadeInLeft"#}
+{#                                                     data-wow-delay="0.1s"#}
+{#                                                     style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">#}
+{#                                                    <p>Phase 1</p>#}
+{#                                                </div>#}
+{#                                                <div class="row">#}
+{#                                                    <div class="col-12 col-md-6 col-lg-4">#}
+{#                                                        <div class="single-timeline-content {% if cycle == 'r2_approval' and file.file_level == 'RO2' and not file.ro2_grading_done %} active {% endif %} d-flex wow fadeInLeft"#}
+{#                                                             data-wow-delay="0.3s"#}
+{#                                                             style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">#}
+{#                                                            <div class="timeline-icon"><i#}
+{#                                                                    class="fa-solid fa-pencil"#}
+{#                                                                    aria-hidden="true"></i>#}
+{#                                                            </div>#}
+{#                                                            <div class="timeline-text">#}
+{#                                                                <h6>RO1 Grading</h6>#}
+{#                                                                <p>RO1 is processing your self-appraisal request</p>#}
+{#                                                            </div>#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{##}
+{#                                                    <div class="col-12 col-md-6 col-lg-4">#}
+{#                                                        <div class="single-timeline-content {% if file.file_level == 'HR' and not file.is_finalized %} active {% endif %} d-flex wow fadeInLeft"#}
+{#                                                             data-wow-delay="0.3s"#}
+{#                                                             style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">#}
+{#                                                            <div class="timeline-icon"><i#}
+{#                                                                    class="fa-solid fa-check-double"#}
+{#                                                                    aria-hidden="true"></i>#}
+{#                                                            </div>#}
+{#                                                            <div class="timeline-text">#}
+{#                                                                <h6>Submit to RO2</h6>#}
+{#                                                                <p>Your marks are verified by your Reporting Officer and the now it is sent to be processed by the#}
+{#                                                                    Director/Reviewing Officer.</p>#}
+{#                                                            </div>#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            <div class="single-timeline-area">#}
+{#                                                <div class="timeline-date wow fadeInLeft"#}
+{#                                                     data-wow-delay="0.1s"#}
+{#                                                     style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">#}
+{#                                                    <p>Phase 3</p>#}
+{#                                                </div>#}
+{#                                                <div class="row">#}
+{#                                                    <div class="col-12 col-md-6 col-lg-4">#}
+{#                                                        <div class="single-timeline-content {% if cycle == 'r2_approval' and file.file_level == 'RO2' and not file.ro2_grading_done %} active {% endif %} d-flex wow fadeInLeft"#}
+{#                                                             data-wow-delay="0.3s"#}
+{#                                                             style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">#}
+{#                                                            <div class="timeline-icon"><i#}
+{#                                                                    class="fa-solid fa-pencil"#}
+{#                                                                    aria-hidden="true"></i>#}
+{#                                                            </div>#}
+{#                                                            <div class="timeline-text">#}
+{#                                                                <h6>RO2 Grading</h6>#}
+{#                                                                <p>RO2/Reviewing Officer is processing your self-appraisal request</p>#}
+{#                                                            </div>#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{##}
+{#                                                    <div class="col-12 col-md-6 col-lg-4">#}
+{#                                                        <div class="single-timeline-content {% if file.file_level == 'HR' and not file.is_finalized %} active {% endif %} d-flex wow fadeInLeft"#}
+{#                                                             data-wow-delay="0.3s"#}
+{#                                                             style="visibility: visible; animation-delay: 0.3s; animation-name: fadeInLeft;">#}
+{#                                                            <div class="timeline-icon"><i#}
+{#                                                                    class="fa-solid fa-check-double"#}
+{#                                                                    aria-hidden="true"></i>#}
+{#                                                            </div>#}
+{#                                                            <div class="timeline-text">#}
+{#                                                                <h6>Submit to RO2</h6>#}
+{#                                                                <p>Your appraisal is verified by your Reporting Officer and the Director/Reviewing Officer.</p>#}
+{#                                                            </div>#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                            <div class="single-timeline-area">#}
+{#                                                <div class="timeline-date wow fadeInLeft"#}
+{#                                                     data-wow-delay="0.1s"#}
+{#                                                     style="visibility: visible; animation-delay: 0.1s; animation-name: fadeInLeft;">#}
+{#                                                    <p>Phase 4</p>#}
+{#                                                </div>#}
+{#                                                <div class="row">#}
+{##}
+{##}
+{#                                                    <div class="col-12 col-md-6 col-lg-4">#}
+{#                                                        <div class="single-timeline-content {% if file.file_level == 'HR' and file.is_finalized %} active {% endif %} d-flex wow fadeInLeft"#}
+{#                                                             data-wow-delay="0.7s"#}
+{#                                                             style="visibility: visible; animation-delay: 0.7s; animation-name: fadeInLeft;">#}
+{#                                                            <div class="timeline-icon"><i#}
+{#                                                                    class="fa-brands fa-gg"#}
+{#                                                                    aria-hidden="true"></i></div>#}
+{#                                                            <div class="timeline-text">#}
+{#                                                                <h6>Result Declaration</h6>#}
+{#                                                                <p>The results are published at this stage and are available at status section on the#}
+{#                                                                    sidebar.</p>#}
+{#                                                            </div>#}
+{#                                                        </div>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+{#                        </section>#}
+{##}
+{#                    </div>#}
+{#                </div>#}
+            </div>
+        </div>
+
+
+        <!--/ Total Revenue -->
+        <div class="col-12 col-md-8 col-lg-4 order-3 order-md-2">
+            <div class="row">
+                <div class="col-6 mb-4">
+
+                </div>
+                <div class="col-6 mb-4">
+
+                </div>
+                <!-- </div>
+<div class="row"> -->
+                <div class="col-12 mb-4">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <!-- Order Statistics -->
+        <div class="col-md-6 col-lg-4 col-xl-4 order-0 mb-4">
+
+        </div>
+        <!--/ Order Statistics -->
+
+        <!-- Expense Overview -->
+        <div class="col-md-6 col-lg-4 order-1 mb-4">
+
+        </div>
+        <!--/ Expense Overview -->
+
+        <!-- Transactions -->
+        <div class="col-md-6 col-lg-4 order-2 mb-4">
+
+        </div>
+        <!--/ Transactions -->
+    </div>
+</div>
+<!-- / Content -->
+
+<!-- Footer -->
+{% include "includes/footer.html" %}
+<!-- / Footer -->
+
+<div class="content-backdrop fade"></div>
+</div>
+<!-- Content wrapper -->
+</div>
+<!-- / Layout page -->
+</div>
+
+<!-- Overlay -->
+<div class="layout-overlay layout-menu-toggle"></div>
+</div>
+<!-- / Layout wrapper -->
+
+
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+<script src="/static/assets/vendor/libs/jquery/jquery.js"></script>
+<script src="/static/assets/vendor/libs/popper/popper.js"></script>
+<script src="/static/assets/vendor/js/bootstrap.js"></script>
+<script src="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+<script src="/static/assets/vendor/js/menu.js"></script>
+<!-- endbuild -->
+
+<!-- Vendors JS -->
+<script src="/static/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+
+<!-- Main JS -->
+<script src="/static/assets/js/main.js"></script>
+
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script>
+    let cycleEndDate,cycleStartDate;
+    {% if cycle.name == 'verification' %}
+        cycleStartDate = new Date(Date.parse("{{ cycle.config.verification_start_date }}"));
+        cycleEndDate = new Date(Date.parse("{{ cycle.config.verification_end_date }}"));
+    {% elif cycle.name == 'appraisal' %}
+        cycleStartDate = new Date(Date.parse("{{ cycle.config.appraisal_start_date }}"));
+        cycleEndDate = new Date(Date.parse("{{ cycle.config.appraisal_end_date }}"));
+    {% elif cycle.name == 'r1_approval' %}
+        cycleStartDate = new Date(Date.parse("{{ cycle.config.r1_approval_start_date }}"));
+        cycleEndDate = new Date(Date.parse("{{ cycle.config.r1_approval_end_date }}"));
+    {% elif cycle.name == 'r2_approval' %}
+        cycleStartDate = new Date(Date.parse("{{ cycle.config.r2_approval_start_date }}"));
+        cycleEndDate = new Date(Date.parse("{{ cycle.config.r2_approval_end_date }}"));
+{#    {% elif cycle.name == 'completed' %}#}
+{#        cycleStartDate = new Date(Date.parse("{{ cycle.config.appraisal_start_date }}"));#}
+{#        cycleEndDate = new Date(Date.parse(" {{ cycle.config.appraisal_end_date }}"));#}
+    {% else %}
+        cycleStartDate = 0;
+        cycleEndDate = 0;
+    {% endif %}
+    const currentDate = new Date(Date.parse("{{ cycle.current_date }}"));
+
+    const diffDays = Math.ceil((cycleEndDate.getTime() - currentDate.getTime()) / (1000 * 60 * 60 * 24));
+    const currentCycleTotalDays = Math.ceil(( cycleEndDate.getTime() - cycleStartDate.getTime() ) / (1000 * 60 * 60 * 24));
+
+    const valueToPercent = (val) => (val * 100) / currentCycleTotalDays;
+    let days = (diffDays<0)? 0 : diffDays;
+    // Growth Chart - Radial Bar Chart
+    // --------------------------------------------------------------------
+    var options = {
+        chart: {
+            height: 280,
+            type: "radialBar",
+            max: 58
+        },
+        radialBar: {
+            range: [0, 1000] // [startValue, endValue]
+        },
+        series: [valueToPercent(days)],
+        colors: ["#797bff"],
+        plotOptions: {
+            radialBar: {
+                hollow: {
+                    margin: 0,
+                    size: "70%",
+                    background: "#fff"
+                },
+                track: {
+                    dropShadow: {
+                        enabled: true,
+                        top: 2,
+                        left: 0,
+                        blur: 4,
+                        opacity: 0.15
+                    }
+                },
+                dataLabels: {
+                    name: {
+                        offsetY: -10,
+                        color: "#697a7d",
+                        fontSize: "20px"
+                    },
+                    value: {
+                        color: "#697a7d",
+                        fontSize: "30px",
+                        show: true,
+                        formatter: function () {
+                            return days;
+                        }
+                    }
+                }
+            }
+        },
+        stroke: {
+            lineCap: "round"
+        },
+        labels: ["Days Remaining"]
+    };
+
+    var chart = new ApexCharts(document.querySelector("#growthChart"), options);
+
+    chart.render();
+</script>
+</body>
+</html>
+

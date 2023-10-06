@@ -1,0 +1,222 @@
+<aside
+        id="layout-menu"
+        class="layout-menu menu-vertical menu bg-menu-theme"
+>
+    <div class="app-brand demo">
+        <a href="{% url 'home' %}" class="app-brand-link">
+              <span class="app-brand-logo demo">
+                <img src="/static/assets/img/logos/logo-sm.png" style=" height: 55px; width: auto">
+              </span>
+            <span class="app-brand-text demo menu-text fw-bolder ms-2"
+            >APAS 3</span
+            >
+        </a>
+
+        <a
+                href="javascript:void(0);"
+                class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none"
+        >
+            <i class="bx bx-chevron-left bx-sm align-middle"></i>
+        </a>
+    </div>
+
+    <div class="menu-inner-shadow"></div>
+
+    <ul class="menu-inner py-1">
+        <!-- Dashboard -->
+        <li class="menu-item {% if pagename == "staff-review-home" %}active{% endif %}">
+            <a href="{% if pagename != "staff-review-home" %}../{% endif %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-user"></i>
+                <div data-i18n="Analytics">Staff Profile</div>
+            </a>
+        </li>
+
+
+        {% if file.ro1_validation.is_parameters_approved and file.file_level == "RO2" and stage == 'r2_approval' %}
+            <!-- Components -->
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Appraisal Process</span>
+            </li>
+            <!-- Cards -->
+            <li class="menu-item {% if pagename == "grade-parameters" %} active {% endif %}">
+                <a href="{% if pagename != "staff-review-home" %}../{% endif %}grade-parameters/" class="menu-link">
+                    <i class="menu-icon tf-icons bx {% if not file.ro2_validation.is_parameters_valid %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                       style="color: {% if not file.ro2_validation.is_parameters_valid %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                    <div data-i18n="Basic">Grade Parameters</div>
+                </a>
+            </li>
+            <li class="menu-item {% if pagename == "grade-self-development" %} active {% endif %}">
+                <a href="{% if pagename != "staff-review-home" %}../{% endif %}grade-self-development/" class="menu-link">
+                    <i class="menu-icon tf-icons bx
+
+
+
+                            {% if file.training_taken %}{% if not file.ro2_validation.is_training_valid %}bx-time-five{% else %} bx-check-circle {% endif %}{% else %}bx-x-circle{% endif %}"
+                       {% if file.training_taken %}style="color: {% if not file.ro2_validation.is_training_valid %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"{% endif %}></i>
+                    <div data-i18n="Basic">Grade Trainings</div>
+                </a>
+            </li>
+            <li class="menu-item {% if pagename == "grade-other-activities" %}active{% endif %}">
+                <a href="{% if pagename != "staff-review-home" %}../{% endif %}grade-other-activities/" class="menu-link">
+                    <i class="menu-icon tf-icons bx {% if file.other_activities_parameter_available %} {% if not file.ro2_validation.is_other_activities_valid %}bx-time-five{% else %} bx-check-circle {% endif %}{% else %}bx-x-circle{% endif %}"
+                       {% if file.other_activities_parameter_available %}style="color: {% if not file.ro2_validation.is_other_activities_valid %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"{% endif %}></i>
+                    <div data-i18n="Basic">Grade Other Activities</div>
+                </a>
+            </li>
+            <li class="menu-item {% if pagename == "review-self-evaluation" %}active{% endif %}">
+                <a href="{% if pagename != "staff-review-home" %}../{% endif %}review-self-evaluation/" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-info-circle"></i>
+                    <div data-i18n="Basic">Review Self Evaluation</div>
+                </a>
+            </li>
+            <li class="menu-item {% if pagename == "grade-mooc" %}active{% endif %}">
+                <a href="{% if pagename != "staff-review-home" %}../{% endif %}grade-mooc/" class="menu-link">
+                    <i class="menu-icon tf-icons bx {% if file.was_mooc_completed %} {% if not file.ro2_validation.is_mooc_valid %}bx-time-five{% else %}bx-check-circle{% endif %}{% else %}bx-x-circle{% endif %}"
+                            {% if file.was_mooc_completed %}
+                       style="color: {% if not file.ro2_validation.is_mooc_valid %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"
+                            {% endif %} ></i>
+                    <div data-i18n="Basic">Grade MooC</div>
+                </a>
+            </li>
+
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Section 2</span>
+            </li>
+            <!-- Forms -->
+
+            <!-- Tables -->
+            <li class="menu-item {% if pagename == "grade-section-2" %}active{% endif %}">
+                <a href="{% if pagename != "staff-review-home" %}../{% endif %}grade-section-2/" class="menu-link">
+                    <i class="menu-icon tf-icons bx {% if not file.ro2_validation.is_section_2_valid %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                       style="color: {% if not file.ro2_validation.is_section_2_valid %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                    <div data-i18n="Tables">Grade Section 2</div>
+                </a>
+            </li>
+
+            <!-- Forms & Tables -->
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Review &amp; Submit</span>
+            </li>
+            <!-- Forms -->
+            <li class="menu-item {% if pagename == "staff-review-all" %}active{% endif %}">
+                <a href="{% if pagename != "staff-review-home" %}../{% endif %}staff-review-all/" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-chart"></i>
+                    <div data-i18n="Tables">Review</div>
+                </a>
+            </li>
+            <!-- Tables -->
+
+            <li class="menu-item {% if pagename == "staff-final-submit" %}active{% endif %}">
+                <a href="{% if pagename != "staff-review-home" %}../{% endif %}staff-final-submit" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-check-double"></i>
+                    <div data-i18n="Tables">Submit</div>
+                </a>
+            </li>
+        {% endif %}
+        {% if file.file_level == "HR" %}
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Appraisal Process</span>
+            </li>
+            <!-- Cards -->
+            <li class="menu-item {% if pagename == "grade-parameters" %} active {% endif %}">
+                <a href="{% if pagename != "staff-review-home" %}../{% endif %}grade-parameters/" class="menu-link">
+                    <i class="menu-icon tf-icons bx {% if not file.ro2_validation.is_parameters_valid %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                       style="color: {% if not file.ro2_validation.is_parameters_valid %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                    <div data-i18n="Basic">Grade Parameters</div>
+                </a>
+            </li>
+            <li class="menu-item {% if pagename == "grade-self-development" %} active {% endif %}">
+                <a href="{% if pagename != "staff-review-home" %}../{% endif %}grade-self-development/" class="menu-link">
+                    <i class="menu-icon tf-icons bx
+
+
+
+                            {% if file.training_taken %}{% if not file.ro2_validation.is_training_valid %}bx-time-five{% else %} bx-check-circle {% endif %}{% else %}bx-x-circle{% endif %}"
+                       {% if file.training_taken %}style="color: {% if not file.ro2_validation.is_training_valid %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"{% endif %}></i>
+                    <div data-i18n="Basic">Grade Trainings</div>
+                </a>
+            </li>
+            <li class="menu-item {% if pagename == "grade-other-activities" %}active{% endif %}">
+                <a href="{% if pagename != "staff-review-home" %}../{% endif %}grade-other-activities/" class="menu-link">
+                    <i class="menu-icon tf-icons bx {% if file.other_activities_parameter_available %} {% if not file.ro2_validation.is_other_activities_valid %}bx-time-five{% else %} bx-check-circle {% endif %}{% else %}bx-x-circle{% endif %}"
+                       {% if file.other_activities_parameter_available %}style="color: {% if not file.ro2_validation.is_other_activities_valid %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"{% endif %}></i>
+                    <div data-i18n="Basic">Grade Other Activities</div>
+                </a>
+            </li>
+            <li class="menu-item {% if pagename == "review-self-evaluation" %}active{% endif %}">
+                <a href="{% if pagename != "staff-review-home" %}../{% endif %}review-self-evaluation/" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-info-circle"></i>
+                    <div data-i18n="Basic">Review Self Evaluation</div>
+                </a>
+            </li>
+            <li class="menu-item {% if pagename == "grade-mooc" %}active{% endif %}">
+                <a href="{% if pagename != "staff-review-home" %}../{% endif %}grade-mooc/" class="menu-link">
+                    <i class="menu-icon tf-icons bx {% if file.was_mooc_completed %} {% if not file.ro2_validation.is_mooc_valid %}bx-time-five{% else %}bx-check-circle{% endif %}{% else %}bx-x-circle{% endif %}"
+                            {% if file.was_mooc_completed %}
+                       style="color: {% if not file.ro2_validation.is_mooc_valid %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"
+                            {% endif %} ></i>
+                    <div data-i18n="Basic">Grade MooC</div>
+                </a>
+            </li>
+
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Section 2</span>
+            </li>
+            <!-- Forms -->
+
+            <!-- Tables -->
+            <li class="menu-item {% if pagename == "grade-section-2" %}active{% endif %}">
+                <a href="{% if pagename != "staff-review-home" %}../{% endif %}grade-section-2/" class="menu-link">
+                    <i class="menu-icon tf-icons bx {% if not file.ro2_validation.is_section_2_valid %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                       style="color: {% if not file.ro2_validation.is_section_2_valid %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                    <div data-i18n="Tables">Grade Section 2</div>
+                </a>
+            </li>
+
+            <!-- Forms & Tables -->
+            <li class="menu-header small text-uppercase">
+                <span class="menu-header-text">Review &amp; Submit</span>
+            </li>
+            <!-- Components -->
+            <li class="menu-item {% if pagename == "staff-review-all" %}active{% endif %}">
+                <a href="{% if pagename != "staff-review-home" %}../{% endif %}staff-review-all/" class="menu-link">
+                    <i class="menu-icon tf-icons bx bx-chart"></i>
+                    <div data-i18n="Tables">Review</div>
+                </a>
+            </li>
+        {% endif %}
+
+        <!-- Misc -->
+        {#        <li class="menu-header small text-uppercase">#}
+        {#            <span class="menu-header-text">Misc</span>#}
+        {#        </li>#}
+        {#        <li class="menu-item">#}
+        {#            <a#}
+        {#                    href="https://github.com/themeselection/sneat-html-admin-template-free/issues"#}
+        {#                    target="_blank"#}
+        {#                    class="menu-link"#}
+        {#            >#}
+        {#                <i class="menu-icon tf-icons bx bx-support"></i>#}
+        {#                <div data-i18n="Support">Support</div>#}
+        {#            </a>#}
+        {#        </li>#}
+        {#        <li class="menu-item">#}
+        {#            <a#}
+        {#                    href="https://themeselection.com/demo/sneat-bootstrap-html-admin-template/documentation/"#}
+        {#                    target="_blank"#}
+        {#                    class="menu-link"#}
+        {#            >#}
+        {#                <i class="menu-icon tf-icons bx bx-file"></i>#}
+        {#                <div data-i18n="Documentation">Documentation</div>#}
+        {#            </a>#}
+        {#        </li>#}
+        {#        <li class="menu-header small text-uppercase"><span class="menu-header-text">Logout</span></li>#}
+        {#        <!-- Tables -->#}
+        {#        <li class="menu-item">#}
+        {#            <a href="{{ request.host }}/logout/" class="menu-link">#}
+        {#                <i class="menu-icon tf-icons bx bx-log-out" style="color: red"></i>#}
+        {#                <div data-i18n="Tables" style="color: red">Logout</div>#}
+        {#            </a>#}
+        {#        </li>#}
+    </ul>
+</aside>
