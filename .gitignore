@@ -1,0 +1,11 @@
+*.pyc
+*.DS_Store
+apas-2-decrypted.csv
+db.sqlite3
+*.ipynb
+*/migrations/
+media/
+.env
+exports/
+.idea/
+prepopulated/
