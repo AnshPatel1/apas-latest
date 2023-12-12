@@ -21,6 +21,8 @@ def login_view(request):
     if request.method == "POST":
         redirect_url = request.GET.urlencode().replace("next=", "")
         redirect_url = redirect_url.replace("%2F", "/")
+        if 'login' in redirect_url:
+            redirect_url = '/'
 
         if form.is_valid():
             username = form.cleaned_data.get("username")
