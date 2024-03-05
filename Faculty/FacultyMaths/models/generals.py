@@ -222,14 +222,14 @@ class PhDGuidance(models.Model):
         return dict(self.choices_status)[self.status]
 
 
-# class BachelorsDissertation(models.Model):
-#     year = models.IntegerField(default=datetime.now().year)
-#     month = models.IntegerField(default=0)
-#     description = models.TextField(blank=True, null=True)
-#     student_name = models.CharField(max_length=200, blank=True, null=True)
-#     is_awarded = models.BooleanField(default=False)
-#     marks = models.ForeignKey(MarkField, on_delete=models.CASCADE, null=True, blank=True, related_name='math_btech')
-#     faculty = models.ForeignKey('Account.User', on_delete=models.CASCADE, null=True, blank=True, related_name='math_btech_faculty')
+class BachelorsDissertation(models.Model):
+    year = models.IntegerField(default=datetime.now().year)
+    month = models.IntegerField(default=0)
+    description = models.TextField(blank=True, null=True)
+    student_name = models.CharField(max_length=200, blank=True, null=True)
+    is_awarded = models.BooleanField(default=False)
+    marks = models.ForeignKey(MarkField, on_delete=models.CASCADE, null=True, blank=True, related_name='math_btech')
+    faculty = models.ForeignKey('Account.User', on_delete=models.CASCADE, null=True, blank=True, related_name='math_btech_faculty')
 
 
 class MastersDissertation(models.Model):

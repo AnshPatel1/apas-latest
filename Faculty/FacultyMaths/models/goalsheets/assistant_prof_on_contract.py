@@ -7,16 +7,16 @@ class MathGoalSheetAssistantProfOnContract(models.Model):
     year = models.IntegerField()
     is_active = models.BooleanField(default=False)
 
-    grand_total = models.IntegerField(default=347)
+    grand_total = models.IntegerField(default=341)
 
     # ||||||||||||||||||||||   PART A   ||||||||||||||||||||||
     # TOTAL FOR PART A (SECTION 1 TO 4) SHOULD BE 307
-    part_a_total = models.IntegerField(default=265)
+    part_a_total = models.IntegerField(default=301)
 
     # ======================   Section 1: Teaching (TCS iON)   ======================
     # Configurations for Section 1
-    section_1_minimum_marks = models.IntegerField(default=65)
-    section_1_maximum_marks = models.IntegerField(default=113)
+    section_1_minimum_marks = models.IntegerField(default=75)
+    section_1_maximum_marks = models.IntegerField(default=122)
 
     # Section 1.A: Teaching Load
     # If teaching load is >=16 then 42 marks
@@ -30,22 +30,24 @@ class MathGoalSheetAssistantProfOnContract(models.Model):
 
     # ------- Section 1.B: Students Feedback (TCS iON) -------
 
-    students_feedback_s_coefficient = models.FloatField(default=2.8)
+    students_feedback_s_coefficient = models.FloatField(default=3.5)
     students_feedback_lower_limit = models.IntegerField(default=3)
 
-    # ------- Section 1.C: Modern Methods Of Teaching (RO/ RV) -------
-    modern_methods_of_teaching_max_marks = models.IntegerField(default=15)
+    # ------- Section 1.C: Academic Practices (RO/ RV) -------
+    modern_methods_of_teaching_max_marks = models.IntegerField(default=8)
+    upkeep_of_course_files_max_marks = models.IntegerField(default=5)
+    inclusion_of_alumni_max_marks = models.IntegerField(default=5)
 
     # ------- Section 1.D (Exam Cell) -------
-    section_1d_max_marks = models.IntegerField(default=30)
+    section_1d_max_marks = models.IntegerField(default=40)
     #   Section 1.D(a): Teaching Innovation
-    timely_invigilation = models.IntegerField(default=5)
+    timely_invigilation = models.IntegerField(default=7)
     #   Section 1.D(b): Paper Setting
-    paper_setting = models.IntegerField(default=9)
+    paper_setting = models.IntegerField(default=11)
     #   Section 1.D(c): Teaching Innovation
-    evaluation = models.IntegerField(default=11)
+    evaluation = models.IntegerField(default=15)
     #   Section 1.D(d): Teaching Innovation
-    result_submission = models.IntegerField(default=5)
+    result_submission = models.IntegerField(default=7)
 
     # ------- Section 1.E: Books and Publications (RIMS / Dean Office) -------
     #  Section 1.E(i): Research based books or monographs
@@ -65,7 +67,7 @@ class MathGoalSheetAssistantProfOnContract(models.Model):
 
     # ======================   Section 2: Research And Publications/Patents   ======================
     # Section 2 Configurations:
-    section_2_subtotal = models.IntegerField(default=87)
+    section_2_subtotal = models.IntegerField(default=114)
     # ------- Section 2.A: Research Publications (RIMS / Dean Office) -------
     # Section 2.A Configurations:
     section_2a_subtotal = models.IntegerField(default=37)
@@ -172,7 +174,21 @@ class MathGoalSheetAssistantProfOnContract(models.Model):
     # #     maximum of 25 marks to be given by RO/RV
     # section_2d_faculty_advisor_to_student = models.IntegerField(default=25)
 
-    # -------------- Section 2.C: Recognition/Awards received --------------
+    # -------------- Section 2.C: Dissertation/Thesis --------------
+    # Section 2.C.i: Bachelors Dissertation/Project
+    #     2 marks to be given per Bachelors Dissertation/Project
+    #     maximum of 10 Bachelors Dissertation/Project per year (20 mark cap)
+    section_2c_i_marks_per_dissertation_awarded = models.IntegerField(default=2)
+    section_2c_i_max_dissertation = models.IntegerField(default=10)
+
+    # Section 2.C.ii: Masters' Thesis (Capped at 2 thesis per year)
+    #     6 marks to be given if thesis is Submitted
+    #     8 marks to be given if thesis is Submitted and Patent granted/published
+    #     10 marks to be given if thesis is Submitted, Papers published, and Patent granted/published
+    section_2c_ii_marks_per_thesis_submitted = models.IntegerField(default=6)
+    section_2c_ii_max_thesis = models.IntegerField(default=2)
+
+    # -------------- Section 2.D: Recognition/Awards received --------------
     #     To be awarded by RO/RV. Capped at 10 marks
     section_2c_recognition_awards_received_max_marks = models.IntegerField(default=25)
     #     10 marks to be given per International Level
@@ -197,11 +213,11 @@ class MathGoalSheetAssistantProfOnContract(models.Model):
 
     # -------------- Section 2.D: Academia Collaboration (University/ Societies/ Research Organization) --------------
     #     Capped at 25 marks for both activities done
-    section_2d_academia_collaboration_max_marks = models.IntegerField(default=25)
+    section_2d_academia_collaboration_max_marks = models.IntegerField(default=20)
     #     5 marks to be given for MoU signed
     #     20 marks to be given for faculty contribution
     section_2d_mou_signed = models.IntegerField(default=5)
-    section_2d_faculty_contribution = models.IntegerField(default=20)
+    section_2d_faculty_contribution = models.IntegerField(default=15)
 
     # =============== Section 3: Administrative Activities ===============
     # Marks to be awarded by RO/RV

@@ -48,8 +48,12 @@ class FOETAssistantProfOnContractAppraisalFile(models.Model):
     student_feedback = models.FloatField(null=True, blank=True)
     student_feedback_marks = models.ForeignKey('FacultyFOET.MarkField', on_delete=models.CASCADE, related_name='student_feedback_marks', null=True, blank=True)
 
-    # PART A > SECTION 1 > SUBSECTION C (Modern Teaching Methods)
+    # PART A > SECTION 1 > SUBSECTION C (Academic Practices)
     modern_teaching_methods = models.ForeignKey('FacultyFOET.ModernMethods', on_delete=models.CASCADE, related_name='modern_teaching_methods', null=True, blank=True)
+    upkeep_of_course_files = models.TextField(null=True, blank=True)
+    upkeep_of_course_files_marks = models.ForeignKey('FacultyFOET.MarkField', on_delete=models.CASCADE, related_name='upkeep_of_course_files_marks', null=True, blank=True)
+    inclusion_of_alumni = models.TextField(null=True, blank=True)
+    inclusion_of_alumni_marks = models.ForeignKey('FacultyFOET.MarkField', on_delete=models.CASCADE, related_name='inclusion_of_alumni_marks', null=True, blank=True)
 
     # PART A > SECTION 1 > SUBSECTION D (Exam Duty)
     exam_duty = models.ForeignKey('FacultyFOET.ExamDuty', on_delete=models.CASCADE, related_name='exam_duty_total_marks', null=True, blank=True)

@@ -34,7 +34,7 @@ class CalculationEngine:
         total += self.calculateTeachingLoad()
         total += self.calculateStudentFeedback()
         total += self.calculateBooksAndPublications()
-        total += self.file.modern_teaching_methods.marks.ro1
+        total += self.calculateAcademicPractices()
         total += self.calculateExaminationDuty()
         return total
 
@@ -71,14 +71,18 @@ class CalculationEngine:
     def calculateBooksAndPublications(self):
         # research based on books and publications
         total = 0
+        _books = []  # new
+        _chapters = []  # new
         for book in self.file.research_books.all():
             if book.marks.ro1_agreed:
                 if book.type == 'book':
                     total += self.file.configuration.section_1e_i_per_book_per_author
                     book.marks.ro1 = self.file.configuration.section_1e_i_per_book_per_author
+                    _books.append(self.file.configuration.section_1e_i_per_book_per_author)
                 else:
                     total += self.file.configuration.section_1e_i_per_chapter
                     book.marks.ro1 = self.file.configuration.section_1e_i_per_chapter
+                    _chapters.append(self.file.configuration.section_1e_i_per_chapter)
             else:
                 book.marks.ro1 = 0
             book.marks.save()
@@ -88,9 +92,11 @@ class CalculationEngine:
                 if book.type == 'book':
                     total += self.file.configuration.section_1e_ii_per_book_per_author
                     book.marks.ro1 = self.file.configuration.section_1e_ii_per_book_per_author
+                    _books.append(self.file.configuration.section_1e_ii_per_book_per_author)
                 else:
                     total += self.file.configuration.section_1e_ii_per_chapter
                     book.marks.ro1 = self.file.configuration.section_1e_ii_per_chapter
+                    _chapters.append(self.file.configuration.section_1e_ii_per_chapter)
             else:
                 book.marks.ro1 = 0
             book.marks.save()
@@ -100,17 +106,32 @@ class CalculationEngine:
                     if book.publication_level == 'national':
                         total += self.file.configuration.section_1e_iii_per_national_book_per_author
                         book.marks.ro1 = self.file.configuration.section_1e_iii_per_national_book_per_author
+                        _books.append(self.file.configuration.section_1e_iii_per_national_book_per_author)
 
                     elif book.publication_level == 'international':
                         total += self.file.configuration.section_1e_iii_per_international_book_per_author
                         book.marks.ro1 = self.file.configuration.section_1e_iii_per_international_book_per_author
+                        _books.append(self.file.configuration.section_1e_iii_per_international_book_per_author)
                 else:
                     total += self.file.configuration.section_1e_iii_per_chapter
                     book.marks.ro1 = self.file.configuration.section_1e_iii_per_chapter
+                    _chapters.append(self.file.configuration.section_1e_iii_per_chapter)
             else:
                 book.marks.ro1 = 0
             book.marks.save()
-        return total
+        _total = 0  # new
+        _books.sort(reverse=True)  # new
+        _chapters.sort(reverse=True)  # new
+        if len(_books) > 0:  # new
+            _total += _books[0]  # new
+        if len(_chapters) > 0:  # new
+            _total += _chapters[0]  # new
+        if len(_chapters) > 1:  # new
+            _total += _chapters[1]  # new
+        return _total  # new
+
+    def calculateAcademicPractices(self):
+        return self.file.modern_teaching_methods.marks.ro1 + self.file.upkeep_of_course_files_marks.ro1 + self.file.inclusion_of_alumni_marks.ro1
 
     def calculateSection2(self):
         total = 0
@@ -574,7 +595,7 @@ class CalculationEngineR2:
         total += self.calculateTeachingLoad()
         total += self.calculateStudentFeedback()
         total += self.calculateBooksAndPublications()
-        total += self.file.modern_teaching_methods.marks.ro2
+        total += self.calculateAcademicPractices()
         total += self.calculateExaminationDuty()
         return total
 
@@ -611,14 +632,18 @@ class CalculationEngineR2:
     def calculateBooksAndPublications(self):
         # research based on books and publications
         total = 0
+        _books = []  # new
+        _chapters = []  # new
         for book in self.file.research_books.all():
             if book.marks.ro2_agreed:
                 if book.type == 'book':
                     total += self.file.configuration.section_1e_i_per_book_per_author
                     book.marks.ro2 = self.file.configuration.section_1e_i_per_book_per_author
+                    _books.append(self.file.configuration.section_1e_i_per_book_per_author)
                 else:
                     total += self.file.configuration.section_1e_i_per_chapter
                     book.marks.ro2 = self.file.configuration.section_1e_i_per_chapter
+                    _chapters.append(self.file.configuration.section_1e_i_per_chapter)
             else:
                 book.marks.ro2 = 0
             book.marks.save()
@@ -628,9 +653,11 @@ class CalculationEngineR2:
                 if book.type == 'book':
                     total += self.file.configuration.section_1e_ii_per_book_per_author
                     book.marks.ro2 = self.file.configuration.section_1e_ii_per_book_per_author
+                    _books.append(self.file.configuration.section_1e_ii_per_book_per_author)
                 else:
                     total += self.file.configuration.section_1e_ii_per_chapter
                     book.marks.ro2 = self.file.configuration.section_1e_ii_per_chapter
+                    _chapters.append(self.file.configuration.section_1e_ii_per_chapter)
             else:
                 book.marks.ro2 = 0
             book.marks.save()
@@ -640,17 +667,33 @@ class CalculationEngineR2:
                     if book.publication_level == 'national':
                         total += self.file.configuration.section_1e_iii_per_national_book_per_author
                         book.marks.ro2 = self.file.configuration.section_1e_iii_per_national_book_per_author
+                        _books.append(self.file.configuration.section_1e_iii_per_national_book_per_author)
 
                     elif book.publication_level == 'international':
                         total += self.file.configuration.section_1e_iii_per_international_book_per_author
                         book.marks.ro2 = self.file.configuration.section_1e_iii_per_international_book_per_author
+                        _books.append(self.file.configuration.section_1e_iii_per_international_book_per_author)
                 else:
                     total += self.file.configuration.section_1e_iii_per_chapter
                     book.marks.ro2 = self.file.configuration.section_1e_iii_per_chapter
+                    _chapters.append(self.file.configuration.section_1e_iii_per_chapter)
             else:
                 book.marks.ro2 = 0
             book.marks.save()
-        return total
+        _total = 0  # new
+        _books.sort(reverse=True)  # new
+        _chapters.sort(reverse=True)  # new
+        if len(_books) > 0:  # new
+            _total += _books[0]  # new
+        if len(_chapters) > 0:  # new
+            _total += _chapters[0]  # new
+        if len(_chapters) > 1:  # new
+            _total += _chapters[1]  # new
+        return _total  # new
+
+    def calculateAcademicPractices(self):
+        return self.file.modern_teaching_methods.marks.ro2 + self.file.upkeep_of_course_files_marks.ro2 + self.file.inclusion_of_alumni_marks.ro2
+
 
     def calculateSection2(self):
         total = 0

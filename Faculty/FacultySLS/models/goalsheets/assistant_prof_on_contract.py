@@ -7,16 +7,16 @@ class FOLSGoalSheetAssistantProfOnContract(models.Model):
     year = models.IntegerField()
     is_active = models.BooleanField(default=False)
 
-    grand_total = models.IntegerField(default=365)
+    grand_total = models.IntegerField(default=374)
 
     # ||||||||||||||||||||||   PART A   ||||||||||||||||||||||
     # TOTAL FOR PART A (SECTION 1 TO 4) SHOULD BE 307
-    part_a_total = models.IntegerField(default=325)
+    part_a_total = models.IntegerField(default=334)
 
     # ======================   Section 1: Teaching (TCS iON)   ======================
     # Configurations for Section 1
-    section_1_minimum_marks = models.IntegerField(default=65)
-    section_1_maximum_marks = models.IntegerField(default=108)
+    section_1_minimum_marks = models.IntegerField(default=75)
+    section_1_maximum_marks = models.IntegerField(default=122)
 
     # Section 1.A: Teaching Load
     # If teaching load is >=16 then 42 marks
@@ -30,22 +30,24 @@ class FOLSGoalSheetAssistantProfOnContract(models.Model):
 
     # ------- Section 1.B: Students Feedback (TCS iON) -------
 
-    students_feedback_s_coefficient = models.FloatField(default=2.8)
+    students_feedback_s_coefficient = models.FloatField(default=3.5)
     students_feedback_lower_limit = models.IntegerField(default=3)
 
-    # ------- Section 1.C: Modern Methods Of Teaching (RO/ RV) -------
+    # ------- Section 1.C: Academic Practices (RO/ RV) -------
     modern_methods_of_teaching_max_marks = models.IntegerField(default=10)
+    upkeep_of_course_files_max_marks = models.IntegerField(default=3)
+    inclusion_of_alumni_max_marks = models.IntegerField(default=5)
 
     # ------- Section 1.D (Exam Cell) -------
-    section_1d_max_marks = models.IntegerField(default=30)
+    section_1d_max_marks = models.IntegerField(default=40)
     #   Section 1.D(a): Teaching Innovation
-    timely_invigilation = models.IntegerField(default=5)
+    timely_invigilation = models.IntegerField(default=7)
     #   Section 1.D(b): Paper Setting
-    paper_setting = models.IntegerField(default=9)
+    paper_setting = models.IntegerField(default=11)
     #   Section 1.D(c): Teaching Innovation
-    evaluation = models.IntegerField(default=11)
+    evaluation = models.IntegerField(default=15)
     #   Section 1.D(d): Teaching Innovation
-    result_submission = models.IntegerField(default=5)
+    result_submission = models.IntegerField(default=7)
 
     # ------- Section 1.E: Books and Publications (RIMS / Dean Office) -------
     #  Section 1.E(i): Research based books or monographs

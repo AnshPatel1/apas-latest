@@ -116,8 +116,9 @@
                             <hr class="my-0">
                             <div class="card-body">
                                 <div class="alert alert-secondary mb-4">
-                                    <input type="checkbox" {% if not file.bachelors_dissertation_available %} checked {% endif %} class="form-check-input me-2" name="bachelors-available" value="No" data-hide-target="bachelors"
-                                           id="hide-bachelors-dissertation"> Check this box if you have any Bachelors Dissertation
+                                    <input type="checkbox" {% if not file.bachelors_dissertation_available %} checked {% endif %} class="form-check-input me-2"
+                                           name="bachelors-available" value="No" data-hide-target="bachelors"
+                                           id="hide-bachelors-dissertation"> Check this box if you <b>don't</b> have any Bachelors Dissertation
                                     <input type="hidden" name="bachelors-available" value="Yes">
                                 </div>
                                 <div class="add-type-table" id="bachelors-dissertation-target">
@@ -188,8 +189,9 @@
                             <hr class="my-0">
                             <div class="card-body">
                                 <div class="alert alert-secondary mb-4">
-                                    <input type="checkbox" {% if not file.masters_thesis_available %} checked {% endif %} class="form-check-input me-2" name="masters-available" value="No" data-hide-target="masters"
-                                           id="hide-master-dissertation"> Check this box if you have any Masters Dissertation
+                                    <input type="checkbox" {% if not file.masters_thesis_available %} checked {% endif %} class="form-check-input me-2"
+                                           name="masters-available" value="No" data-hide-target="masters"
+                                           id="hide-master-dissertation"> Check this box if you <b>don't</b> have any Masters Dissertation
                                     <input type="hidden" name="masters-available" value="Yes"></input>
                                 </div>
                                 <div class="add-type-table" id="master-dissertation-target">
@@ -215,9 +217,7 @@
                                                 </td>
                                                 <td>
                                                     <select data-prefix="masters-dissertation-" class="form-select" id="">
-                                                            <option value="submitted">Submitted</option>
-                                                            <option value="submitted_patent_published">Submitted & Patent Published / Granted</option>
-                                                            <option value="submitted_patent_papers_published">Submitted, Papers Published & Patent Granted / Published</option>
+                                                        <option value="submitted">Submitted</option>
                                                     </select>
                                                 </td>
                                                 <td>
@@ -240,7 +240,8 @@
                                                     >{{ dissertation.student_name }}</textarea>
                                                     </td>
                                                     <td>
-                                                        <select required name="masters-dissertation-{{ forloop.counter }}" data-prefix="masters-dissertation-" class="form-select" id="">
+                                                        <select required name="masters-dissertation-{{ forloop.counter }}" data-prefix="masters-dissertation-"
+                                                                class="form-select" id="">
                                                             <option {% if dissertation.status == 'submitted' %} selected {% endif %} value="submitted">Submitted</option>
                                                             <option {% if dissertation.status == 'submitted_patent_published' %} selected {% endif %}
                                                                                                                                  value="submitted_patent_published">
@@ -264,41 +265,40 @@
                                 </div>
                             </div>
                         </div>
-                    {% if file.file_level == "APPRAISEE" and cycle.name == 'appraisal' %}
-                        <hr class="my-0 mt-3">
-                        <div class="card mt-5">
-                            {% csrf_token %}
-                            <h5 class="card-header">Save</h5>
+                        {% if file.file_level == "APPRAISEE" and cycle.name == 'appraisal' %}
+                            <hr class="my-0 mt-3">
+                            <div class="card mt-5">
+                                {% csrf_token %}
+                                <h5 class="card-header">Save</h5>
 
-                            <hr class="m-0"/>
-                            <div class="card-body">
+                                <hr class="m-0"/>
+                                <div class="card-body">
 
-                                <p class="card-text">
-                                    If you want to save this parameter, please click the "Save and Next" button below.
+                                    <p class="card-text">
+                                        If you want to save this parameter, please click the "Save and Next" button below.
+                                    </p>
+                                    <div class="content-wrapper">
 
-                                </p>
-                                <div class="content-wrapper">
+                                        <!-- Content -->
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <button id="tbl-btn" class="btn btn-success col-12 submit-btn"
+                                                        {#                                                    data-bs-toggle="tooltip"#}
+                                                        data-bs-offset="0,4"
+                                                        data-bs-placement="top"
+                                                        data-bs-html="true"
+                                                        data-after="/patent/"
+                                                        type="submit"
+                                                        title="<i class='bx bx-info-circle bx-xs' ></i> <span>Send your parameters to your RO1 for approval</span>">
+                                                    <span class="tf-icons bx bx-check-circle"></span>&nbsp; Save and Next
 
-                                    <!-- Content -->
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <button id="tbl-btn" class="btn btn-success col-12 submit-btn"
-                                                    {#                                                    data-bs-toggle="tooltip"#}
-                                                    data-bs-offset="0,4"
-                                                    data-bs-placement="top"
-                                                    data-bs-html="true"
-                                                    data-after="/patent/"
-                                                    type="submit"
-                                                    title="<i class='bx bx-info-circle bx-xs' ></i> <span>Send your parameters to your RO1 for approval</span>">
-                                                <span class="tf-icons bx bx-check-circle"></span>&nbsp; Save and Next
-
-                                            </button>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endif %}
+                        {% endif %}
                     </form>
                 </div>
             </div>
@@ -365,7 +365,7 @@
             processData: false,
             success: function (response) {
                 if (confirm("Saved successfully. Continue to next page?")) {
-                    window.location.href = window.location.href + "../patent/";
+                    window.location.href = window.location.href + "../award/";
                 } else {
                     window.location.reload();
                 }

@@ -30,7 +30,8 @@
     <title>
         Teaching
     </title>
-    <link rel="icon" type="image/x-icon" href="/media/admin-interface/favicon/Pandit_Deendayal_Energy_University_logo-2.png">
+    <link rel="icon" type="image/x-icon"
+          href="/media/admin-interface/favicon/Pandit_Deendayal_Energy_University_logo-2.png">
     <meta name="description" content=""/>
 
 
@@ -123,7 +124,7 @@
                             Section 1 / <span class="text-muted fw-light">Teaching</span>
                         </h4>
                         <div class="card prepopulated">
-                            <h5 class="card-header">Teaching Load  </h5>
+                            <h5 class="card-header">Teaching Load </h5>
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover table-bordered">
                                     <thead>
@@ -148,8 +149,9 @@
                             </div>
                         </div>
                         <div class="card mt-3 prepopulated">
-                            <h5 class="card-header">Students Feedback  </h5>
-                            <div class="alert alert-secondary ms-3 me-3">Kindly note that this is the Student Feedback Received, the Score for this Parameter shall be
+                            <h5 class="card-header">Students Feedback </h5>
+                            <div class="alert alert-secondary ms-3 me-3">Kindly note that this is the Student Feedback
+                                Received, the Score for this Parameter shall be
                                 calculated by the System as per the range mentioned in the Goal Sheet.
                             </div>
                             <div class="table-responsive">
@@ -176,16 +178,42 @@
                             </div>
                         </div>
                         <div class="card mt-5">
-                            <h4 class="card-header"><b>1.C</b> Modern Methods of Teaching</h4>
+                            <h4 class="card-header"><b>1.C</b> Academic Practices</h4>
+
                             <div class="card-body">
-
-                                <textarea required class="form-control count mt-4" placeholder="Enter Details" maxlength=1000 minlength="100" rows="6"#}
+                                <h5>I. Modern Methods of Teaching</h5>
+                                <textarea required class="form-control count mt-2" placeholder="Enter Details"
+                                          maxlength=1000 minlength="100" rows="6"
                                           name="teaching-flip-classes">{{ file.modern_teaching_methods.flip_classes|default_if_none:'' }}</textarea>
-                            </div>
 
+                                <p><b>Modern Methods Include:</b> <br>
+                                    1. Flip Classes<br/>
+                                    2. Case Study Based<br/>
+                                    3. Technology Integration<br/>
+                                    4. Design Thinking<br/>
+                                    5. Project based Teaching-Learning<br/>
+                                    6. NEP Compliance in terms of Activity Based Learning, Thematic Teaching & Learning
+                                    by
+                                    Design, Stimulus Activity, Cognitive Learning & likewise.<br/>
+                                    7. Any other <br/>
+                                </p>
+                            </div>
+                            <hr>
+                            <div class="card-body">
+                                <h5>II. Upkeep of Course Files</h5>
+                                <textarea required class="form-control count mt-2" placeholder="Enter Details"
+                                          maxlength=1000 minlength="100" rows="6"
+                                          name="upkeep-of-course-files">{{ file.upkeep_of_course_files|default_if_none:'' }}</textarea>
+                            </div>
+                            <div class="card-body">
+                                <h5>III. Inclusion of Alumni / Industry in course design, delivery & evaluation</h5>
+                                <textarea required class="form-control count mt-2" placeholder="Enter Details"
+                                          maxlength=1000 minlength="100" rows="6"
+                                          name="inclusion-of-alumni">{{ file.inclusion_of_alumni|default_if_none:'' }}</textarea>
+                            </div>
                         </div>
                         <div class="card mt-5 prepopulated">
-                            <h5 class="card-header">Exam Duty  </h5>
+                            <h5 class="card-header">Exam Duty </h5>
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover table-bordered">
                                     <thead>
@@ -204,7 +232,8 @@
                                             <strong>Timely Invigilation</strong>
                                         </td>
                                         <td>
-                                            {{ file.exam_duty.timely_invigilation }} / {{ file.configuration.timely_invigilation }}
+                                            {{ file.exam_duty.timely_invigilation }}
+                                            / {{ file.configuration.timely_invigilation }}
                                         </td>
                                     </tr>
                                     <tr>
@@ -228,7 +257,8 @@
                                             <strong>Result Submission</strong>
                                         </td>
                                         <td>
-                                            {{ file.exam_duty.result_submission }} / {{ file.configuration.result_submission }}
+                                            {{ file.exam_duty.result_submission }}
+                                            / {{ file.configuration.result_submission }}
                                         </td>
                                     </tr>
                                     </tbody>
@@ -238,6 +268,9 @@
                         <div class="card mt-3 prepopulated">
                             <h5 class="card-header"><b>1.E</b> Books and Publications
                             </h5>
+{#                            <br>#}
+                            <div class="alert alert-secondary ms-3 me-3">Marks shall only be counted for 1 Book of any Category and 2 Chapters of any Category as mentioned in the Goalsheet
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover table-bordered">
                                     <thead>
@@ -302,7 +335,8 @@
                                 <div class="card-body">
 
                                     <p class="card-text">
-                                        If you want to save this parameter, please click the "Save and Next" button below.
+                                        If you want to save this parameter, please click the "Save and Next" button
+                                        below.
                                     </p>
                                     <div class="content-wrapper">
 
@@ -316,7 +350,8 @@
                                                         data-bs-html="true"
                                                         type="submit"
                                                         title="<i class='bx bx-info-circle bx-xs' ></i> <span>Send your parameters to your RO1 for approval</span>">
-                                                    <span class="tf-icons bx bx-check-circle"></span>&nbsp; Save and Next
+                                                    <span class="tf-icons bx bx-check-circle"></span>&nbsp; Save and
+                                                    Next
 
                                                 </button>
                                             </div>

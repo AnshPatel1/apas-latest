@@ -363,11 +363,8 @@ class FacultyViewSet:
                 file.modern_teaching_methods.save()
                 file.save()
             file.modern_teaching_methods.flip_classes = request.POST.get('teaching-flip-classes')
-            file.modern_teaching_methods.case_study = request.POST.get('teaching-case-study')
-            file.modern_teaching_methods.technology_integration = request.POST.get('teaching-technology-integration')
-            file.modern_teaching_methods.design_thinking = request.POST.get('teaching-design-thinking')
-            file.modern_teaching_methods.project_based_teaching = request.POST.get('teaching-project-based-teaching')
-            file.modern_teaching_methods.other = request.POST.get('teaching-any-other')
+            file.upkeep_of_course_files = request.POST.get('upkeep-of-course-files')
+            file.inclusion_of_alumni = request.POST.get('inclusion-of-alumni')
             file.modern_teaching_methods.save()
             file.save()
 
@@ -458,65 +455,68 @@ class FacultyViewSet:
         context['internal_guidance'] = file.phd_guidance.filter(category='internal')
         return render(request, "html/faculty/science/phd-guidance-entry.html", context)
 
-    # @staticmethod
-    # @login_required(login_url='/login/')
-    # def dissertation_entry(request):
-    #     if not FacultyHelperFunctions.check_authorized_user(request):
-    #         context = {
-    #             'error_code': "Unauthorized Error",
-    #             "error_message": "You are not authorized to view this page."
-    #         }
-    #         return render(request, "html/error_pages/pages-error.html", context)
-    #
-    #     context = {'user': request.user, 'page_name': 'dissertation-entry'}
-    #     file = FacultyHelperFunctions.get_appraisal_file(request)
-    #     context['cycle'] = FacultyHelperFunctions.get_cycle()
-    #     if file is not None:
-    #         context['file'] = file
-    #     if request.method == 'POST':
-    #         file.validator.dissertation_validated = True
-    #         file.validator.save()
-    #         bachelors_available = 'No' not in dict(request.POST)['bachelors-available']
-    #         masters_available = 'No' not in dict(request.POST)['masters-available']
-    #         file.bachelors_dissertation_available = bachelors_available
-    #         file.masters_thesis_available = masters_available
-    #         print('No' in dict(request.POST)['bachelors-available'], masters_available)
-    #         file.save()
-    #         if bachelors_available:
-    #             entries = {key: value for key, value in dict(request.POST).items() if key.startswith('bachelors-dissertation')}
-    #             entries = list(entries.values())
-    #             bachelors = []
-    #             for entry in entries:
-    #                 diss = BachelorsDissertation()
-    #                 diss.faculty = request.user
-    #                 diss.description = entry[0]
-    #                 diss.student_name = entry[1]
-    #                 if entry[2] == 'awarded':
-    #                     diss.is_awarded = True
-    #                 bachelors.append(diss)
-    #             file.bachelors_dissertation.all().delete()
-    #             BachelorsDissertation.objects.bulk_create(bachelors)
-    #             file.bachelors_dissertation.set(bachelors)
-    #         else:
-    #             file.bachelors_dissertation.all().delete()
-    #         if masters_available:
-    #             entries = {key: value for key, value in dict(request.POST).items() if key.startswith('masters-dissertation')}
-    #             entries = list(entries.values())
-    #             masters = []
-    #             for entry in entries:
-    #                 thesis = MastersDissertation()
-    #                 thesis.faculty = request.user
-    #                 thesis.description = entry[0]
-    #                 thesis.student_name = entry[1]
-    #                 if entry[2] == 'submitted' or entry[2] == 'submitted_patent_published' or entry[2] == 'submitted_patent_papers_published':
-    #                     thesis.status = entry[2]
-    #                 masters.append(thesis)
-    #             file.masters_thesis.all().delete()
-    #             MastersDissertation.objects.bulk_create(masters)
-    #             file.masters_thesis.set(masters)
-    #         else:
-    #             file.masters_thesis.all().delete()
-    #     return render(request, "html/faculty/science/dissertation-entry.html", context)
+    @staticmethod
+    @login_required(login_url='/login/')
+    def dissertation_entry(request):
+        if not FacultyHelperFunctions.check_authorized_user(request):
+            context = {
+                'error_code': "Unauthorized Error",
+                "error_message": "You are not authorized to view this page."
+            }
+            return render(request, "html/error_pages/pages-error.html", context)
+
+        context = {'user': request.user, 'page_name': 'dissertation-entry'}
+        file = FacultyHelperFunctions.get_appraisal_file(request)
+        context['cycle'] = FacultyHelperFunctions.get_cycle()
+        if file is not None:
+            context['file'] = file
+        if request.method == 'POST':
+            file.validator.dissertation_validated = True
+            file.validator.save()
+            bachelors_available = 'No' not in dict(request.POST)['bachelors-available']
+            masters_available = 'No' not in dict(request.POST)['masters-available']
+            file.bachelors_dissertation_available = bachelors_available
+            file.masters_thesis_available = masters_available
+            print('No' in dict(request.POST)['bachelors-available'], masters_available)
+            file.save()
+            if bachelors_available:
+                entries = {key: value for key, value in dict(request.POST).items() if
+                           key.startswith('bachelors-dissertation')}
+                entries = list(entries.values())
+                bachelors = []
+                for entry in entries:
+                    diss = BachelorsDissertation()
+                    diss.faculty = request.user
+                    diss.description = entry[0]
+                    diss.student_name = entry[1]
+                    if entry[2] == 'awarded':
+                        diss.is_awarded = True
+                    bachelors.append(diss)
+                file.bachelors_dissertation.all().delete()
+                BachelorsDissertation.objects.bulk_create(bachelors)
+                file.bachelors_dissertation.set(bachelors)
+            else:
+                file.bachelors_dissertation.all().delete()
+            if masters_available:
+                entries = {key: value for key, value in dict(request.POST).items() if
+                           key.startswith('masters-dissertation')}
+                entries = list(entries.values())
+                masters = []
+                for entry in entries:
+                    thesis = MastersDissertation()
+                    thesis.faculty = request.user
+                    thesis.description = entry[0]
+                    thesis.student_name = entry[1]
+                    if entry[2] == 'submitted' or entry[2] == 'submitted_patent_published' or entry[
+                        2] == 'submitted_patent_papers_published':
+                        thesis.status = entry[2]
+                    masters.append(thesis)
+                file.masters_thesis.all().delete()
+                MastersDissertation.objects.bulk_create(masters)
+                file.masters_thesis.set(masters)
+            else:
+                file.masters_thesis.all().delete()
+        return render(request, "html/faculty/science/dissertation-entry.html", context)
 
     @staticmethod
     @login_required(login_url='/login/')

@@ -75,6 +75,24 @@ class RO2FacultyFOETViewSet:
                 file.modern_teaching_methods.marks.ro2_agreed = False
             file.modern_teaching_methods.marks.save()
 
+
+            file.upkeep_of_course_files_marks.ro2_remarks = request.POST.get('upkeep-of-course-files-remarks')
+            file.upkeep_of_course_files_marks.ro2 = float(request.POST.get('upkeep-of-course-files-marks'))
+            if request.POST.get('upkeep-of-course-files-action') == 'accept':
+                file.upkeep_of_course_files_marks.ro2_agreed = True
+            if request.POST.get('upkeep-of-course-files-action') == 'reject':
+                file.upkeep_of_course_files_marks.ro2_agreed = False
+            file.upkeep_of_course_files_marks.save()
+
+            file.inclusion_of_alumni_marks.ro2_remarks = request.POST.get('inclusion-of-alumni-remarks')
+            file.inclusion_of_alumni_marks.ro2 = float(request.POST.get('inclusion-of-alumni-marks'))
+            if request.POST.get('inclusion-of-alumni-action') == 'accept':
+                file.inclusion_of_alumni_marks.ro2_agreed = True
+            if request.POST.get('inclusion-of-alumni-action') == 'reject':
+                file.inclusion_of_alumni_marks.ro2_agreed = False
+            file.inclusion_of_alumni_marks.save()
+
+
             existing_books = list(file.textbooks.all())
             for i in range(len(existing_books)):
                 db_book = existing_books[i]
@@ -972,13 +990,13 @@ class FacultyHelperFunctions:
         appraisee = User.objects.get(username=username)
         file = None
         if appraisee.designation_abbreviation == "assistant_prof_on_contract":
-            file = FOETAssistantProfOnContractAppraisalFile.objects.filter(user=appraisee).first()
+            file:FOETProfAppraisalFile = FOETAssistantProfOnContractAppraisalFile.objects.filter(user=appraisee).first()
         elif appraisee.designation_abbreviation == "assistant_prof":
-            file = FOETAssistantProfAppraisalFile.objects.filter(user=appraisee).first()
+            file:FOETProfAppraisalFile = FOETAssistantProfAppraisalFile.objects.filter(user=appraisee).first()
         elif appraisee.designation_abbreviation == "associate_prof":
-            file = FOETAssociateProfAppraisalFile.objects.filter(user=appraisee).first()
+            file:FOETProfAppraisalFile = FOETAssociateProfAppraisalFile.objects.filter(user=appraisee).first()
         elif appraisee.designation_abbreviation == "prof":
-            file = FOETProfAppraisalFile.objects.filter(user=appraisee).first()
+            file:FOETProfAppraisalFile = FOETProfAppraisalFile.objects.filter(user=appraisee).first()
 
         denominator = file.configuration.grand_total
         engine = CalculationEngineR2(file)
@@ -1010,8 +1028,8 @@ class FacultyHelperFunctions:
         else:
             result['grade'] = 'BELOW AVERAGE'
 
-        if teaching_total < 65 and result['grade'] != 'BELOW AVERAGE':
-            result['grade'] = 'AVERAGE'
+        if teaching_total < file.configuration.section_1_minimum_marks and result['grade'] != 'OUTSTANDING':
+            result['grade'] = 'GOOD'
         return result
 
     @staticmethod

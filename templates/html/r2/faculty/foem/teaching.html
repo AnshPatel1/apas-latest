@@ -30,7 +30,8 @@
     <title>
         Teaching
     </title>
-    <link rel="icon" type="image/x-icon" href="/media/admin-interface/favicon/Pandit_Deendayal_Energy_University_logo-2.png">
+    <link rel="icon" type="image/x-icon"
+          href="/media/admin-interface/favicon/Pandit_Deendayal_Energy_University_logo-2.png">
     <meta name="description" content=""/>
 
 
@@ -312,96 +313,217 @@
                         {#                            </div>#}
                         {#                        </div>#}
                         <div class="card mt-3">
-                            <h5 class="card-header">Modern Methods Of Teaching</h5>
-                            <table class="table table-striped table-hover table-bordered">
-                                <thead>
-                                <tr>
-                                    <th>Input</th>
-                                    <th>R1 Actions</th>
-                                    <th class="col-2">R2 Remarks</th>
-                                    <th>
-                                        R2 Marks
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>
-                                        <strong>{{ file.modern_teaching_methods.flip_classes }}</strong>
-                                    </td>
-                                    <td class="col-2">
-                                        R1 Marks: {{ file.modern_teaching_methods.marks.ro1 }} <br>
-                                        R1 Remarks: {{ file.modern_teaching_methods.marks.ro1_remarks }}
-                                    </td>
-                                    <td class="p-0">
+                            <h5 class="card-header">Academic Practices</h5>
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover table-bordered table-responsive">
+                                    <thead>
+                                    <tr>
+                                        <th>Parameter</th>
+                                        <th>Appraisee Input</th>
+                                        <th>R1 Actions</th>
+                                        <th class="col-2">R2 Remarks</th>
+                                        <th>
+                                            R2 Marks
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td class="col-3">Modern Methods of Teaching</td>
+                                        <td>
+                                            <strong>{{ file.modern_teaching_methods.flip_classes }}</strong>
+                                        </td>
+                                        <td class="col-2">
+                                            R1 Marks: {{ file.modern_teaching_methods.marks.ro1 }} <br>
+                                            R1 Remarks: {{ file.modern_teaching_methods.marks.ro1_remarks }}
+                                        </td>
+                                        <td class="p-0">
                                         <textarea class="form-control count" placeholder="Enter Remarks" maxlength=100
                                                   minlength=2 rows="6" required
                                                   name="modern-methods-remarks">{{ file.modern_teaching_methods.marks.ro2_remarks|default_if_none:"OK" }}</textarea>
-                                    </td>
-                                    <td class="col-2 action-wrap">
-                                        {#                                            <div class="alert alert-secondary mt-2">#}
-                                        {#                                                <input type="hidden" class="r1-action marks" name="r1_marks" value="{{ file.modern_teaching_methods.marks.ro1 }}">#}
-                                        {##}
-                                        {#                                                <input type="checkbox" class="agreeCheckbox form-check-input" style="margin: 0 auto;">#}
-                                        {#                                                &nbsp; I agree with the marks given by RO1#}
-                                        {#                                            </div>#}
-                                        <div
-                                                style="margin: 0px"
-                                                class="btn-group"
-                                                role="group"
-                                                aria-label="Basic radio toggle button group"
-                                        >
-                                            <input
-                                                    type="radio"
-                                                    class="btn-check"
-                                                    name="teaching-methods-action"
-                                                    id="teaching-methods-accept"
-                                                    value="accept"
-                                                    {% if file.modern_teaching_methods.marks.ro2_agreed %}checked{% endif %}
-                                                    autocomplete="off"
-                                                    required
-                                            />
-                                            <label
-                                                    class="btn btn-outline-primary"
-                                                    for="teaching-methods-accept"
-                                            >Accept</label
+                                        </td>
+                                        <td class="col-2 action-wrap">
+                                            {#                                            <div class="alert alert-secondary mt-2">#}
+                                            {#                                                <input type="hidden" class="r1-action marks" name="r1_marks" value="{{ file.modern_teaching_methods.marks.ro1 }}">#}
+                                            {##}
+                                            {#                                                <input type="checkbox" class="agreeCheckbox form-check-input" style="margin: 0 auto;">#}
+                                            {#                                                &nbsp; I agree with the marks given by RO1#}
+                                            {#                                            </div>#}
+                                            <div
+                                                    style="margin: 0px"
+                                                    class="btn-group"
+                                                    role="group"
+                                                    aria-label="Basic radio toggle button group"
                                             >
-                                            <input
-                                                    type="radio"
-                                                    class="btn-check"
-                                                    name="teaching-methods-action"
-                                                    id="teaching-methods-reject"
-                                                    value="reject"
-                                                    {% if not file.modern_teaching_methods.marks.ro2_agreed %}checked{% endif %}
-                                                    autocomplete="off"
-                                                    required
-                                            />
-                                            <label
-                                                    class="btn btn-outline-danger"
-                                                    for="teaching-methods-reject"
-                                            >Reject</label
+                                                <input
+                                                        type="radio"
+                                                        class="btn-check"
+                                                        name="teaching-methods-action"
+                                                        id="teaching-methods-accept"
+                                                        value="accept"
+                                                        {% if file.modern_teaching_methods.marks.ro2_agreed %}checked{% endif %}
+                                                        autocomplete="off"
+                                                        required
+                                                />
+                                                <label
+                                                        class="btn btn-outline-primary"
+                                                        for="teaching-methods-accept"
+                                                >Accept</label
+                                                >
+                                                <input
+                                                        type="radio"
+                                                        class="btn-check"
+                                                        name="teaching-methods-action"
+                                                        id="teaching-methods-reject"
+                                                        value="reject"
+                                                        {% if not file.modern_teaching_methods.marks.ro2_agreed %}checked{% endif %}
+                                                        autocomplete="off"
+                                                        required
+                                                />
+                                                <label
+                                                        class="btn btn-outline-danger"
+                                                        for="teaching-methods-reject"
+                                                >Reject</label
+                                                >
+                                            </div>
+                                            <input class="form-control mt-2 individual-max r2-action r2-marks cannotBeZeroOnAccept"
+                                                   type="number" step="0.1" min="0"
+                                                   data-old="{{ file.modern_teaching_methods.marks.ro2 }}"
+                                                   placeholder="Enter Marks"
+                                                   max="{{ file.configuration.modern_methods_of_teaching_max_marks }}"
+                                                   id="modern-methods-marks" name="modern-methods-marks"
+                                                   value="{{ file.modern_teaching_methods.marks.ro2 }}" required/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-3">Upkeep of Course Files</td>
+                                        <td>
+                                            <strong>{{ file.upkeep_of_course_files }}</strong>
+                                        </td>
+                                        <td class="col-2">
+                                            R1 Marks: {{ file.upkeep_of_course_files_marks.ro1 }} <br>
+                                            R1 Remarks: {{ file.upkeep_of_course_files_marks.ro1_remarks }}
+                                        </td>
+                                        <td class="p-0">
+                                        <textarea class="form-control count" placeholder="Enter Remarks" maxlength=100
+                                                  minlength=2 rows="6" required
+                                                  name="upkeep-of-course-files-remarks">{{ file.upkeep_of_course_files_marks.ro2_remarks|default_if_none:"OK" }}</textarea>
+                                        </td>
+                                        <td class="col-2 action-wrap">
+                                            <div
+                                                    style="margin: 0px"
+                                                    class="btn-group"
+                                                    role="group"
+                                                    aria-label="Basic radio toggle button group"
                                             >
-                                        </div>
-                                        <input class="form-control mt-2 individual-max r2-action r2-marks cannotBeZeroOnAccept"
-                                               type="number" step="0.1" min="0"
-                                               data-old="{{ file.modern_teaching_methods.marks.ro2 }}"
-                                               placeholder="Enter Marks"
-                                               max="{{ file.configuration.modern_methods_of_teaching_max_marks }}"
-                                               id="modern-methods-marks" name="modern-methods-marks"
-                                               value="{{ file.modern_teaching_methods.marks.ro2 }}" required/>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            {#                            <div class="m-4">#}
-                            {#                            {{ file.modern_teaching_methods.flip_classes }}#}
-                            {#                                <hr class="my-0 mt-2 mb-2">#}
-                            {#                                <textarea class="form-control count" placeholder="Enter Remarks" maxlength=100 minlength=10 rows="6" required#}
-                            {#                                          name="modern-methods-remarks">{{ file.modern_teaching_methods.marks.ro1_remarks|default_if_none:"" }}</textarea>#}
-                            {#                                <hr class="m-0"/>#}
-                            {#                                <input class="form-control mt-2 individual-max" type="number" placeholder="Enter Marks" max="10" name="modern-methods-marks"#}
-                            {#                                       value="{{ file.modern_teaching_methods.marks.ro1|default:"0" }}"/>#}
-                            {#                            </div>#}
+                                                <input
+                                                        type="radio"
+                                                        class="btn-check"
+                                                        name="upkeep-of-course-files-action"
+                                                        id="upkeep-of-course-files-accept"
+                                                        value="accept"
+                                                        {% if file.upkeep_of_course_files_marks.ro2_agreed %}checked{% endif %}
+                                                        autocomplete="off"
+                                                        required
+                                                />
+                                                <label
+                                                        class="btn btn-outline-primary"
+                                                        for="upkeep-of-course-files-accept"
+                                                >Accept</label
+                                                >
+                                                <input
+                                                        type="radio"
+                                                        class="btn-check"
+                                                        name="upkeep-of-course-files-action"
+                                                        id="upkeep-of-course-files-reject"
+                                                        value="reject"
+                                                        {% if not file.upkeep_of_course_files_marks.ro2_agreed %}checked{% endif %}
+                                                        autocomplete="off"
+                                                        required
+                                                />
+                                                <label
+                                                        class="btn btn-outline-danger"
+                                                        for="upkeep-of-course-files-reject"
+                                                >Reject</label
+                                                >
+                                            </div>
+                                            <input class="form-control mt-2 individual-max cannotBeZeroOnAccept"
+                                                   type="number" step="0.1" min="0"
+                                                   data-old="{{ file.upkeep_of_course_files_marks.ro2 }}"
+                                                   placeholder="Enter Marks"
+                                                   max="{{ file.configuration.upkeep_of_course_files_max_marks }}"
+                                                   id="upkeep-of-course-files-marks"
+                                                   name="upkeep-of-course-files-marks"
+                                                   value="{{ file.upkeep_of_course_files_marks.ro2 }}" required/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-3">Inclusion of Alumni / Industry in course design, delivery &
+                                            evaluation
+                                        </td>
+                                        <td>
+                                            <strong>{{ file.inclusion_of_alumni }}</strong>
+                                        </td>
+                                        <td class="col-2">
+                                            R1 Marks: {{ file.inclusion_of_alumni_marks.ro1 }} <br>
+                                            R1 Remarks: {{ file.inclusion_of_alumni_marks.ro1_remarks }}
+                                        </td>
+                                        <td class="p-0">
+                                        <textarea class="form-control count" placeholder="Enter Remarks" maxlength=100
+                                                  minlength=2 rows="6" required
+                                                  name="inclusion-of-alumni-remarks">{{ file.inclusion_of_alumni_marks.ro2_remarks|default_if_none:"OK" }}</textarea>
+                                        </td>
+                                        <td class="col-2 action-wrap">
+                                            <div
+                                                    style="margin: 0px"
+                                                    class="btn-group"
+                                                    role="group"
+                                                    aria-label="Basic radio toggle button group"
+                                            >
+                                                <input
+                                                        type="radio"
+                                                        class="btn-check"
+                                                        name="inclusion-of-alumni-action"
+                                                        id="inclusion-of-alumni-accept"
+                                                        value="accept"
+                                                        {% if file.inclusion_of_alumni_marks.ro2_agreed %}checked{% endif %}
+                                                        autocomplete="off"
+                                                        required
+                                                />
+                                                <label
+                                                        class="btn btn-outline-primary"
+                                                        for="inclusion-of-alumni-accept"
+                                                >Accept</label
+                                                >
+                                                <input
+                                                        type="radio"
+                                                        class="btn-check"
+                                                        name="inclusion-of-alumni-action"
+                                                        id="inclusion-of-alumni-reject"
+                                                        value="reject"
+                                                        {% if not file.inclusion_of_alumni_marks.ro2_agreed %}checked{% endif %}
+                                                        autocomplete="off"
+                                                        required
+                                                />
+                                                <label
+                                                        class="btn btn-outline-danger"
+                                                        for="inclusion-of-alumni-reject"
+                                                >Reject</label
+                                                >
+                                            </div>
+                                            <input class="form-control mt-2 individual-max cannotBeZeroOnAccept"
+                                                   type="number" step="0.1" min="0"
+                                                   data-old="{{ file.inclusion_of_alumni_marks.ro2 }}"
+                                                   placeholder="Enter Marks"
+                                                   max="{{ file.configuration.inclusion_of_alumni_max_marks }}"
+                                                   id="inclusion-of-alumni-marks"
+                                                   name="inclusion-of-alumni-marks"
+                                                   value="{{ file.inclusion_of_alumni_marks.ro2 }}" required/>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                         <div class="card mt-5 prepopulated">
                             <h5 class="card-header">Exam Duty</h5>
@@ -462,6 +584,9 @@
                         <div class="card mt-3 prepopulated">
                             <h5 class="card-header"><b>1.E</b> Books and Publications
                             </h5>
+                        <div class="alert alert-secondary ms-3 me-3">Applies to only 1 Book of any category & 2
+                                Chapters of any category
+                            </div>
                             <div class="table-responsive">
                                 <table class="table table-striped table-hover table-bordered">
                                     <thead>
@@ -563,7 +688,8 @@
                                 <div class="card-body">
 
                                     <p class="card-text">
-                                        If you want to save this parameter, please click the "Save and Next" button below.
+                                        If you want to save this parameter, please click the "Save and Next" button
+                                        below.
 
                                     </p>
                                     <div class="content-wrapper">
@@ -632,6 +758,8 @@
     {#    initializeAddTableForm(table);#}
     {# });#}
     initializeAcceptRejectDisable("teaching-methods-accept", "teaching-methods-reject", "modern-methods-marks");
+    initializeAcceptRejectDisable("upkeep-of-course-files-accept", "upkeep-of-course-files-reject", "upkeep-of-course-files-marks");
+    initializeAcceptRejectDisable("inclusion-of-alumni-accept", "inclusion-of-alumni-reject", "inclusion-of-alumni-marks");
     $("#form-submit").submit(function (e) {
         e.preventDefault();
         const data = {};

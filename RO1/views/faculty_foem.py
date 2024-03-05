@@ -53,6 +53,14 @@ class RO1FacultyFOEMViewSet:
             file.modern_teaching_methods.marks.save()
             file.modern_teaching_methods.save()
 
+        if file.upkeep_of_course_files_marks is None:
+            file.upkeep_of_course_files_marks = MarkField()
+            file.upkeep_of_course_files_marks.save()
+
+        if file.inclusion_of_alumni_marks is None:
+            file.inclusion_of_alumni_marks = MarkField()
+            file.inclusion_of_alumni_marks.save()
+
         if file.exam_duty.marks is None:
             file.exam_duty.marks = MarkField()
             file.exam_duty.marks.save()
@@ -75,6 +83,22 @@ class RO1FacultyFOEMViewSet:
             if request.POST.get('teaching-methods-action') == 'reject':
                 file.modern_teaching_methods.marks.ro1_agreed = False
             file.modern_teaching_methods.marks.save()
+
+            file.upkeep_of_course_files_marks.ro1_remarks = request.POST.get('upkeep-of-course-files-remarks')
+            file.upkeep_of_course_files_marks.ro1 = float(request.POST.get('upkeep-of-course-files-marks'))
+            if request.POST.get('upkeep-of-course-files-action') == 'accept':
+                file.upkeep_of_course_files_marks.ro1_agreed = True
+            if request.POST.get('upkeep-of-course-files-action') == 'reject':
+                file.upkeep_of_course_files_marks.ro1_agreed = False
+            file.upkeep_of_course_files_marks.save()
+
+            file.inclusion_of_alumni_marks.ro1_remarks = request.POST.get('inclusion-of-alumni-remarks')
+            file.inclusion_of_alumni_marks.ro1 = float(request.POST.get('inclusion-of-alumni-marks'))
+            if request.POST.get('inclusion-of-alumni-action') == 'accept':
+                file.inclusion_of_alumni_marks.ro1_agreed = True
+            if request.POST.get('inclusion-of-alumni-action') == 'reject':
+                file.inclusion_of_alumni_marks.ro1_agreed = False
+            file.inclusion_of_alumni_marks.save()
 
             existing_books = list(file.textbooks.all())
             for i in range(len(existing_books)):
@@ -945,6 +969,8 @@ class RO1FacultyFOEMViewSet:
         context['can_submit'] = file.ro1_validator.is_valid_for_ro(
             file.user.designation_abbreviation == 'assistant_prof_on_contract')
 
+        context['academic_practices'] = engine.calculateAcademicPractices()
+
         return render(request, "html/r1/faculty/foem/review.html", context)
 
     @staticmethod
@@ -1080,8 +1106,8 @@ class FacultyHelperFunctions:
         else:
             result['grade'] = 'BELOW AVERAGE'
 
-        if teaching_total < 65 and result['grade'] != 'BELOW AVERAGE':
-            result['grade'] = 'AVERAGE'
+        if teaching_total < file.configuration.section_1_minimum_marks and result['grade'] != 'OUTSTANDING':
+            result['grade'] = 'GOOD'
         return result
 
     @staticmethod

@@ -388,11 +388,8 @@ class FacultyViewSet:
                 file.modern_teaching_methods.save()
                 file.save()
             file.modern_teaching_methods.flip_classes = request.POST.get('teaching-flip-classes')
-            file.modern_teaching_methods.case_study = request.POST.get('teaching-case-study')
-            file.modern_teaching_methods.technology_integration = request.POST.get('teaching-technology-integration')
-            file.modern_teaching_methods.design_thinking = request.POST.get('teaching-design-thinking')
-            file.modern_teaching_methods.project_based_teaching = request.POST.get('teaching-project-based-teaching')
-            file.modern_teaching_methods.other = request.POST.get('teaching-any-other')
+            file.upkeep_of_course_files = request.POST.get('upkeep-of-course-files')
+            file.inclusion_of_alumni = request.POST.get('inclusion-of-alumni')
             file.modern_teaching_methods.save()
             file.save()
 

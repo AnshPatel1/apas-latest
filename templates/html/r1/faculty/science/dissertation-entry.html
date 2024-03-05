@@ -249,10 +249,10 @@
                                 </div>
                             </div>
                         </div>
-                        {% if file.file_level == 'RO1' and cycle.name == 'r1_approval' %}
+                    {% if file.file_level == 'RO1' and cycle.name == 'r1_approval' %}
                             {% csrf_token %}
-                            <hr class="my-0 mt-3">
-                            <div class="card mt-5">
+                        <hr class="my-0 mt-3">
+                        <div class="card mt-5">
                             <h5 class="card-header">Submission</h5>
 
                             <hr class="m-0"/>
@@ -281,7 +281,7 @@
                                 </div>
                             </div>
                         </div>
-                        {% endif %}
+                    {% endif %}
                     </form>
                 </div>
             </div>

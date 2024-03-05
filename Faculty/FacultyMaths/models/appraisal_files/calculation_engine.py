@@ -1,4 +1,5 @@
-from . import MathAssistantProfOnContractAppraisalFile, MathAssistantProfAppraisalFile, MathAssociateProfAppraisalFile, MathProfAppraisalFile
+from . import MathAssistantProfOnContractAppraisalFile, MathAssistantProfAppraisalFile, MathAssociateProfAppraisalFile, \
+    MathProfAppraisalFile
 from .. import MarkField
 
 
@@ -7,7 +8,8 @@ class CalculationEngine:
     that can be used to calculate the value of an appraisal.
     """
 
-    def __init__(self, file: MathAssistantProfOnContractAppraisalFile | MathAssistantProfAppraisalFile | MathAssociateProfAppraisalFile | MathProfAppraisalFile):
+    def __init__(self,
+                 file: MathAssistantProfOnContractAppraisalFile | MathAssistantProfAppraisalFile | MathAssociateProfAppraisalFile | MathProfAppraisalFile):
         # self.is_on_contract = is_on_contract
         self.file = file
 
@@ -32,23 +34,29 @@ class CalculationEngine:
         total += self.calculateTeachingLoad()
         total += self.calculateStudentFeedback()
         total += self.calculateBooksAndPublications()
-        total += self.file.modern_teaching_methods.marks.ro1
+        total += self.calculateAcademicPractices()
         total += self.calculateExaminationDuty()
         return total
 
     def calculateTeachingLoad(self):
         tl_avg = (self.file.teaching_load.semester_odd + self.file.teaching_load.semester_even) / 2
         if tl_avg >= self.file.configuration.teaching_load_upper_limit:
-            return round(self.file.configuration.teaching_load_upper_limit * self.file.configuration.teaching_load_t_coefficient, 0)
+            return round(
+                self.file.configuration.teaching_load_upper_limit * self.file.configuration.teaching_load_t_coefficient,
+                0)
         elif tl_avg <= self.file.configuration.teaching_load_lower_limit:
-            return round(self.file.configuration.teaching_load_lower_limit * self.file.configuration.teaching_load_t_coefficient, 0)
+            return round(
+                self.file.configuration.teaching_load_lower_limit * self.file.configuration.teaching_load_t_coefficient,
+                0)
         else:
             return round(tl_avg * self.file.configuration.teaching_load_t_coefficient, 0)
 
     def calculateStudentFeedback(self):
         st_load = self.file.student_feedback
         if st_load <= self.file.configuration.students_feedback_lower_limit:
-            return round(self.file.configuration.students_feedback_lower_limit * self.file.configuration.students_feedback_s_coefficient, 0)
+            return round(
+                self.file.configuration.students_feedback_lower_limit * self.file.configuration.students_feedback_s_coefficient,
+                0)
         else:
             return round(st_load * self.file.configuration.students_feedback_s_coefficient, 0)
 
@@ -63,14 +71,18 @@ class CalculationEngine:
     def calculateBooksAndPublications(self):
         # research based on books and publications
         total = 0
+        _books = []  # new
+        _chapters = []  # new
         for book in self.file.research_books.all():
             if book.marks.ro1_agreed:
                 if book.type == 'book':
                     total += self.file.configuration.section_1e_i_per_book_per_author
                     book.marks.ro1 = self.file.configuration.section_1e_i_per_book_per_author
+                    _books.append(self.file.configuration.section_1e_i_per_book_per_author)  # new
                 else:
                     total += self.file.configuration.section_1e_i_per_chapter
                     book.marks.ro1 = self.file.configuration.section_1e_i_per_chapter
+                    _chapters.append(self.file.configuration.section_1e_i_per_chapter)  # new
             else:
                 book.marks.ro1 = 0
             book.marks.save()
@@ -80,17 +92,32 @@ class CalculationEngine:
                     if book.publication_level == 'national':
                         total += self.file.configuration.section_1e_ii_per_national_book_per_author
                         book.marks.ro1 = self.file.configuration.section_1e_ii_per_national_book_per_author
+                        _books.append(self.file.configuration.section_1e_ii_per_national_book_per_author)  # new
 
                     elif book.publication_level == 'international':
                         total += self.file.configuration.section_1e_ii_per_international_book_per_author
                         book.marks.ro1 = self.file.configuration.section_1e_ii_per_international_book_per_author
+                        _books.append(self.file.configuration.section_1e_ii_per_international_book_per_author)  # new
                 else:
                     total += self.file.configuration.section_1e_ii_per_chapter
                     book.marks.ro1 = self.file.configuration.section_1e_ii_per_chapter
+                    _chapters.append(self.file.configuration.section_1e_ii_per_chapter)  # new
             else:
                 book.marks.ro1 = 0
             book.marks.save()
-        return total
+        _total = 0  # new
+        _books.sort(reverse=True)  # new
+        _chapters.sort(reverse=True)  # new
+        if len(_books) > 0:  # new
+            _total += _books[0]  # new
+        if len(_chapters) > 0:  # new
+            _total += _chapters[0]  # new
+        if len(_chapters) > 1:  # new
+            _total += _chapters[1]  # new
+        return _total  # new
+
+    def calculateAcademicPractices(self):
+        return self.file.modern_teaching_methods.marks.ro1 + self.file.upkeep_of_course_files_marks.ro1 + self.file.inclusion_of_alumni_marks.ro1
 
     def calculateSection2(self):
         total = 0
@@ -100,6 +127,7 @@ class CalculationEngine:
         print('Projects: ', total)
         if not self.file.user.designation_abbreviation == 'assistant_prof_on_contract':
             total += self.calculatePhDGuidance()
+        total += self.calculateDissertationAll()
         total += self.calculateAwards()
         print('Awards: ', total)
         total += self.calculateAcademiaCollaboration()
@@ -139,20 +167,30 @@ class CalculationEngine:
                 else:
                     if paper.category == 'scopus':
                         if paper.quality == 'q1':
-                            total += (self.file.configuration.section_2a_a_i_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
-                            paper.marks.ro1 = (self.file.configuration.section_2a_a_i_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
+                            total += (
+                                        self.file.configuration.section_2a_a_i_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
+                            paper.marks.ro1 = (
+                                        self.file.configuration.section_2a_a_i_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q2':
-                            total += (self.file.configuration.section_2a_a_i_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
-                            paper.marks.ro1 = (self.file.configuration.section_2a_a_i_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
+                            total += (
+                                        self.file.configuration.section_2a_a_i_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
+                            paper.marks.ro1 = (
+                                        self.file.configuration.section_2a_a_i_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q3':
-                            total += (self.file.configuration.section_2a_a_i_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
-                            paper.marks.ro1 = (self.file.configuration.section_2a_a_i_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
+                            total += (
+                                        self.file.configuration.section_2a_a_i_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
+                            paper.marks.ro1 = (
+                                        self.file.configuration.section_2a_a_i_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q4':
-                            total += (self.file.configuration.section_2a_a_i_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
-                            paper.marks.ro1 = (self.file.configuration.section_2a_a_i_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
+                            total += (
+                                        self.file.configuration.section_2a_a_i_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
+                            paper.marks.ro1 = (
+                                        self.file.configuration.section_2a_a_i_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
                     elif paper.category == 'wos':
-                        total += (self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
-                        paper.marks.ro1 = (self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
+                        total += (
+                                    self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
+                        paper.marks.ro1 = (
+                                    self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
             else:
                 paper.marks.ro1 = 0
             paper.marks.save()
@@ -184,20 +222,30 @@ class CalculationEngine:
                 else:
                     if paper.category == 'scopus':
                         if paper.quality == 'q1':
-                            total += (self.file.configuration.section_2a_a_ii_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
-                            paper.marks.ro1 = (self.file.configuration.section_2a_a_ii_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
+                            total += (
+                                        self.file.configuration.section_2a_a_ii_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
+                            paper.marks.ro1 = (
+                                        self.file.configuration.section_2a_a_ii_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q2':
-                            total += (self.file.configuration.section_2a_a_ii_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
-                            paper.marks.ro1 = (self.file.configuration.section_2a_a_ii_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
+                            total += (
+                                        self.file.configuration.section_2a_a_ii_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
+                            paper.marks.ro1 = (
+                                        self.file.configuration.section_2a_a_ii_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q3':
-                            total += (self.file.configuration.section_2a_a_ii_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
-                            paper.marks.ro1 = (self.file.configuration.section_2a_a_ii_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
+                            total += (
+                                        self.file.configuration.section_2a_a_ii_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
+                            paper.marks.ro1 = (
+                                        self.file.configuration.section_2a_a_ii_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q4':
-                            total += (self.file.configuration.section_2a_a_ii_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
-                            paper.marks.ro1 = (self.file.configuration.section_2a_a_ii_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
+                            total += (
+                                        self.file.configuration.section_2a_a_ii_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
+                            paper.marks.ro1 = (
+                                        self.file.configuration.section_2a_a_ii_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
                     elif paper.category == 'wos':
-                        total += (self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
-                        paper.marks.ro1 = (self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
+                        total += (
+                                    self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
+                        paper.marks.ro1 = (
+                                    self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
             else:
                 paper.marks.ro1 = 0
             paper.marks.save()
@@ -285,39 +333,33 @@ class CalculationEngine:
 
         return round(total, 2)
 
-    # def calculateDissertationAll(self):
-    #     return self.calculateBachelorsDissertation() + self.calculateMastersThesis()
-    #
-    # def calculateBachelorsDissertation(self):
-    #     total = 0
-    #     count = 0
-    #     for dissertation in self.file.bachelors_dissertation.all():
-    #         if dissertation.marks.ro1_agreed and dissertation.is_awarded and count <= 10:
-    #             count += 1
-    #             total += self.file.configuration.section_2c_i_marks_per_dissertation_awarded
-    #             dissertation.marks.ro1 = self.file.configuration.section_2c_i_marks_per_dissertation_awarded
-    #         dissertation.marks.save()
-    #     return round(total, 2)
-    #
-    # def calculateMastersThesis(self):
-    #     total = 0
-    #     count = 0
-    #     for thesis in self.file.masters_thesis.all():
-    #         if thesis.marks.ro1_agreed and count <= 2:
-    #             count += 1
-    #             if thesis.status == 'submitted':
-    #                 total += self.file.configuration.section_2c_ii_marks_per_thesis_submitted
-    #                 thesis.marks.ro1 = self.file.configuration.section_2c_ii_marks_per_thesis_submitted
-    #             elif thesis.status == 'submitted_patent_published':
-    #                 total += self.file.configuration.section_2c_ii_marks_per_thesis_submitted_and_patent_granted
-    #                 thesis.marks.ro1 = self.file.configuration.section_2c_ii_marks_per_thesis_submitted_and_patent_granted
-    #             elif thesis.status == 'submitted_patent_papers_published':
-    #                 total += self.file.configuration.section_2c_ii_marks_per_thesis_submitted_and_papers_published
-    #                 thesis.marks.ro1 = self.file.configuration.section_2c_ii_marks_per_thesis_submitted_and_papers_published
-    #         else:
-    #             thesis.marks.ro1 = 0
-    #         thesis.marks.save()
-    #     return round(total, 2)
+    def calculateDissertationAll(self):
+        return self.calculateBachelorsDissertation() + self.calculateMastersThesis()
+
+    def calculateBachelorsDissertation(self):
+        total = 0
+        count = 0
+        for dissertation in self.file.bachelors_dissertation.all():
+            if dissertation.marks.ro1_agreed and dissertation.is_awarded and count <= 10:
+                count += 1
+                total += self.file.configuration.section_2c_i_marks_per_dissertation_awarded
+                dissertation.marks.ro1 = self.file.configuration.section_2c_i_marks_per_dissertation_awarded
+            dissertation.marks.save()
+        return round(total, 2)
+
+    def calculateMastersThesis(self):
+        total = 0
+        count = 0
+        for thesis in self.file.masters_thesis.all():
+            if thesis.marks.ro1_agreed and count <= 2:
+                count += 1
+                if thesis.status == 'submitted':
+                    total += self.file.configuration.section_2c_ii_marks_per_thesis_submitted
+                    thesis.marks.ro1 = self.file.configuration.section_2c_ii_marks_per_thesis_submitted
+            else:
+                thesis.marks.ro1 = 0
+            thesis.marks.save()
+        return round(total, 2)
 
     # def calculateSectionD(self):
     #     patent_marks = self.calculatePatent()
@@ -524,7 +566,8 @@ class CalculationEngineR2:
     that can be used to calculate the value of an appraisal.
     """
 
-    def __init__(self, file: MathAssistantProfOnContractAppraisalFile | MathAssistantProfAppraisalFile | MathAssociateProfAppraisalFile | MathProfAppraisalFile):
+    def __init__(self,
+                 file: MathAssistantProfOnContractAppraisalFile | MathAssistantProfAppraisalFile | MathAssociateProfAppraisalFile | MathProfAppraisalFile):
         # self.is_on_contract = is_on_contract
         self.file = file
 
@@ -549,23 +592,29 @@ class CalculationEngineR2:
         total += self.calculateTeachingLoad()
         total += self.calculateStudentFeedback()
         total += self.calculateBooksAndPublications()
-        total += self.file.modern_teaching_methods.marks.ro2
+        total += self.calculateAcademicPractices()
         total += self.calculateExaminationDuty()
         return total
 
     def calculateTeachingLoad(self):
         tl_avg = (self.file.teaching_load.semester_odd + self.file.teaching_load.semester_even) / 2
         if tl_avg >= self.file.configuration.teaching_load_upper_limit:
-            return round(self.file.configuration.teaching_load_upper_limit * self.file.configuration.teaching_load_t_coefficient, 0)
+            return round(
+                self.file.configuration.teaching_load_upper_limit * self.file.configuration.teaching_load_t_coefficient,
+                0)
         elif tl_avg <= self.file.configuration.teaching_load_lower_limit:
-            return round(self.file.configuration.teaching_load_lower_limit * self.file.configuration.teaching_load_t_coefficient, 0)
+            return round(
+                self.file.configuration.teaching_load_lower_limit * self.file.configuration.teaching_load_t_coefficient,
+                0)
         else:
             return round(tl_avg * self.file.configuration.teaching_load_t_coefficient, 0)
 
     def calculateStudentFeedback(self):
         st_load = self.file.student_feedback
         if st_load <= self.file.configuration.students_feedback_lower_limit:
-            return round(self.file.configuration.students_feedback_lower_limit * self.file.configuration.students_feedback_s_coefficient, 0)
+            return round(
+                self.file.configuration.students_feedback_lower_limit * self.file.configuration.students_feedback_s_coefficient,
+                0)
         else:
             return round(st_load * self.file.configuration.students_feedback_s_coefficient, 0)
 
@@ -580,14 +629,18 @@ class CalculationEngineR2:
     def calculateBooksAndPublications(self):
         # research based on books and publications
         total = 0
+        _books = []  # new
+        _chapters = []  # new
         for book in self.file.research_books.all():
             if book.marks.ro2_agreed:
                 if book.type == 'book':
                     total += self.file.configuration.section_1e_i_per_book_per_author
                     book.marks.ro2 = self.file.configuration.section_1e_i_per_book_per_author
+                    _books.append(self.file.configuration.section_1e_i_per_book_per_author)  # new
                 else:
                     total += self.file.configuration.section_1e_i_per_chapter
                     book.marks.ro2 = self.file.configuration.section_1e_i_per_chapter
+                    _chapters.append(self.file.configuration.section_1e_i_per_chapter)
             else:
                 book.marks.ro2 = 0
             book.marks.save()
@@ -597,17 +650,32 @@ class CalculationEngineR2:
                     if book.publication_level == 'national':
                         total += self.file.configuration.section_1e_ii_per_national_book_per_author
                         book.marks.ro2 = self.file.configuration.section_1e_ii_per_national_book_per_author
+                        _books.append(self.file.configuration.section_1e_ii_per_national_book_per_author)  # new
 
                     elif book.publication_level == 'international':
                         total += self.file.configuration.section_1e_ii_per_international_book_per_author
                         book.marks.ro2 = self.file.configuration.section_1e_ii_per_international_book_per_author
+                        _books.append(self.file.configuration.section_1e_ii_per_international_book_per_author)  # new
                 else:
                     total += self.file.configuration.section_1e_ii_per_chapter
                     book.marks.ro2 = self.file.configuration.section_1e_ii_per_chapter
+                    _chapters.append(self.file.configuration.section_1e_ii_per_chapter)  # new
             else:
                 book.marks.ro2 = 0
             book.marks.save()
-        return total
+        _total = 0  # new
+        _books.sort(reverse=True)  # new
+        _chapters.sort(reverse=True)  # new
+        if len(_books) > 0:  # new
+            _total += _books[0]  # new
+        if len(_chapters) > 0:  # new
+            _total += _chapters[0]  # new
+        if len(_chapters) > 1:  # new
+            _total += _chapters[1]  # new
+        return _total  # new
+
+    def calculateAcademicPractices(self):
+        return self.file.modern_teaching_methods.marks.ro2 + self.file.upkeep_of_course_files_marks.ro2 + self.file.inclusion_of_alumni_marks.ro2
 
     def calculateSection2(self):
         total = 0
@@ -615,6 +683,7 @@ class CalculationEngineR2:
         total += self.calculateProjects()
         if not self.file.user.designation_abbreviation == 'assistant_prof_on_contract':
             total += self.calculatePhDGuidance()
+        total += self.calculateDissertationAll()
         total += self.calculateAwards()
         total += self.calculateAcademiaCollaboration()
         return total
@@ -652,20 +721,30 @@ class CalculationEngineR2:
                 else:
                     if paper.category == 'scopus':
                         if paper.quality == 'q1':
-                            total += (self.file.configuration.section_2a_a_i_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
-                            paper.marks.ro2 = (self.file.configuration.section_2a_a_i_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
+                            total += (
+                                        self.file.configuration.section_2a_a_i_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
+                            paper.marks.ro2 = (
+                                        self.file.configuration.section_2a_a_i_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q2':
-                            total += (self.file.configuration.section_2a_a_i_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
-                            paper.marks.ro2 = (self.file.configuration.section_2a_a_i_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
+                            total += (
+                                        self.file.configuration.section_2a_a_i_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
+                            paper.marks.ro2 = (
+                                        self.file.configuration.section_2a_a_i_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q3':
-                            total += (self.file.configuration.section_2a_a_i_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
-                            paper.marks.ro2 = (self.file.configuration.section_2a_a_i_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
+                            total += (
+                                        self.file.configuration.section_2a_a_i_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
+                            paper.marks.ro2 = (
+                                        self.file.configuration.section_2a_a_i_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q4':
-                            total += (self.file.configuration.section_2a_a_i_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
-                            paper.marks.ro2 = (self.file.configuration.section_2a_a_i_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
+                            total += (
+                                        self.file.configuration.section_2a_a_i_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
+                            paper.marks.ro2 = (
+                                        self.file.configuration.section_2a_a_i_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
                     elif paper.category == 'wos':
-                        total += (self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
-                        paper.marks.ro2 = (self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
+                        total += (
+                                    self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
+                        paper.marks.ro2 = (
+                                    self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
             else:
                 paper.marks.ro2 = 0
             paper.marks.save()
@@ -697,20 +776,30 @@ class CalculationEngineR2:
                 else:
                     if paper.category == 'scopus':
                         if paper.quality == 'q1':
-                            total += (self.file.configuration.section_2a_a_ii_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
-                            paper.marks.ro2 = (self.file.configuration.section_2a_a_ii_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
+                            total += (
+                                        self.file.configuration.section_2a_a_ii_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
+                            paper.marks.ro2 = (
+                                        self.file.configuration.section_2a_a_ii_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q2':
-                            total += (self.file.configuration.section_2a_a_ii_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
-                            paper.marks.ro2 = (self.file.configuration.section_2a_a_ii_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
+                            total += (
+                                        self.file.configuration.section_2a_a_ii_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
+                            paper.marks.ro2 = (
+                                        self.file.configuration.section_2a_a_ii_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q3':
-                            total += (self.file.configuration.section_2a_a_ii_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
-                            paper.marks.ro2 = (self.file.configuration.section_2a_a_ii_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
+                            total += (
+                                        self.file.configuration.section_2a_a_ii_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
+                            paper.marks.ro2 = (
+                                        self.file.configuration.section_2a_a_ii_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q4':
-                            total += (self.file.configuration.section_2a_a_ii_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
-                            paper.marks.ro2 = (self.file.configuration.section_2a_a_ii_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
+                            total += (
+                                        self.file.configuration.section_2a_a_ii_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
+                            paper.marks.ro2 = (
+                                        self.file.configuration.section_2a_a_ii_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
                     elif paper.category == 'wos':
-                        total += (self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
-                        paper.marks.ro2 = (self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
+                        total += (
+                                    self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
+                        paper.marks.ro2 = (
+                                    self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
             else:
                 paper.marks.ro2 = 0
             paper.marks.save()
@@ -800,40 +889,34 @@ class CalculationEngineR2:
 
         return round(total, 2)
 
-    # def calculateDissertationAll(self):
-    #     return self.calculateBachelorsDissertation() + self.calculateMastersThesis()
-    #
-    # def calculateBachelorsDissertation(self):
-    #     total = 0
-    #     count = 0
-    #     for dissertation in self.file.bachelors_dissertation.all():
-    #         if dissertation.marks.ro2_agreed and dissertation.is_awarded and count <= 10:
-    #             count += 1
-    #             total += self.file.configuration.section_2c_i_marks_per_dissertation_awarded
-    #             dissertation.marks.ro2 = self.file.configuration.section_2c_i_marks_per_dissertation_awarded
-    #         dissertation.marks.save()
-    #     return round(total, 2)
-    #
-    # def calculateMastersThesis(self):
-    #     total = 0
-    #     count = 0
-    #     for thesis in self.file.masters_thesis.all():
-    #         if thesis.marks.ro2_agreed and count <= 2:
-    #             count += 1
-    #             if thesis.status == 'submitted':
-    #                 total += self.file.configuration.section_2c_ii_marks_per_thesis_submitted
-    #                 thesis.marks.ro2 = self.file.configuration.section_2c_ii_marks_per_thesis_submitted
-    #             elif thesis.status == 'submitted_patent_published':
-    #                 total += self.file.configuration.section_2c_ii_marks_per_thesis_submitted_and_patent_granted
-    #                 thesis.marks.ro2 = self.file.configuration.section_2c_ii_marks_per_thesis_submitted_and_patent_granted
-    #             elif thesis.status == 'submitted_patent_papers_published':
-    #                 total += self.file.configuration.section_2c_ii_marks_per_thesis_submitted_and_papers_published
-    #                 thesis.marks.ro2 = self.file.configuration.section_2c_ii_marks_per_thesis_submitted_and_papers_published
-    #         else:
-    #             thesis.marks.ro2 = 0
-    #         thesis.marks.save()
-    #     return round(total, 2)
-    #
+    def calculateDissertationAll(self):
+        return self.calculateBachelorsDissertation() + self.calculateMastersThesis()
+
+    def calculateBachelorsDissertation(self):
+        total = 0
+        count = 0
+        for dissertation in self.file.bachelors_dissertation.all():
+            if dissertation.marks.ro2_agreed and dissertation.is_awarded and count <= 10:
+                count += 1
+                total += self.file.configuration.section_2c_i_marks_per_dissertation_awarded
+                dissertation.marks.ro2 = self.file.configuration.section_2c_i_marks_per_dissertation_awarded
+            dissertation.marks.save()
+        return round(total, 2)
+
+    def calculateMastersThesis(self):
+        total = 0
+        count = 0
+        for thesis in self.file.masters_thesis.all():
+            if thesis.marks.ro2_agreed and count <= 2:
+                count += 1
+                if thesis.status == 'submitted':
+                    total += self.file.configuration.section_2c_ii_marks_per_thesis_submitted
+                    thesis.marks.ro2 = self.file.configuration.section_2c_ii_marks_per_thesis_submitted
+            else:
+                thesis.marks.ro2 = 0
+            thesis.marks.save()
+        return round(total, 2)
+
     # def calculateSectionD(self):
     #     patent_marks = self.calculatePatent()
     #

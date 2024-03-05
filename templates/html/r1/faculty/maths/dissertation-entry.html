@@ -249,38 +249,39 @@
                                 </div>
                             </div>
                         </div>
-                        {% if file.file_level == 'RO1' and cycle.name == 'r1_approval' %}
+                    {% if file.file_level == 'RO1' and cycle.name == 'r1_approval' %}
                             {% csrf_token %}
-                            <hr class="my-0 mt-3">
-                            <div class="card mt-5">
-                                <h5 class="card-header">Submission</h5>
+                        <hr class="my-0 mt-3">
+                        <div class="card mt-5">
+                            <h5 class="card-header">Submission</h5>
 
-                                <hr class="m-0"/>
-                                <div class="card-body">
+                            <hr class="m-0"/>
+                            <div class="card-body">
 
-                                    <p class="card-text">
-                                        If you want to save this parameter, please click the "Save and Next" button below.
-                                    </p>
-                                    <div class="content-wrapper">
+                                <p class="card-text">
+                                    If you want to save this parameter, please click the "Save and Next" button below.
 
-                                        <!-- Content -->
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <button id="tbl-btn" class="btn btn-success col-12 submit-btn"
-                                                        data-bs-offset="0,4"
-                                                        data-bs-placement="top"
-                                                        data-bs-html="true"
-                                                        data-after="/patent/"
-                                                        type="submit">
-                                                    <span class="tf-icons bx bx-check-circle"></span>&nbsp; Save and Next
+                                </p>
+                                <div class="content-wrapper">
 
-                                                </button>
-                                            </div>
+                                    <!-- Content -->
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <button id="tbl-btn" class="btn btn-success col-12 submit-btn"
+                                                    data-bs-offset="0,4"
+                                                    data-bs-placement="top"
+                                                    data-bs-html="true"
+                                                    data-after="/patent/"
+                                                    type="submit">
+                                                <span class="tf-icons bx bx-check-circle"></span>&nbsp; Save and Next
+
+                                            </button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        {% endif %}
+                        </div>
+                    {% endif %}
                     </form>
                 </div>
             </div>

@@ -7,16 +7,16 @@ class FOEMGoalSheetAssociateProf(models.Model):
     year = models.IntegerField()
     is_active = models.BooleanField(default=False)
 
-    grand_total = models.IntegerField(default=396)
+    grand_total = models.IntegerField(default=360)
 
     # ||||||||||||||||||||||   PART A   ||||||||||||||||||||||
     # TOTAL FOR PART A (SECTION 1 TO 4) SHOULD BE 307
-    part_a_total = models.IntegerField(default=356)
+    part_a_total = models.IntegerField(default=315)
 
     # ======================   Section 1: Teaching (TCS iON)   ======================
     # Configurations for Section 1
-    section_1_minimum_marks = models.IntegerField(default=65)
-    section_1_maximum_marks = models.IntegerField(default=93)
+    section_1_minimum_marks = models.IntegerField(default=75)
+    section_1_maximum_marks = models.IntegerField(default=105)
 
     # Section 1.A: Teaching Load
     # If teaching load is >=14 then 42 marks
@@ -30,22 +30,24 @@ class FOEMGoalSheetAssociateProf(models.Model):
 
     # ------- Section 1.B: Students Feedback (TCS iON) -------
 
-    students_feedback_s_coefficient = models.FloatField(default=2.4)
+    students_feedback_s_coefficient = models.FloatField(default=3)
     students_feedback_lower_limit = models.IntegerField(default=3)
 
-    # ------- Section 1.C: Modern Methods Of Teaching (RO/ RV) -------
+    # ------- Section 1.C: Academic Practices (RO/ RV) -------
     modern_methods_of_teaching_max_marks = models.IntegerField(default=10)
+    upkeep_of_course_files_max_marks = models.IntegerField(default=3)
+    inclusion_of_alumni_max_marks = models.IntegerField(default=5)
 
     # ------- Section 1.D (Exam Cell) -------
-    section_1d_max_marks = models.IntegerField(default=20)
+    section_1d_max_marks = models.IntegerField(default=30)
     #   Section 1.D(a): Teaching Innovation
-    timely_invigilation = models.IntegerField(default=5)
+    timely_invigilation = models.IntegerField(default=7)
     #   Section 1.D(b): Paper Setting
-    paper_setting = models.IntegerField(default=5)
+    paper_setting = models.IntegerField(default=8)
     #   Section 1.D(c): Teaching Innovation
-    evaluation = models.IntegerField(default=5)
+    evaluation = models.IntegerField(default=8)
     #   Section 1.D(d): Teaching Innovation
-    result_submission = models.IntegerField(default=5)
+    result_submission = models.IntegerField(default=7)
 
     # ------- Section 1.E: Books and Publications (RIMS / Dean Office) -------
     #  Section 1.E(i): Research based books or monographs
@@ -69,7 +71,7 @@ class FOEMGoalSheetAssociateProf(models.Model):
 
     # ======================   Section 2: Research And Publications/Patents   ======================
     # Section 2 Configurations:
-    section_2_subtotal = models.IntegerField(default=175)
+    section_2_subtotal = models.IntegerField(default=165)
     # ------- Section 2.A: Research Publications (RIMS / Dean Office) -------
     # Section 2.A Configurations:
     section_2a_subtotal = models.IntegerField(default=45)
@@ -135,9 +137,9 @@ class FOEMGoalSheetAssociateProf(models.Model):
     # 0 marks to be awarded for PhD guidance awarded
     # 0 marks to be awarded for PhD guidance Synopsis Submitted
     # 0 marks to be awarded for PhD guidance Under Progress
-    section_2b_phd_guidance_awarded = models.IntegerField(default=25)
-    section_2b_phd_guidance_synopsis_submitted = models.IntegerField(default=15)
-    section_2b_phd_guidance_under_progress = models.IntegerField(default=10)
+    section_2b_phd_guidance_awarded = models.IntegerField(default=20)
+    section_2b_phd_guidance_synopsis_submitted = models.IntegerField(default=10)
+    section_2b_phd_guidance_under_progress = models.IntegerField(default=5)
 
     section_2b_phd_guidance_external = models.IntegerField(default=5)
     section_2b_phd_guidance_external_max = models.IntegerField(default=2)
@@ -198,11 +200,11 @@ class FOEMGoalSheetAssociateProf(models.Model):
 
     # -------------- Section 2.F: Academia Collaboration (University/ Societies/ Research Organization) --------------
     #     Capped at 25 marks for both activities done
-    section_2f_academia_collaboration_max_marks = models.IntegerField(default=25)
+    section_2f_academia_collaboration_max_marks = models.IntegerField(default=20)
     #     5 marks to be given for MoU signed
     #     20 marks to be given for faculty contribution
     section_2f_mou_signed = models.IntegerField(default=5)
-    section_2f_faculty_contribution = models.IntegerField(default=20)
+    section_2f_faculty_contribution = models.IntegerField(default=15)
 
     # =============== Section 3: Administrative Activities ===============
     # Marks to be awarded by RO/RV

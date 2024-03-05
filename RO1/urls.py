@@ -152,6 +152,8 @@ urlpatterns = [
          name='ro1-faculty-maths-project-entry'),
     path('faculty/maths/<int:pk>/phd-guidance/', RO1FacultyMathViewSet.phd_guidance_entry,
          name='ro1-faculty-maths-phd-guidance-entry'),
+    path('faculty/maths/<int:pk>/dissertation/', RO1FacultyMathViewSet.dissertation_entry,
+         name='ro1-faculty-math-dissertation-entry'),
     path('faculty/maths/<int:pk>/award/', RO1FacultyMathViewSet.award_entry, name='ro1-faculty-maths-award-entry'),
     path('faculty/maths/<int:pk>/academia-collab/', RO1FacultyMathViewSet.academia_collab_entry,
          name='ro1-faculty-maths-academia-collab-entry'),

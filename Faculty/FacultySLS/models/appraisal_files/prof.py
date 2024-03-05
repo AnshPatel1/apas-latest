@@ -50,6 +50,13 @@ class FOLSProfAppraisalFile(models.Model):
     # PART A > SECTION 1 > SUBSECTION C (Modern Teaching Methods)
     modern_teaching_methods = models.ForeignKey('FacultySLS.ModernMethods', on_delete=models.CASCADE, related_name='sls_prof_modern_teaching_methods', null=True,
                                                 blank=True)
+    upkeep_of_course_files = models.TextField(null=True, blank=True)
+    upkeep_of_course_files_marks = models.ForeignKey('FacultySLS.MarkField', on_delete=models.CASCADE,
+                                                     related_name='prof_upkeep_of_course_files_marks', null=True,
+                                                     blank=True)
+    inclusion_of_alumni = models.TextField(null=True, blank=True)
+    inclusion_of_alumni_marks = models.ForeignKey('FacultySLS.MarkField', on_delete=models.CASCADE,
+                                                  related_name='prof_inclusion_of_alumni_marks', null=True, blank=True)
 
     # PART A > SECTION 1 > SUBSECTION D (Exam Duty)
     exam_duty = models.ForeignKey('FacultySLS.ExamDuty', on_delete=models.CASCADE, related_name='sls_prof_exam_duty_total_marks', null=True, blank=True)

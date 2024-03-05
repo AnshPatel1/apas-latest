@@ -47,8 +47,14 @@ class MathAssistantProfOnContractAppraisalFile(models.Model):
     student_feedback = models.FloatField(null=True, blank=True)
     student_feedback_marks = models.ForeignKey('FacultyMaths.MarkField', on_delete=models.CASCADE, related_name='math_student_feedback_marks', null=True, blank=True)
 
-    # PART A > SECTION 1 > SUBSECTION C (Modern Teaching Methods)
+    # PART A > SECTION 1 > SUBSECTION C (Academic Practices)
     modern_teaching_methods = models.ForeignKey('FacultyMaths.ModernMethods', on_delete=models.CASCADE, related_name='math_modern_teaching_methods', null=True, blank=True)
+    upkeep_of_course_files = models.TextField(null=True, blank=True)
+    upkeep_of_course_files_marks = models.ForeignKey('FacultyMaths.MarkField', on_delete=models.CASCADE,
+                                                     related_name='upkeep_of_course_files_marks', null=True, blank=True)
+    inclusion_of_alumni = models.TextField(null=True, blank=True)
+    inclusion_of_alumni_marks = models.ForeignKey('FacultyMaths.MarkField', on_delete=models.CASCADE,
+                                                  related_name='inclusion_of_alumni_marks', null=True, blank=True)
 
     # PART A > SECTION 1 > SUBSECTION D (Exam Duty)
     exam_duty = models.ForeignKey('FacultyMaths.ExamDuty', on_delete=models.CASCADE, related_name='math_exam_duty_total_marks', null=True, blank=True)
@@ -77,16 +83,16 @@ class MathAssistantProfOnContractAppraisalFile(models.Model):
     phd_guidance = models.ManyToManyField('FacultyMaths.PhDGuidance', related_name='math_phd_guidance', blank=True)
     # TODO: Check foet goalsheet row 50
 
-    # # PART A > SECTION 2 > SUBSECTION C (Dissertation)
-    # dissertation_total = models.ForeignKey('FacultyMaths.MarkField', on_delete=models.CASCADE, related_name='math_dissertation_total', null=True, blank=True)
-    #
-    # # bachelors_dissertation_available = models.BooleanField(default=True)
-    # # bachelors_dissertation_total = models.ForeignKey('FacultyMaths.MarkField', on_delete=models.CASCADE, related_name='math_bachelors_dissertation_total', null=True, blank=True)
-    # # bachelors_dissertation = models.ManyToManyField('FacultyMaths.BachelorsDissertation', related_name='math_bachelors_dissertation', blank=True)
-    #
-    # masters_thesis_available = models.BooleanField(default=True)
-    # masters_thesis_total = models.ForeignKey('FacultyMaths.MarkField', on_delete=models.CASCADE, related_name='math_masters_thesis_total', null=True, blank=True)
-    # masters_thesis = models.ManyToManyField('FacultyMaths.MastersDissertation', related_name='math_masters_thesis', blank=True)
+    # PART A > SECTION 2 > SUBSECTION C (Dissertation)
+    dissertation_total = models.ForeignKey('FacultyMaths.MarkField', on_delete=models.CASCADE, related_name='math_dissertation_total', null=True, blank=True)
+
+    bachelors_dissertation_available = models.BooleanField(default=True)
+    bachelors_dissertation_total = models.ForeignKey('FacultyMaths.MarkField', on_delete=models.CASCADE, related_name='math_bachelors_dissertation_total', null=True, blank=True)
+    bachelors_dissertation = models.ManyToManyField('FacultyMaths.BachelorsDissertation', related_name='math_bachelors_dissertation', blank=True)
+
+    masters_thesis_available = models.BooleanField(default=True)
+    masters_thesis_total = models.ForeignKey('FacultyMaths.MarkField', on_delete=models.CASCADE, related_name='math_masters_thesis_total', null=True, blank=True)
+    masters_thesis = models.ManyToManyField('FacultyMaths.MastersDissertation', related_name='math_masters_thesis', blank=True)
 
     # # PART A > SECTION 2 > SUBSECTION D (Patents)
     # patents_total = models.ForeignKey('FacultyMaths.MarkField', on_delete=models.CASCADE, related_name='math_patents_total', null=True, blank=True)

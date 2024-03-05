@@ -1,6 +1,7 @@
 from django.db import models
 
-from . import FOETAssistantProfOnContractAppraisalFile, FOETAssistantProfAppraisalFile, FOETAssociateProfAppraisalFile, FOETProfAppraisalFile
+from . import FOETAssistantProfOnContractAppraisalFile, FOETAssistantProfAppraisalFile, FOETAssociateProfAppraisalFile, \
+    FOETProfAppraisalFile
 from .. import MarkField
 
 
@@ -35,7 +36,7 @@ class CalculationEngine:
         total += self.calculateTeachingLoad()
         total += self.calculateStudentFeedback()
         total += self.calculateBooksAndPublications()
-        total += self.file.modern_teaching_methods.marks.ro1
+        total += self.calculateAcademicPractices()
         total += self.calculateExaminationDuty()
         return total
 
@@ -72,14 +73,19 @@ class CalculationEngine:
     def calculateBooksAndPublications(self):
         # research based on books and publications
         total = 0
+        _research_books = []  # new
+        _text_books = []  # new
+        _chapters = []  # new
         for book in self.file.research_books.all():
             if book.marks.ro1_agreed:
                 if book.type == 'book':
                     total += self.file.configuration.section_1e_i_per_book_per_author
                     book.marks.ro1 = self.file.configuration.section_1e_i_per_book_per_author
+                    _research_books.append(self.file.configuration.section_1e_i_per_book_per_author)  # new
                 else:
                     total += self.file.configuration.section_1e_i_per_chapter
                     book.marks.ro1 = self.file.configuration.section_1e_i_per_chapter
+                    _chapters.append(self.file.configuration.section_1e_i_per_chapter)  # new
             else:
                 book.marks.ro1 = 0
             book.marks.save()
@@ -89,17 +95,36 @@ class CalculationEngine:
                     if book.publication_level == 'national':
                         total += self.file.configuration.section_1e_ii_per_national_book_per_author
                         book.marks.ro1 = self.file.configuration.section_1e_ii_per_national_book_per_author
+                        _text_books.append(self.file.configuration.section_1e_ii_per_national_book_per_author)  # new
 
                     elif book.publication_level == 'international':
                         total += self.file.configuration.section_1e_ii_per_international_book_per_author
                         book.marks.ro1 = self.file.configuration.section_1e_ii_per_international_book_per_author
+                        _text_books.append(self.file.configuration.section_1e_ii_per_international_book_per_author)  # new
                 else:
                     total += self.file.configuration.section_1e_ii_per_chapter
                     book.marks.ro1 = self.file.configuration.section_1e_ii_per_chapter
+                    _chapters.append(self.file.configuration.section_1e_ii_per_chapter)  # new
             else:
                 book.marks.ro1 = 0
             book.marks.save()
-        return total
+        _total = 0  # new
+        _research_books.sort(reverse=True)  # new
+        _text_books.sort(reverse=True)  # new
+        _chapters.sort(reverse=True)  # new
+        if len(_research_books) > 0:  # new
+            _total += _research_books[0]  # new
+        elif len(_text_books) > 0:  # new
+            _total += _text_books[0]  # new
+        if len(_chapters) > 0:  # new
+            _total += _chapters[0]  # new
+        if len(_chapters) > 1:  # new
+            _total += _chapters[1]  # new
+        return _total  # new
+        # return total
+
+    def calculateAcademicPractices(self):
+        return self.file.modern_teaching_methods.marks.ro1 + self.file.upkeep_of_course_files_marks.ro1 + self.file.inclusion_of_alumni_marks.ro1
 
     def calculateSection2(self):
         total = 0
@@ -148,29 +173,29 @@ class CalculationEngine:
                     if paper.category == 'scopus':
                         if paper.quality == 'q1':
                             total += (
-                                        self.file.configuration.section_2a_a_i_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_i_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
                             paper.marks.ro1 = (
-                                        self.file.configuration.section_2a_a_i_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_i_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q2':
                             total += (
-                                        self.file.configuration.section_2a_a_i_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_i_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
                             paper.marks.ro1 = (
-                                        self.file.configuration.section_2a_a_i_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_i_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q3':
                             total += (
-                                        self.file.configuration.section_2a_a_i_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_i_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
                             paper.marks.ro1 = (
-                                        self.file.configuration.section_2a_a_i_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_i_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q4':
                             total += (
-                                        self.file.configuration.section_2a_a_i_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_i_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
                             paper.marks.ro1 = (
-                                        self.file.configuration.section_2a_a_i_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_i_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
                     elif paper.category == 'wos':
                         total += (
-                                    self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
+                                self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
                         paper.marks.ro1 = (
-                                    self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
+                                self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
             else:
                 paper.marks.ro1 = 0
             paper.marks.save()
@@ -203,29 +228,29 @@ class CalculationEngine:
                     if paper.category == 'scopus':
                         if paper.quality == 'q1':
                             total += (
-                                        self.file.configuration.section_2a_a_ii_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_ii_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
                             paper.marks.ro1 = (
-                                        self.file.configuration.section_2a_a_ii_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_ii_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q2':
                             total += (
-                                        self.file.configuration.section_2a_a_ii_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_ii_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
                             paper.marks.ro1 = (
-                                        self.file.configuration.section_2a_a_ii_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_ii_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q3':
                             total += (
-                                        self.file.configuration.section_2a_a_ii_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_ii_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
                             paper.marks.ro1 = (
-                                        self.file.configuration.section_2a_a_ii_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_ii_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q4':
                             total += (
-                                        self.file.configuration.section_2a_a_ii_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_ii_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
                             paper.marks.ro1 = (
-                                        self.file.configuration.section_2a_a_ii_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_ii_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
                     elif paper.category == 'wos':
                         total += (
-                                    self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
+                                self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
                         paper.marks.ro1 = (
-                                    self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
+                                self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
             else:
                 paper.marks.ro1 = 0
             paper.marks.save()
@@ -448,8 +473,12 @@ class CalculationEngine:
         total = 0
         for consultancy in self.file.providing_consultancy.all():
             if consultancy.marks.ro1_agreed:
-                total += self.file.configuration.section_2f_providing_consultancy
-                consultancy.marks.ro1 = self.file.configuration.section_2f_providing_consultancy
+                if consultancy.amount > 50000:
+                    total += self.file.configuration.section_2f_providing_consultancy
+                    consultancy.marks.ro1 = self.file.configuration.section_2f_providing_consultancy
+                else:
+                    total += self.file.configuration.section_2f_providing_consultancy_below_50k
+                    consultancy.marks.ro1 = self.file.configuration.section_2f_providing_consultancy_below_50k
             else:
                 consultancy.marks.ro1 = 0
             consultancy.marks.save()
@@ -610,7 +639,7 @@ class CalculationEngineR2:
         total += self.calculateTeachingLoad()
         total += self.calculateStudentFeedback()
         total += self.calculateBooksAndPublications()
-        total += self.file.modern_teaching_methods.marks.ro2
+        total += self.calculateAcademicPractices()
         total += self.calculateExaminationDuty()
         return total
 
@@ -647,14 +676,19 @@ class CalculationEngineR2:
     def calculateBooksAndPublications(self):
         # research based on books and publications
         total = 0
+        _research_books = []  # new
+        _text_books = []  # new
+        _chapters = []  # new
         for book in self.file.research_books.all():
             if book.marks.ro2_agreed:
                 if book.type == 'book':
                     total += self.file.configuration.section_1e_i_per_book_per_author
                     book.marks.ro2 = self.file.configuration.section_1e_i_per_book_per_author
+                    _research_books.append(self.file.configuration.section_1e_i_per_book_per_author)  # new
                 else:
                     total += self.file.configuration.section_1e_i_per_chapter
                     book.marks.ro2 = self.file.configuration.section_1e_i_per_chapter
+                    _chapters.append(self.file.configuration.section_1e_i_per_chapter)  # new
             else:
                 book.marks.ro2 = 0
             book.marks.save()
@@ -664,17 +698,36 @@ class CalculationEngineR2:
                     if book.publication_level == 'national':
                         total += self.file.configuration.section_1e_ii_per_national_book_per_author
                         book.marks.ro2 = self.file.configuration.section_1e_ii_per_national_book_per_author
+                        _text_books.append(self.file.configuration.section_1e_ii_per_national_book_per_author)  # new
 
                     elif book.publication_level == 'international':
                         total += self.file.configuration.section_1e_ii_per_international_book_per_author
                         book.marks.ro2 = self.file.configuration.section_1e_ii_per_international_book_per_author
+                        _text_books.append(self.file.configuration.section_1e_ii_per_international_book_per_author)  # new
                 else:
                     total += self.file.configuration.section_1e_ii_per_chapter
                     book.marks.ro2 = self.file.configuration.section_1e_ii_per_chapter
+                    _chapters.append(self.file.configuration.section_1e_ii_per_chapter)  # new
             else:
                 book.marks.ro2 = 0
             book.marks.save()
-        return total
+        _total = 0  # new
+        _research_books.sort(reverse=True)  # new
+        _text_books.sort(reverse=True)  # new
+        _chapters.sort(reverse=True)  # new
+        if len(_research_books) > 0:  # new
+            _total += _research_books[0]  # new
+        elif len(_text_books) > 0:  # new
+            _total += _text_books[0]  # new
+        if len(_chapters) > 0:  # new
+            _total += _chapters[0]  # new
+        if len(_chapters) > 1:  # new
+            _total += _chapters[1]  # new
+        return _total  # new
+        # return total
+
+    def calculateAcademicPractices(self):
+        return self.file.modern_teaching_methods.marks.ro2 + self.file.upkeep_of_course_files_marks.ro2 + self.file.inclusion_of_alumni_marks.ro2
 
     def calculateSection2(self):
         total = 0
@@ -723,29 +776,29 @@ class CalculationEngineR2:
                     if paper.category == 'scopus':
                         if paper.quality == 'q1':
                             total += (
-                                        self.file.configuration.section_2a_a_i_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_i_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
                             paper.marks.ro2 = (
-                                        self.file.configuration.section_2a_a_i_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_i_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q2':
                             total += (
-                                        self.file.configuration.section_2a_a_i_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_i_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
                             paper.marks.ro2 = (
-                                        self.file.configuration.section_2a_a_i_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_i_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q3':
                             total += (
-                                        self.file.configuration.section_2a_a_i_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_i_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
                             paper.marks.ro2 = (
-                                        self.file.configuration.section_2a_a_i_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_i_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q4':
                             total += (
-                                        self.file.configuration.section_2a_a_i_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_i_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
                             paper.marks.ro2 = (
-                                        self.file.configuration.section_2a_a_i_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_i_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
                     elif paper.category == 'wos':
                         total += (
-                                    self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
+                                self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
                         paper.marks.ro2 = (
-                                    self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
+                                self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
             else:
                 paper.marks.ro2 = 0
             paper.marks.save()
@@ -778,29 +831,29 @@ class CalculationEngineR2:
                     if paper.category == 'scopus':
                         if paper.quality == 'q1':
                             total += (
-                                        self.file.configuration.section_2a_a_ii_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_ii_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
                             paper.marks.ro2 = (
-                                        self.file.configuration.section_2a_a_ii_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_ii_per_scopus_q1 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q2':
                             total += (
-                                        self.file.configuration.section_2a_a_ii_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_ii_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
                             paper.marks.ro2 = (
-                                        self.file.configuration.section_2a_a_ii_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_ii_per_scopus_q2 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q3':
                             total += (
-                                        self.file.configuration.section_2a_a_ii_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_ii_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
                             paper.marks.ro2 = (
-                                        self.file.configuration.section_2a_a_ii_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_ii_per_scopus_q3 * co_author_cut)  # / paper.co_author_count
                         elif paper.quality == 'q4':
                             total += (
-                                        self.file.configuration.section_2a_a_ii_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_ii_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
                             paper.marks.ro2 = (
-                                        self.file.configuration.section_2a_a_ii_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
+                                    self.file.configuration.section_2a_a_ii_per_scopus_q4 * co_author_cut)  # / paper.co_author_count
                     elif paper.category == 'wos':
                         total += (
-                                    self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
+                                self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
                         paper.marks.ro2 = (
-                                    self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
+                                self.file.configuration.section_2a_a_ii_per_wos * co_author_cut)  # / paper.co_author_count
             else:
                 paper.marks.ro2 = 0
             paper.marks.save()
@@ -1026,8 +1079,12 @@ class CalculationEngineR2:
         total = 0
         for consultancy in self.file.providing_consultancy.all():
             if consultancy.marks.ro2_agreed:
-                total += self.file.configuration.section_2f_providing_consultancy
-                consultancy.marks.ro2 = self.file.configuration.section_2f_providing_consultancy
+                if consultancy.amount > 50000:
+                    total += self.file.configuration.section_2f_providing_consultancy
+                    consultancy.marks.ro2 = self.file.configuration.section_2f_providing_consultancy
+                else:
+                    total += self.file.configuration.section_2f_providing_consultancy_below_50k
+                    consultancy.marks.ro2 = self.file.configuration.section_2f_providing_consultancy_below_50k
             else:
                 consultancy.marks.ro2 = 0
             consultancy.marks.save()

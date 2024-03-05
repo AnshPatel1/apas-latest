@@ -77,15 +77,22 @@
             <li class="menu-item {{% if page_name == "phd-guidance-entry" %} active {% endif %}">
                 <a href="{% if page_name != "faculty-home" %}../{% endif %}phd-guidance/" class="menu-link">
                     <i class="menu-icon tf-icons bx {% if not file.ro2_validator.phd_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
-                   style="color: {% if not file.ro2_validator.phd_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                       style="color: {% if not file.ro2_validator.phd_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
                     <div data-i18n="Basic">PhD Guidance</div>
                 </a>
             </li>
         {% endif %}
+        <li class="menu-item {{% if page_name == "dissertation-entry" %} active {% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}dissertation/" class="menu-link">
+                <i class="menu-icon tf-icons bx {% if not file.ro2_validator.dissertation_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                   style="color: {% if not file.ro2_validator.dissertation_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                <div data-i18n="Basic">Dissertation</div>
+            </a>
+        </li>
 
         <li class="menu-item {{% if page_name == "patent-entry" %} active {% endif %}">
             <a href="{% if page_name != "faculty-home" %}../{% endif %}patent/" class="menu-link">
-                    <i class="menu-icon tf-icons bx {% if not file.ro2_validator.patents_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                <i class="menu-icon tf-icons bx {% if not file.ro2_validator.patents_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
                    style="color: {% if not file.ro2_validator.patents_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
                 <div data-i18n="Basic">Patents / Inventions</div>
             </a>
@@ -116,7 +123,7 @@
         </li>
         <li class="menu-item {% if page_name == "mentorship-entry" %}active{% endif %}">
             <a href="{% if page_name != "faculty-home" %}../{% endif %}mentorship/" class="menu-link">
-               <i class="menu-icon tf-icons bx {% if not file.ro2_validator.mentorship_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                <i class="menu-icon tf-icons bx {% if not file.ro2_validator.mentorship_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
                    style="color: {% if not file.ro2_validator.mentorship_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
                 <div data-i18n="Tables">Mentorship</div>
             </a>
@@ -126,7 +133,7 @@
         </li>
         <li class="menu-item {% if page_name == "attending-conference-entry" %}active{% endif %}">
             <a href="{% if page_name != "faculty-home" %}../{% endif %}attending-conference/" class="menu-link">
-               <i class="menu-icon tf-icons bx {% if not file.ro2_validator.attending_conferences_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                <i class="menu-icon tf-icons bx {% if not file.ro2_validator.attending_conferences_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
                    style="color: {% if not file.ro2_validator.attending_conferences_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
                 <div data-i18n="Tables">Attending Conference and Seminars</div>
             </a>
