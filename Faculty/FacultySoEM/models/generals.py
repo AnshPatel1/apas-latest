@@ -239,8 +239,7 @@ class PhDGuidance(models.Model):
 class MastersDissertation(models.Model):
     status_choices = (
         ('submitted', 'Submitted'),
-        ('submitted_patent_published', 'Submitted and Patent Published / Granted'),
-        ('submitted_patent_papers_published', 'Submitted and Patent Granted/Published Papers Published'),
+        ('submitted_with_ipr', 'Submitted with IPR such as Trademark, Copyright'),
     )
     year = models.IntegerField(default=datetime.now().year)
     month = models.IntegerField(default=0)

@@ -530,7 +530,7 @@ class FacultyViewSet:
                     thesis.faculty = request.user
                     thesis.description = entry[0]
                     thesis.student_name = entry[1]
-                    if entry[2] == 'submitted' or entry[2] == 'submitted_patent_published' or entry[2] == 'submitted_patent_papers_published':
+                    if entry[2] == 'submitted' or entry[2] == 'submitted_with_ipr':
                         thesis.status = entry[2]
                     masters.append(thesis)
                 file.masters_thesis.all().delete()
