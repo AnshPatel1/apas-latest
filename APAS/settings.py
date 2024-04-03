@@ -43,6 +43,8 @@ for host in os.getenv('ALLOWED_HOSTS').split(','):
 INSTALLED_APPS = [
     'MasterConfiguration.apps.MasterconfigurationConfig',
     'Account.apps.AccountConfig',
+    'MassAlterations.apps.MassalterationsConfig',
+    'Reports.apps.ReportsConfig',
     'Staff.apps.AppraiseeConfig',
     'Faculty.FacultyFOET.apps.FacultyfoetConfig',
     'Faculty.FacultySLS.apps.FacultyslsConfig',
