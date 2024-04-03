@@ -211,8 +211,7 @@ class FOLSGoalSheetProf(models.Model):
     section_3_subtotal = models.IntegerField(default=74)
 
     # ------- Section 3.A: Successful conversion of International Admission (SLS)/ Local Placements -------
-    #todo: change this
-    section_3a_international_admission = models.IntegerField(default=4)
+    section_3a_international_admission = models.IntegerField(default=24)
 
     # ------- Section 3.B: Arranging Conferences/ Seminars/Conclaves -------
     #     Max 15 marks to be given by RO/RV

@@ -211,7 +211,6 @@ class FOLSGoalSheetAssociateProf(models.Model):
     section_3_subtotal = models.IntegerField(default=58)
 
     # ------- Section 3.A: Successful conversion of International Admission (SLS)/ Local Placements -------
-    #todo: change this
     section_3a_international_admission = models.IntegerField(default=21)
 
     # ------- Section 3.B: Arranging Conferences/ Seminars/Conclaves -------

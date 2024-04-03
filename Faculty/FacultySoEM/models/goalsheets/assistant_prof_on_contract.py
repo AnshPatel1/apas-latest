@@ -209,7 +209,7 @@ class FOEMGoalSheetAssistantProfOnContract(models.Model):
     # =============== Section 3: Administrative Activities ===============
     # Marks to be awarded by RO/RV
     # Section 3 Configurations:
-    section_3_subtotal = models.IntegerField(default=55)
+    section_3_subtotal = models.IntegerField(default=20)
 
     # # ------- Section 3.A: Successful conversion of International Admission (SLS)/ Local Placements -------
     # section_3a_international_admission = models.IntegerField(default=15)

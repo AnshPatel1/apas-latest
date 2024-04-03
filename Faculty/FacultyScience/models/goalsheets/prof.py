@@ -167,9 +167,9 @@ class ScienceGoalSheetProf(models.Model):
     # 0 marks to be awarded for PhD guidance awarded
     # 0 marks to be awarded for PhD guidance Synopsis Submitted
     # 0 marks to be awarded for PhD guidance Under Progress
-    section_2b_phd_guidance_awarded = models.IntegerField(default=25)
-    section_2b_phd_guidance_synopsis_submitted = models.IntegerField(default=15)
-    section_2b_phd_guidance_under_progress = models.IntegerField(default=10)
+    section_2b_phd_guidance_awarded = models.IntegerField(default=20)
+    section_2b_phd_guidance_synopsis_submitted = models.IntegerField(default=10)
+    section_2b_phd_guidance_under_progress = models.IntegerField(default=5)
 
     section_2b_phd_guidance_external = models.IntegerField(default=5)
     section_2b_phd_guidance_external_max = models.IntegerField(default=2)
