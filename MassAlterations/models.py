@@ -215,6 +215,12 @@ class BulkUserUpload(models.Model):
                     if row[3] in ['assistant_prof_on_contract', 'prof', 'associate_prof', 'assistant_prof', 'stf']:
                         user.designation = designations[row[3]]
                         user.designation_abbreviation = row[3]
+                    if row[3] == 'stf':
+                        user.roles = 'stf'
+                        user.type = "Staff"
+                    else:
+                        user.roles = 'fac'
+                        user.type = "Faculty"
                     user.department = row[4]
                     if row[5] not in schools:
                         raise UploadError(f"Invalid school {row[5]}. Please enter one of {', '.join(schools.keys())}",
