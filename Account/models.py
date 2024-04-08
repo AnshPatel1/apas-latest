@@ -4,7 +4,14 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager, Permission
 
 # Create your models here.
 # create custome user model
-
+schools = {
+    'SOT': 'School of Technology',
+    'SPM': 'School of Petroleum Management',
+    'SPT': 'School of Petroleum Technology',
+    'SLS': 'School of Liberal Studies',
+    'PDPU': 'PDPU',
+    'PDEU': 'PDEU'
+}
 designations = {'assistant_prof_on_contract': 'Assistant Professor (On Contract)',
                 'prof': 'Professor',
                 'associate_prof': 'Associate Professor',

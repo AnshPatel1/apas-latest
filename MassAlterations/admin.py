@@ -5,3 +5,4 @@ from MassAlterations.models import *
 admin.site.register(ChangeR1R2)
 admin.site.register(ChangeDesignation)
 admin.site.register(SetAppraise)
+admin.site.register(BulkUserUpload)
