@@ -186,7 +186,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 # SMTP Configuration
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.pdpu.ac.in'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'noreply.apas@pdpu.ac.in'
-EMAIL_HOST_PASSWORD = 'APAS$12#45'
+EMAIL_HOST_USER = 'noreply.apas.pdpu@gmail.com'
+EMAIL_HOST_PASSWORD = 'snqsmvcclzioifsb'
