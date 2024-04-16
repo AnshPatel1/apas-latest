@@ -840,73 +840,77 @@
                     <h4 class="fw-bold py-3 mt-4">Section 4C / <span class="text-muted fw-light">Involvement in Extra curricular/ Co- curricular activities</span></h4>
                     <div class="card mt-3 prepopulated">
                         <h5 class="card-header">Involvement in Extra Curricular / Co-Curricular Activities</h5>
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover table-bordered">
-                                <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th class="col-1">Marks</th>
-                                </tr>
-                                </thead>
-                                <tbody class="table-border-bottom-0">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover table-bordered">
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th class="col-1">Marks</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="table-border-bottom-0">
 
-                                <tr>
-                                    <td>
-                                        <strong>Marks awarded for involvement in Co-Curricular and Extra Curricular Activities</strong>
-                                    </td>
-                                    <td>
-                                        {{ extra_curricular.marks }} / {{ file.configuration.section_4c_involvement_in_extra_curricular_activities_max_marks }}
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
+                                    <tr>
+                                        <td>
+                                            <strong>Marks awarded for involvement in Co-Curricular and Extra Curricular Activities</strong>
+                                        </td>
+                                        <td>
+                                            {{ extra_curricular.marks }} / {{ file.configuration.section_4c_involvement_in_extra_curricular_activities_max_marks }}
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                     <div class="card mt-3 prepopulated">
                         <h4 class="card-header">Additional Marks</h4>
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover table-bordered">
-                                <thead>
-                                <tr>
-                                    <th style="min-width: 500px">Details</th>
-                                    <th class="col-2"><strong>Marks</strong></th>
-                                </tr>
-                                </thead>
-                                <tbody class="table-border-bottom-0" id="maj-tbody">
-                                {% if file.user.is_hod %}
+                        <div class="card-body m-0 p-0">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover table-bordered">
+                                    <thead>
                                     <tr>
-                                        <td>Additional marks for being Head of the Department</td>
-                                        <td>10</td>
+                                        <th style="min-width: 500px">Details</th>
+                                        <th class="col-2"><strong>Marks</strong></th>
                                     </tr>
-                                {% endif %}
-                                {% if additional.placement_activity > 0 %}
-                                    <tr>
-                                        <td>Additional marks for faculties nominated for year round Placement Activity</td>
-                                        <td>{{ additional.placement_activity }} / 25</td>
-
-                                    </tr>
-                                {% endif %}
-                                {% if additional.admission_activity > 0 %}
-                                    <tr>
-                                        <td>Additional marks for faculties nominated for year round Admission Activity</td>
-                                        <td>{{ additional.admission_activity }} / 25</td>
-                                    </tr>
-                                {% endif %}
-                                <tr>
-                                    {% if additional.pgp_chair > 0 %}
-                                        <td>Additional marks for faculties nominated for PGP Chair</td>
-                                        <td>{{ additional.pgp_chair }} / 15</td>
+                                    </thead>
+                                    <tbody class="table-border-bottom-0" id="maj-tbody">
+                                    {% if file.user.is_hod %}
+                                        <tr>
+                                            <td>Additional marks for being Head of the Department</td>
+                                            <td>10</td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if additional.placement_activity > 0 %}
+                                        <tr>
+                                            <td>Additional marks for faculties nominated for year round Placement Activity</td>
+                                            <td>{{ additional.placement_activity }} / 25</td>
 
                                         </tr>
                                     {% endif %}
-                                {% if additional.e_mba_chair > 0 %}
-                                    <tr>
-                                        <td>Additional marks for faculties nominated for E-MBA Chair</td>
-                                        <td>{{ additional.e_mba_chair }} / 10</td>
-                                    </tr>
-                                {% endif %}
-                                </tbody>
-                            </table>
+                                    {% if additional.admission_activity > 0 %}
+                                        <tr>
+                                            <td>Additional marks for faculties nominated for year round Admission Activity</td>
+                                            <td>{{ additional.admission_activity }} / 25</td>
+                                        </tr>
+                                    {% endif %}
+                                    {% if additional.pgp_chair > 0 %}
+                                        <tr>
+                                            <td>Additional marks for faculties nominated for PGP Chair</td>
+                                            <td>{{ additional.pgp_chair }} / 15</td>
+
+                                        </tr>
+                                    {% endif %}
+                                    {% if additional.e_mba_chair > 0 %}
+                                        <tr>
+                                            <td>Additional marks for faculties nominated for E-MBA Chair</td>
+                                            <td>{{ additional.e_mba_chair }} / 10</td>
+                                        </tr>
+                                    {% endif %}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
 
