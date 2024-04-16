@@ -225,7 +225,7 @@
                                                             Grade Other Activities
                                                         </dd>
                                                     {% endif %}
-                                                    {% if not file.ro2_validation.is_mooc_valid %}
+                                                    {% if not file.ro2_validation.is_mooc_valid and file.was_mooc_completed %}
                                                         <dd class="col-sm-8">
                                                             <i class="menu-icon tf-icons bx bx-time-five"
                                                                style="color: rgb(220, 53, 69)"></i>
