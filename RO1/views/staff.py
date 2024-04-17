@@ -382,27 +382,6 @@ class RO1StaffView:
 
     @login_required(login_url='/login/')
     def grade_mooc(request, pk):
-        if request.method == 'GET':
-            if HelperFunctions.check_if_ro1_is_authorized(None, request, pk):
-                pass
-            else:
-                context = {
-                    'error_code': "Unauthorized Error",
-                    "error_message": "You are not authorized to view this page."
-                }
-                return render(request, "html/error_pages/pages-error.html", context)
-            try:
-                file = StaffAppraisalFile.objects.get(user=User.objects.get(id=pk))
-            except StaffAppraisalFile.DoesNotExist:
-                return HttpResponse('No file found')
-            # if file.file_level == "RO1":
-            context = {}
-            context['file'] = file
-            context['config'] = StaffConfiguration.objects.get(name='master')
-            context['pagename'] = 'grade-mooc'
-            context['cycle'], context['stage'], context['today'] = HelperFunctions.get_cycles()
-            context['can_submit'] = HelperFunctions.can_submit(None, file)
-            return render(request, 'html/r1/staff/grade-mooc.html', context)
         if request.method == 'POST':
             if HelperFunctions.check_if_ro1_is_authorized(None, request, pk):
                 pass
@@ -437,7 +416,27 @@ class RO1StaffView:
             else:
                 file.ro1_validation.is_mooc_valid = False
                 file.ro1_validation.save()
-            return JsonResponse({'status': 'success'})
+        if request.method == 'GET':
+            if HelperFunctions.check_if_ro1_is_authorized(None, request, pk):
+                pass
+            else:
+                context = {
+                    'error_code': "Unauthorized Error",
+                    "error_message": "You are not authorized to view this page."
+                }
+                return render(request, "html/error_pages/pages-error.html", context)
+            try:
+                file = StaffAppraisalFile.objects.get(user=User.objects.get(id=pk))
+            except StaffAppraisalFile.DoesNotExist:
+                return HttpResponse('No file found')
+            # if file.file_level == "RO1":
+            context = {}
+            context['file'] = file
+            context['config'] = StaffConfiguration.objects.get(name='master')
+            context['pagename'] = 'grade-mooc'
+            context['cycle'], context['stage'], context['today'] = HelperFunctions.get_cycles()
+            context['can_submit'] = HelperFunctions.can_submit(None, file)
+            return render(request, 'html/r1/staff/grade-mooc.html', context)
 
     @login_required(login_url='/login/')
     def grade_section_2(request, pk):
