@@ -51,7 +51,13 @@ class UploadCSV(models.Model):
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
-                        raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
+                        try:
+                            faculty = User.objects.get(username=row[0])
+                        except User.DoesNotExist:
+                            raise UploadError(f"Faculty with username {row[0]} does not exist. Check duplicates", self.file.url,
+                                              self.upload_type)
+                        except User.MultipleObjectsReturned:
+                            raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
                     aca = ViewAcademiaCollaboration()
                     aca.faculty = faculty
                     aca.csv_origin = self
@@ -81,7 +87,13 @@ class UploadCSV(models.Model):
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
-                        raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
+                        try:
+                            faculty = User.objects.get(username=row[0])
+                        except User.DoesNotExist:
+                            raise UploadError(f"Faculty with username {row[0]} does not exist. Check duplicates", self.file.url,
+                                              self.upload_type)
+                        except User.MultipleObjectsReturned:
+                            raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
                     aw = ViewCoCurricular()
                     aw.faculty = faculty
                     aw.csv_origin = self
@@ -105,7 +117,13 @@ class UploadCSV(models.Model):
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
-                        raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
+                        try:
+                            faculty = User.objects.get(username=row[0])
+                        except User.DoesNotExist:
+                            raise UploadError(f"Faculty with username {row[0]} does not exist. Check duplicates", self.file.url,
+                                              self.upload_type)
+                        except User.MultipleObjectsReturned:
+                            raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
                     aw = ViewAward()
                     aw.faculty = faculty
                     aw.csv_origin = self
@@ -133,7 +151,13 @@ class UploadCSV(models.Model):
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
-                        raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
+                        try:
+                            faculty = User.objects.get(username=row[0])
+                        except User.DoesNotExist:
+                            raise UploadError(f"Faculty with username {row[0]} does not exist. Check duplicates", self.file.url,
+                                              self.upload_type)
+                        except User.MultipleObjectsReturned:
+                            raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
                     pa = ViewPatent()
                     pa.faculty = faculty
                     pa.csv_origin = self
@@ -161,7 +185,13 @@ class UploadCSV(models.Model):
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
-                        raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
+                        try:
+                            faculty = User.objects.get(username=row[0])
+                        except User.DoesNotExist:
+                            raise UploadError(f"Faculty with username {row[0]} does not exist. Check duplicates", self.file.url,
+                                              self.upload_type)
+                        except User.MultipleObjectsReturned:
+                            raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
                     ad = ViewPhDGuidance()
                     ad.faculty = faculty
                     ad.csv_origin = self
@@ -187,7 +217,13 @@ class UploadCSV(models.Model):
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
-                        raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
+                        try:
+                            faculty = User.objects.get(username=row[0])
+                        except User.DoesNotExist:
+                            raise UploadError(f"Faculty with username {row[0]} does not exist. Check duplicates", self.file.url,
+                                              self.upload_type)
+                        except User.MultipleObjectsReturned:
+                            raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
                     pr = ViewProject()
                     pr.faculty = faculty
                     pr.csv_origin = self
@@ -237,7 +273,13 @@ class UploadCSV(models.Model):
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
-                        raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
+                        try:
+                            faculty = User.objects.get(username=row[0])
+                        except User.DoesNotExist:
+                            raise UploadError(f"Faculty with username {row[0]} does not exist. Check duplicates", self.file.url,
+                                              self.upload_type)
+                        except User.MultipleObjectsReturned:
+                            raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
                     sw = ViewScopusWos()
                     sw.faculty = faculty
                     sw.csv_origin = self
@@ -295,7 +337,13 @@ class UploadCSV(models.Model):
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
-                        raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
+                        try:
+                            faculty = User.objects.get(username=row[0])
+                        except User.DoesNotExist:
+                            raise UploadError(f"Faculty with username {row[0]} does not exist. Check duplicates", self.file.url,
+                                              self.upload_type)
+                        except User.MultipleObjectsReturned:
+                            raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
                     bk = ViewBook()
                     bk.faculty = faculty
                     bk.csv_origin = self
@@ -348,7 +396,13 @@ class UploadCSV(models.Model):
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
-                        raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
+                        try:
+                            faculty = User.objects.get(username=row[0])
+                        except User.DoesNotExist:
+                            raise UploadError(f"Faculty with username {row[0]} does not exist. Check duplicates", self.file.url,
+                                              self.upload_type)
+                        except User.MultipleObjectsReturned:
+                            raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
                     ed = ViewExamDuty()
                     ed.faculty = faculty
                     ed.csv_origin = self
@@ -375,7 +429,13 @@ class UploadCSV(models.Model):
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
-                        raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
+                        try:
+                            faculty = User.objects.get(username=row[0])
+                        except User.DoesNotExist:
+                            raise UploadError(f"Faculty with username {row[0]} does not exist. Check duplicates", self.file.url,
+                                              self.upload_type)
+                        except User.MultipleObjectsReturned:
+                            raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
                     sf = ViewStudentFeedback()
                     sf.faculty = faculty
                     sf.csv_origin = self
@@ -399,7 +459,13 @@ class UploadCSV(models.Model):
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
-                        raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
+                        try:
+                            faculty = User.objects.get(username=row[0])
+                        except User.DoesNotExist:
+                            raise UploadError(f"Faculty with username {row[0]} does not exist. Check duplicates", self.file.url,
+                                              self.upload_type)
+                        except User.MultipleObjectsReturned:
+                            raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
                     tl = ViewTeachingLoad()
                     tl.faculty = faculty
                     tl.csv_origin = self
@@ -431,7 +497,13 @@ class UploadCSV(models.Model):
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
-                        raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
+                        try:
+                            faculty = User.objects.get(username=row[0])
+                        except User.DoesNotExist:
+                            raise UploadError(f"Faculty with username {row[0]} does not exist. Check duplicates", self.file.url,
+                                              self.upload_type)
+                        except User.MultipleObjectsReturned:
+                            raise UploadError(f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue", self.file.url, self.upload_type)
                     ad = ViewAdditionalMarks()
                     ad.faculty = faculty
                     ad.csv_origin = self
