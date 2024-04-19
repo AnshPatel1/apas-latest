@@ -190,3 +190,4 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'noreply.apas.pdpu@gmail.com'
 EMAIL_HOST_PASSWORD = 'snqsmvcclzioifsb'
+DATA_UPLOAD_MAX_NUMBER_FIELDS = 10000000
