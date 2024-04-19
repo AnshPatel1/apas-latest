@@ -49,7 +49,7 @@ class UploadCSV(models.Model):
                 objects = []
                 for row in csvreader[1:]:
                     try:
-                        faculty = User.objects.get(username=row[0])
+                        faculty = User.objects.get(username__iexact=row[0])
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
@@ -79,7 +79,7 @@ class UploadCSV(models.Model):
                 objects = []
                 for row in csvreader[1:]:
                     try:
-                        faculty = User.objects.get(username=row[0])
+                        faculty = User.objects.get(username__iexact=row[0])
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
@@ -103,7 +103,7 @@ class UploadCSV(models.Model):
                 objects = []
                 for row in csvreader[1:]:
                     try:
-                        faculty = User.objects.get(username=row[0])
+                        faculty = User.objects.get(username__iexact=row[0])
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
@@ -127,7 +127,7 @@ class UploadCSV(models.Model):
                 objects = []
                 for row in csvreader[1:]:
                     try:
-                        faculty = User.objects.get(username=row[0])
+                        faculty = User.objects.get(username__iexact=row[0])
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
@@ -155,7 +155,7 @@ class UploadCSV(models.Model):
                 objects = []
                 for row in csvreader[1:]:
                     try:
-                        faculty = User.objects.get(username=row[0])
+                        faculty = User.objects.get(username__iexact=row[0])
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
@@ -183,7 +183,7 @@ class UploadCSV(models.Model):
         #         objects = []
         #         for row in csvreader[1:]:
         #             try:
-        #                 faculty = User.objects.get(username=row[0])
+        #                 faculty = User.objects.get(username__iexact=row[0])
         #             except User.DoesNotExist:
         #                 raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
         #             except User.MultipleObjectsReturned:
@@ -211,7 +211,7 @@ class UploadCSV(models.Model):
                 objects = []
                 for row in csvreader[1:]:
                     try:
-                        faculty = User.objects.get(username=row[0])
+                        faculty = User.objects.get(username__iexact=row[0])
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
@@ -237,7 +237,7 @@ class UploadCSV(models.Model):
                 objects = []
                 for row in csvreader[1:]:
                     try:
-                        faculty = User.objects.get(username=row[0])
+                        faculty = User.objects.get(username__iexact=row[0])
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
@@ -287,7 +287,7 @@ class UploadCSV(models.Model):
                 objects = []
                 for row in csvreader[1:]:
                     try:
-                        faculty = User.objects.get(username=row[0])
+                        faculty = User.objects.get(username__iexact=row[0])
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
@@ -352,7 +352,7 @@ class UploadCSV(models.Model):
                 objects = []
                 for row in csvreader[1:]:
                     try:
-                        faculty = User.objects.get(username=row[0])
+                        faculty = User.objects.get(username__iexact=row[0])
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
@@ -405,7 +405,7 @@ class UploadCSV(models.Model):
                 objects = []
                 for row in csvreader[1:]:
                     try:
-                        faculty = User.objects.get(username=row[0])
+                        faculty = User.objects.get(username__iexact=row[0])
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
@@ -432,7 +432,7 @@ class UploadCSV(models.Model):
                 objects = []
                 for row in csvreader[1:]:
                     try:
-                        faculty = User.objects.get(username=row[0])
+                        faculty = User.objects.get(username__iexact=row[0])
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
@@ -456,7 +456,7 @@ class UploadCSV(models.Model):
                 objects = []
                 for row in csvreader[1:]:
                     try:
-                        faculty = User.objects.get(username=row[0])
+                        faculty = User.objects.get(username__iexact=row[0])
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
@@ -488,7 +488,7 @@ class UploadCSV(models.Model):
                 objects = []
                 for row in csvreader[1:]:
                     try:
-                        faculty = User.objects.get(username=row[0])
+                        faculty = User.objects.get(username__iexact=row[0])
                     except User.DoesNotExist:
                         raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url, self.upload_type)
                     except User.MultipleObjectsReturned:
