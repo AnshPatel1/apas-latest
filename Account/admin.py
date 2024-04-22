@@ -8,9 +8,9 @@ from django import forms
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ['username', 'email', 'designation', 'department', 'school', 'roles']
-    list_filter = ['designation', 'department', 'school', 'roles', 'is_staff', 'is_admin', 'is_ro1', 'is_ro2', 'is_hr']
+    list_filter = ['designation', 'department', 'school', 'roles', 'is_staff', 'is_admin', 'is_ro1', 'is_ro2', 'is_hr', "is_hod"]
     search_fields = ['full_name', 'username', 'email', 'designation', 'department', 'school', 'roles', 'is_staff', 'is_admin',
-                     'is_ro1', 'is_ro2', 'is_hr']
+                     'is_ro1', 'is_ro2', 'is_hr', 'is_hod']
     # filter_horizontal = ['permissions_mixin']
     list_per_page = 25
     filter_horizontal = ['user_permissions']

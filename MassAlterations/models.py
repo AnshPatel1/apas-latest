@@ -217,7 +217,7 @@ class SetHOD(models.Model):
                         f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue",
                         self.file.url, 'Change Designation')
             User.objects.update(is_hod=False)
-            User.objects.filter(username__in=[faculty.id for faculty in faculties]).update(is_hod=True)
+            User.objects.filter(username__in=faculties).update(is_hod=True)
 
 
     def delete(self, using=None, keep_parents=False):
