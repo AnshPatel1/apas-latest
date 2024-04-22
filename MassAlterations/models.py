@@ -229,8 +229,8 @@ class SetHOD(models.Model):
         return f'{self.id}'
 
     class Meta:
-        verbose_name = 'Set Appraise'
-        verbose_name_plural = 'Set Appraise'
+        verbose_name = 'Set HOD'
+        verbose_name_plural = 'Set HODs'
         ordering = ['id']
 
 
