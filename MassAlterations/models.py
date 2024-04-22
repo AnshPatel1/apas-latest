@@ -189,10 +189,56 @@ class SetAppraise(models.Model):
         ordering = ['id']
 
 
+class SetHOD(models.Model):
+    """Model for storing the file uploaded by the user"""
+    file = models.FileField(upload_to='alterations_csv_uploads')
+
+    def clean(self):
+        if not str(self.file.name).endswith('.csv'):
+            raise UploadError(
+                "Not correct file format. Please make sure the file is a csv file with extension .csv",
+                self.file.url, 'Change Designation')
+        self.save()
+
+        with open(self.file.path, 'r') as f:
+            csvreader = list(csv.reader(f))
+            if len(csvreader[0]) != 1:
+                raise UploadError("Not a valid csv file. Make sure the file has 2 columns", self.file.url,
+                                  'Change Designation')
+            faculties = []
+            for row in csvreader[1:]:
+                try:
+                    faculties.append(User.objects.get(username__iexact=row[0]).username)
+                except User.DoesNotExist:
+                    raise UploadError(f"Faculty with username {row[0]} does not exist", self.file.url,
+                                      'Change Designation')
+                except User.MultipleObjectsReturned:
+                    raise UploadError(
+                        f"Multiple faculty with username {row[0]} exist. Please contact admin to resolve this issue",
+                        self.file.url, 'Change Designation')
+            User.objects.update(is_hod=False)
+            User.objects.filter(username__in=[faculty.id for faculty in faculties]).update(is_hod=True)
+
+
+    def delete(self, using=None, keep_parents=False):
+        if os.path.isfile(self.file.path):
+            os.remove(self.file.path)
+        super().delete()
+
+    def __str__(self):
+        return f'{self.id}'
+
+    class Meta:
+        verbose_name = 'Set Appraise'
+        verbose_name_plural = 'Set Appraise'
+        ordering = ['id']
+
+
 class BulkUserUpload(models.Model):
     """Model for storing the file uploaded by the user"""
     # full_name,username,email,designation,department,school
     file = models.FileField(upload_to='alterations_csv_uploads')
+
     def clean(self):
         if not str(self.file.name).endswith('.csv'):
             raise UploadError(
