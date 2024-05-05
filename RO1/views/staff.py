@@ -920,7 +920,7 @@ class HelperFunctions:
                 elif cycle.r1_approval_start_date <= date_today <= cycle.r1_approval_end_date:
                     stage = 'r1_approval'
 
-                elif cycle.r2_approval_start_date <= date_today < cycle.r2_approval_end_date:
+                elif cycle.r2_approval_start_date <= date_today <= cycle.r2_approval_end_date:
                     stage = 'r2_approval'
 
                 elif date_today > cycle.r2_approval_end_date:
