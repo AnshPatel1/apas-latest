@@ -211,6 +211,7 @@
                                     <th>Dept.</th>
                                     <th>Designation.</th>
                                     <th>MooC Submitted</th>
+                                    <th>R2 Approved</th>
                                     <th>View Certificate</th>
                                 </tr>
                                 </thead>
@@ -234,11 +235,18 @@
                                             {% endif %}
                                         </td>
                                         <td>
+                                            {% if file.mooc_accepted and file.mooc_marks_awarded.ro2 > 0 %}
+                                                Yes
+                                            {% else %}
+                                                No
+                                            {% endif %}
+                                        </td>
+                                        <td>
                                             {% if file.was_mooc_completed %}
                                                 <a href="{{ file.mooc_file.file.url }}" target="_blank">
-                                                <span class="tf-icons bx bx-file"></span>
-                                                View Certificate
-                                            </a>
+                                                    <span class="tf-icons bx bx-file"></span>
+                                                    View Certificate
+                                                </a>
                                             {% else %}
                                                 -
                                             {% endif %}
