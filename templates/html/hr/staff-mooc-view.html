@@ -215,7 +215,7 @@
                                 </tr>
                                 </thead>
                                 <tbody class="table-border-bottom-0" id="review-list">
-                                {% for file in files %}
+                                {% for file in files|dictsortreversed:"was_mooc_completed" %}
                                     <tr>
                                         <td>
                                             <strong class="ms-3">{{ file.user.full_name }}</strong>
