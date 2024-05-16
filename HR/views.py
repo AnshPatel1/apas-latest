@@ -129,62 +129,6 @@ def staff_grade(request):
 
 
 @login_required(login_url='/login/')
-def staff_mooc(request):
-    if request.user.is_hr:
-        context = {}
-        context['pagename'] = 'staff-mooc'
-        context['files'] = []
-        # for i in StaffAppraisalFile.objects.all():
-        # if i.user.ro2_id == request.user:
-        # context['files'].append(i)
-        context['cycle'], context['stage'], context['today'] = HelperFunctions.get_cycles()
-        users = StaffAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all()
-        context['pending_files'] = []
-        context['files'] = StaffAppraisalFile.objects.filter(user__in=users, file_level__in=['RO2', 'HR'])
-        context['count'] = {
-            'r1': {
-                'o': context['files'].filter(grade_received_ro1='Outstanding').count(),
-                'g': context['files'].filter(grade_received_ro1='Good').count(),
-                'a': context['files'].filter(grade_received_ro1='Average').count(),
-                'b': context['files'].filter(grade_received_ro1='Below Average').count(),
-            },
-            'r2': {
-                'o': context['files'].filter(grade_received_ro2='Outstanding', file_level='HR').count(),
-                'g': context['files'].filter(grade_received_ro2='Good', file_level='HR').count(),
-                'a': context['files'].filter(grade_received_ro2='Average', file_level='HR').count(),
-                'b': context['files'].filter(grade_received_ro2='Below Average', file_level='HR').count(),
-            },
-        }
-        context['departments'] = []
-        for f in context['files']:
-            i = f.user
-            if i.department not in context['departments']:
-                context['departments'].append(i.department)
-        for i in context['pending_files']:
-            if i.department.upper() not in context['departments']:
-                context['departments'].append(i.department.upper())
-
-        designations = []
-        for i in context['files']:
-            if i.user.designation.upper() not in designations:
-                designations.append(i.user.designation.upper())
-        for i in context['pending_files']:
-            if i.designation.upper() not in designations:
-                designations.append(i.designation.upper())
-
-        context['designations'] = designations
-        context['selection'] = 'staff'
-
-        return render(request, 'html/hr/staff-mooc-view.html', context)
-    else:
-        context = {
-            'error_code': "Unauthorized Error",
-            "error_message": "You are not authorized to view this page."
-        }
-        return render(request, 'html/error_pages/pages-error.html', context)
-
-
-@login_required(login_url='/login/')
 def home(request):
     if not request.user.is_hr:
         context = {
@@ -266,6 +210,62 @@ class TrackGrade:
             context['selection'] = 'staff'
 
             return render(request, 'html/hr/staff-grade-view.html', context)
+        else:
+            context = {
+                'error_code': "Unauthorized Error",
+                "error_message": "You are not authorized to view this page."
+            }
+            return render(request, 'html/error_pages/pages-error.html', context)
+
+    @staticmethod
+    @login_required(login_url='/login/')
+    def staff_mooc(request):
+        if request.user.is_hr:
+            context = {}
+            context['pagename'] = 'staff-mooc'
+            context['files'] = []
+            # for i in StaffAppraisalFile.objects.all():
+            # if i.user.ro2_id == request.user:
+            # context['files'].append(i)
+            context['cycle'], context['stage'], context['today'] = HelperFunctions.get_cycles()
+            users = StaffAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all()
+            context['pending_files'] = []
+            context['files'] = StaffAppraisalFile.objects.filter(user__in=users, file_level__in=['RO2', 'HR'])
+            context['count'] = {
+                'r1': {
+                    'o': context['files'].filter(grade_received_ro1='Outstanding').count(),
+                    'g': context['files'].filter(grade_received_ro1='Good').count(),
+                    'a': context['files'].filter(grade_received_ro1='Average').count(),
+                    'b': context['files'].filter(grade_received_ro1='Below Average').count(),
+                },
+                'r2': {
+                    'o': context['files'].filter(grade_received_ro2='Outstanding', file_level='HR').count(),
+                    'g': context['files'].filter(grade_received_ro2='Good', file_level='HR').count(),
+                    'a': context['files'].filter(grade_received_ro2='Average', file_level='HR').count(),
+                    'b': context['files'].filter(grade_received_ro2='Below Average', file_level='HR').count(),
+                },
+            }
+            context['departments'] = []
+            for f in context['files']:
+                i = f.user
+                if i.department not in context['departments']:
+                    context['departments'].append(i.department)
+            for i in context['pending_files']:
+                if i.department.upper() not in context['departments']:
+                    context['departments'].append(i.department.upper())
+
+            designations = []
+            for i in context['files']:
+                if i.user.designation.upper() not in designations:
+                    designations.append(i.user.designation.upper())
+            for i in context['pending_files']:
+                if i.designation.upper() not in designations:
+                    designations.append(i.designation.upper())
+
+            context['designations'] = designations
+            context['selection'] = 'staff'
+
+            return render(request, 'html/hr/staff-mooc-view.html', context)
         else:
             context = {
                 'error_code': "Unauthorized Error",
