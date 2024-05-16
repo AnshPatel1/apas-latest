@@ -51,6 +51,12 @@
                 <div data-i18n="Analytics">Staff Grade</div>
             </a>
         </li>
+        <li class="menu-item {% if pagename == 'staff-mooc' %}active{% endif %}">
+            <a href="{% url 'hr-staff-mooc' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-adjust"></i>
+                <div data-i18n="Analytics">Staff MooC</div>
+            </a>
+        </li>
         <li class="menu-item {% if pagename == 'foet-track' %}active{% endif %}">
             <a href="{% url 'hr-foet-track' %}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-adjust"></i>
