@@ -1,3 +1,4 @@
+{% load mathfilters %}
 <!DOCTYPE html>
 <html
         lang="en"
@@ -211,9 +212,11 @@
                                     <th>Dept.</th>
                                     <th>Designation.</th>
                                     <th>RO Grade</th>
-                                    <th>RO Percent</th>
-                                    <th>RV Grade</th>
-                                    <th>RV Percent</th>
+                                    <th>RO Score (w/MOOC)</th>
+                                    <th>RV Score (w/MOOC)</th>
+                                    <th>MooC Marks Given</th>
+                                    <th>Grand Total (w/o MooC)</th>
+                                    <th>Final Grade</th>
                                 </tr>
                                 </thead>
                                 <tbody class="table-border-bottom-0" id="review-list">
@@ -234,11 +237,26 @@
                                         <td>
                                             {{ file.total_marks.ro1 }}
                                         </td>
-                                        <td>
-                                            <strong>{{ file.grade_received_ro2 }}</strong>
-                                        </td>
+
                                         <td>
                                             {{ file.total_marks.ro2 }}
+                                        </td>
+                                        <td>
+                                            {% if file.was_mooc_completed %}
+                                                {{ file.mooc_marks_awarded.ro2 }}
+                                            {% else %}
+                                                NA
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if file.was_mooc_completed %}
+                                                {{ file.total_marks.ro2|sub:file.mooc_marks_awarded.ro2 }}
+                                            {% else %}
+                                                {{ file.total_marks.ro2 }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <strong>{{ file.grade_received_ro2 }}</strong>
                                         </td>
                                     </tr>
 
@@ -321,9 +339,9 @@
             }
         });
     });
-
+    
     function applyFilter() {
-
+        
         let table = document.getElementById("review-table");
         let tr = table.querySelector("tbody").querySelectorAll("tr");
         let recordCount = 0;
@@ -332,15 +350,15 @@
             row.classList.add("count-profile");
             recordCount++;
         });
-
-
+        
+        
         document.getElementById("tbl-headers").style.display = "";
         document.querySelector(".recordCount").children[0].innerHTML = String(Number(recordCount) - 1);
     }
-
+    
     applyFilter();
-
-
+    
+    
     function exportToExcel() {
         let reviewTable = document.getElementById("review-table");
         let reviewTableRecords = reviewTable.querySelectorAll("tbody tr");
