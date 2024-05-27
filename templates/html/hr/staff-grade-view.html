@@ -215,7 +215,6 @@
                                     <th>RO Score (w/MOOC)</th>
                                     <th>RV Score (w/MOOC)</th>
                                     <th>MooC Marks Given</th>
-                                    <th>Grand Total (w/o MooC)</th>
                                     <th>Final Grade</th>
                                 </tr>
                                 </thead>
@@ -246,13 +245,6 @@
                                                 {{ file.mooc_marks_awarded.ro2 }}
                                             {% else %}
                                                 NA
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if file.was_mooc_completed %}
-                                                {{ file.total_marks.ro2|sub:file.mooc_marks_awarded.ro2 }}
-                                            {% else %}
-                                                {{ file.total_marks.ro2 }}
                                             {% endif %}
                                         </td>
                                         <td>
@@ -375,7 +367,6 @@
                 <th>RO Score (w/MOOC)</th>
                 <th>RV Score (w/MOOC)</th>
                 <th>MooC Marks Given</th>
-                <th>Grand Total (w/o MooC)</th>
                 <th>Final Grade</th>
             </tr>
         `;
