@@ -977,6 +977,6 @@ class RO2StaffView:
                 file.total_marks.save()
             file.total_marks.ro2 = context['grand_total']
             file.total_marks.save()
-            file.grade_received_ro2 = GradeConfiguration.objects.filter(is_active=True).first().get_grade(context['grand_total'])
+            file.grade_received_ro2 = GradeConfiguration.objects.filter(is_active=True).first().get_grade(round(context['grand_total']))
             file.save()
             return JsonResponse({'success': True})

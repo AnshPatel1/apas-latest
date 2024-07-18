@@ -858,7 +858,7 @@ class RO1StaffView:
             file.total_marks.ro1 = context['grand_total']
             file.total_marks.save()
             HelperFunctions.copy_ro1_marks_to_ro2(None, file)
-            file.grade_received_ro1 = GradeConfiguration.objects.filter(is_active=True).first().get_grade(context['grand_total'])
+            file.grade_received_ro1 = GradeConfiguration.objects.filter(is_active=True).first().get_grade(round(context['grand_total']))
             file.save()
 
             return JsonResponse({'success': True})
