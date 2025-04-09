@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render
-from MasterConfiguration.models import StaffAppraisalCycleInclusion
+from django.shortcuts import render, redirect
+
 from Faculty.FacultyFOET.models.appraisal_files import *
 import Faculty.FacultyFOET.models.appraisal_files.calculation_engine as foet_calc
 from Faculty.FacultySLS.models.appraisal_files import *
@@ -20,6 +20,11 @@ import BulkUpload.BulkUploadFoLS.models as bulk_sls
 import BulkUpload.BulkUploadFoET.models as bulk_foet
 import BulkUpload.BulkUploadMaths.models as bulk_math
 import BulkUpload.BulkUploadScience.models as bulk_science
+import json
+import requests
+from xml.etree.ElementTree import fromstring
+import hashlib
+from HR.models import *
 
 
 # Create your views here.
@@ -1579,3 +1584,425 @@ def get_count():
             'math': context['math_count'],
             'science': context['science_count'],
             }
+
+
+class APIVerifyViews:
+    @staticmethod
+    def patent_home(request):
+        context = {
+            'pagename': 'hr-api-patent-home',
+            'request': request,
+            'title': "Verify Patent Data from API",
+            'child_view': 'hr-api-patent'
+        }
+        school_wise_inclusion = SOTFacultyAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all().union(
+            SLSFacultyAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all()).union(
+            SPMFacultyAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all()).union(
+            MathFacultyAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all()).union(
+            ScienceFacultyAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all())
+
+        included_appraisees = {}
+        for i in school_wise_inclusion:
+            included_appraisees[i.email.lower()] = i
+        api_endpoint = f"https://orsp.pdpu.ac.in/API/APAS.asmx/Getpatent?key=B77A5C561934E089&year={FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year}"
+        resp = requests.get(api_endpoint)
+        data = json.loads(fromstring(resp.content).text)
+        unmatched_records = []
+        for i in data:
+            if i['Email'].lower() not in included_appraisees:
+                unmatched_records.append(i.values())
+        context['unmatched_records'] = unmatched_records
+        context['total_records'] = len(data)
+        context['headers'] = data[0].keys()
+        return render(request, 'html/hr/verify_home.html', context)
+
+    @staticmethod
+    @login_required(login_url='/')
+    def patent(request, school):
+        school_active_year_map = {
+            'sot': FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
+            'sls': SLSFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
+            'som': SOEMFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
+            'math': MathFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
+            'science': ScienceFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
+        }
+        school_wise_inclusion = {
+            'sot': SOTFacultyAppraisalCycleInclusion,
+            'sls': SLSFacultyAppraisalCycleInclusion,
+            'som': SPMFacultyAppraisalCycleInclusion,
+            'math': MathFacultyAppraisalCycleInclusion,
+            'science': ScienceFacultyAppraisalCycleInclusion
+        }
+        included_appraisees = {}
+        for i in school_wise_inclusion[school].objects.filter(is_active=True).first().appraisee.all():
+            included_appraisees[i.email.lower()] = i
+        api_endpoint = f"https://orsp.pdpu.ac.in/API/APAS.asmx/Getpatent?key=B77A5C561934E089&year={school_active_year_map[school]}"
+        resp = requests.get(api_endpoint)
+        data = json.loads(fromstring(resp.content).text)
+        context = {
+            'pagename': 'hr-api-patent-home',
+            'request': request,
+            'title': "Verify Patent Data from API",
+            'headers': data[0].keys(),
+            'data': []
+        }
+        hash_pragma = [
+            'internal_ID',
+            'uid',
+            'Email',
+            'department',
+            'school',
+            'brief_school',
+            'ptn_type',
+            'ptn_desc',
+            'month',
+            'yr',
+            'application_no',
+        ]
+        for i in list(data):
+            if i['Email'].lower() in included_appraisees:
+                i['hash'] = hashlib.md5('|'.join([i[j] for j in hash_pragma]).encode()).hexdigest()
+                verified = PatentRecords.objects.filter(internal_id=i['internal_ID']).first()
+                if verified:
+                    i['remarks'] = verified.remarks
+                    i['is_verified'] = verified.is_verified
+                    i['is_rejected'] = verified.is_rejected
+                    if i['hash'] == verified.hash:
+                        if verified.is_verified:
+                            i['status'] = 'verified'
+                            i['status_code'] = 0
+                        if verified.is_rejected:
+                            i['status'] = 'rejected'
+                            i['status_code'] = 1
+                    else:
+                        if verified.is_verified:
+                            i['status'] = 'modified_after_verification'
+                            i['status_code'] = 4
+                        if verified.is_rejected:
+                            i['status'] = 'modified'
+                            i['status_code'] = 3
+                        i['old_data'] = verified.to_dict()
+                else:
+                    i['status'] = 'unverified'
+                    i['status_code'] = 2
+                context['data'].append(i)
+        context['data_json'] = json.dumps(context['data'])
+        if request.method == 'POST':
+            for d in context['data']:
+                if request.POST.get(f'patent-record-{d["internal_ID"]}') is None:
+                    continue
+                decision = request.POST.get(f'patent-record-{d["internal_ID"]}').strip()
+                remarks = request.POST.get(f'patent-record-{d["internal_ID"]}-remarks').strip()
+                if d['status'] == 'unverified':
+                    v = PatentRecords()
+                else:
+                    v = PatentRecords.objects.filter(internal_id=d['internal_ID']).first()
+                v.internal_id = d['internal_ID']
+                v.faculty = included_appraisees[d['Email'].lower()]
+                v.uid = d['uid']
+                v.Email = d['Email']
+                v.department = d['department']
+                v.school = d['school']
+                v.brief_school = d['brief_school']
+                v.ptn_type = d['ptn_type']
+                v.ptn_desc = d['ptn_desc']
+                v.month = d['month']
+                v.yr = d['yr']
+                v.application_no = d['application_no']
+                v.hash = d['hash']
+                if decision == "reject":
+                    v.is_rejected = True
+                    v.is_verified = False
+                    v.rejected_by = request.user
+                if decision == 'accept':
+                    v.is_rejected = False
+                    v.is_verified = True
+                    v.verified_by = request.user
+                v.remarks = remarks
+                v.save()
+            return redirect('hr-api-patent', school=school)
+        return render(request, 'html/hr/verify_patent.html', context)
+
+    @staticmethod
+    @login_required(login_url='/')
+    def patent_reverse(request, school, internal_id):
+        try:
+            patent_record = PatentRecords.objects.get(internal_id=internal_id)
+            if patent_record:
+                patent_record.delete()
+        except Exception as e:
+            print(e)
+        return redirect('hr-api-patent', school=school)
+
+
+    @staticmethod
+    def paper_home(request):
+        context = {
+            'pagename': 'hr-api-paper-home',
+            'request': request,
+            'title': "Verify Paper Data from API",
+            'child_view': 'hr-api-paper'
+        }
+        school_wise_inclusion = SOTFacultyAppraisalCycleInclusion.objects.filter(
+            is_active=True).first().appraisee.all().union(
+            SLSFacultyAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all()).union(
+            SPMFacultyAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all()).union(
+            MathFacultyAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all()).union(
+            ScienceFacultyAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all())
+
+        included_appraisees = {}
+        for i in school_wise_inclusion:
+            included_appraisees[i.email.lower()] = i
+        api_endpoint = f"https://orsp.pdpu.ac.in/API/APAS.asmx/Getpaper?key=B77A5C561934E089&year={FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year}"
+        resp = requests.get(api_endpoint)
+        data = json.loads(fromstring(resp.content).text)
+        unmatched_records = []
+        for i in data:
+            if i['Email'].lower() not in included_appraisees:
+                unmatched_records.append(i.values())
+        context['unmatched_records'] = unmatched_records
+        context['total_records'] = len(data)
+        context['headers'] = data[0].keys()
+        return render(request, 'html/hr/verify_home.html', context)
+
+    @staticmethod
+    @login_required(login_url='/')
+    def paper(request, school):
+        school_active_year_map = {
+            'sot': FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
+            'sls': SLSFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
+            'som': SOEMFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
+            'math': MathFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
+            'science': ScienceFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
+        }
+        school_wise_inclusion = {
+            'sot': SOTFacultyAppraisalCycleInclusion,
+            'sls': SLSFacultyAppraisalCycleInclusion,
+            'som': SPMFacultyAppraisalCycleInclusion,
+            'math': MathFacultyAppraisalCycleInclusion,
+            'science': ScienceFacultyAppraisalCycleInclusion
+        }
+        included_appraisees = {}
+        for i in school_wise_inclusion[school].objects.filter(is_active=True).first().appraisee.all():
+            included_appraisees[i.email.lower()] = i
+        api_endpoint = f"https://orsp.pdpu.ac.in/API/APAS.asmx/Getpaper?key=B77A5C561934E089&year={school_active_year_map[school]}"
+        resp = requests.get(api_endpoint)
+        data = json.loads(fromstring(resp.content).text)
+        # f = open(f"HR/paper.json", "r")
+        # data = json.load(f)
+        # f.close()
+        context = {
+            'pagename': 'hr-api-paper-home',
+            'request': request,
+            'title': "Verify Paper Data from API",
+            'headers': data[0].keys(),
+            'data': []
+        }
+        for i in list(data):
+            if i['Email'].lower() in included_appraisees:
+                i['hash'] = PaperRecords.calculate_hash(i)
+                verified = PaperRecords.objects.filter(internal_id=i['internal_ID']).first()
+                if verified:
+                    i['remarks'] = verified.remarks
+                    i['is_verified'] = verified.is_verified
+                    i['is_rejected'] = verified.is_rejected
+                    if i['hash'] == verified.hash:
+                        if verified.is_verified:
+                            i['status'] = 'verified'
+                            i['status_code'] = 0
+                        if verified.is_rejected:
+                            i['status'] = 'rejected'
+                            i['status_code'] = 1
+                    else:
+                        if verified.is_verified:
+                            i['status'] = 'modified_after_verification'
+                            i['status_code'] = 4
+                        if verified.is_rejected:
+                            i['status'] = 'modified'
+                            i['status_code'] = 3
+                        i['old_data'] = verified.to_dict()
+                else:
+                    i['status'] = 'unverified'
+                    i['status_code'] = 2
+                context['data'].append(i)
+        context['data_json'] = json.dumps(context['data'])
+        if request.method == 'POST':
+            errors = []
+            for d in context['data']:
+                if request.POST.get(f'paper-record-{d["internal_ID"]}') is None:
+                    continue
+                decision = request.POST.get(f'paper-record-{d["internal_ID"]}').strip()
+                remarks = request.POST.get(f'paper-record-{d["internal_ID"]}-remarks').strip()
+                if d['status'] == 'unverified':
+                    v = PaperRecords()
+                else:
+                    v = PaperRecords.objects.filter(internal_id=d['internal_ID']).first()
+                v.populate(d)
+                v.faculty = included_appraisees[d['Email'].lower()]
+                v.hash = d['hash']
+                if decision == "reject":
+                    v.is_rejected = True
+                    v.is_verified = False
+                    v.rejected_by = request.user
+                if decision == 'accept':
+                    v.is_rejected = False
+                    v.is_verified = True
+                    v.verified_by = request.user
+                v.remarks = remarks
+                try:
+                    v.save()
+                except Exception as e:
+                    errors.append(f"Error saving record {d['internal_ID']}: {str(e)}")
+            if errors:
+                errors = '\n\n\n'.join(errors).replace('\n', '<br>')
+                return HttpResponse(f"<p>The following records werernt saved due to data errors<br><br>{errors}:</p>")
+            return redirect('hr-api-paper', school=school)
+        return render(request, 'html/hr/verify_paper.html', context)
+
+    @staticmethod
+    @login_required(login_url='/')
+    def paper_reverse(request, school, internal_id):
+        try:
+            paper_record = PaperRecords.objects.get(internal_id=internal_id)
+            if paper_record:
+                paper_record.delete()
+        except Exception as e:
+            print(e)
+        return redirect('hr-api-paper', school=school)
+
+
+    @staticmethod
+    @login_required(login_url='/')
+    def books_home(request):
+        context = {
+            'pagename': 'hr-api-books-home',
+            'request': request,
+            'title': "Verify Books Data from API",
+            'child_view': 'hr-api-books'
+        }
+        school_wise_inclusion = SOTFacultyAppraisalCycleInclusion.objects.filter(
+            is_active=True).first().appraisee.all().union(
+            SLSFacultyAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all()).union(
+            SPMFacultyAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all()).union(
+            MathFacultyAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all()).union(
+            ScienceFacultyAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all())
+
+        included_appraisees = {}
+        for i in school_wise_inclusion:
+            included_appraisees[i.email.lower()] = i
+        api_endpoint = f"https://orsp.pdpu.ac.in/API/APAS.asmx/Getbook?key=B77A5C561934E089&year={FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year}"
+        resp = requests.get(api_endpoint)
+        data = json.loads(fromstring(resp.content).text)
+        unmatched_records = []
+        for i in data:
+            if i['Email'].lower() not in included_appraisees:
+                unmatched_records.append(i.values())
+        context['unmatched_records'] = unmatched_records
+        context['total_records'] = len(data)
+        context['headers'] = data[0].keys()
+        return render(request, 'html/hr/verify_home.html', context)
+
+    @staticmethod
+    @login_required(login_url='/')
+    def books(request, school):
+        school_active_year_map = {
+            'sot': FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
+            'sls': SLSFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
+            'som': SOEMFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
+            'math': MathFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
+            'science': ScienceFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
+        }
+        school_wise_inclusion = {
+            'sot': SOTFacultyAppraisalCycleInclusion,
+            'sls': SLSFacultyAppraisalCycleInclusion,
+            'som': SPMFacultyAppraisalCycleInclusion,
+            'math': MathFacultyAppraisalCycleInclusion,
+            'science': ScienceFacultyAppraisalCycleInclusion
+        }
+        included_appraisees = {}
+        for i in school_wise_inclusion[school].objects.filter(is_active=True).first().appraisee.all():
+            included_appraisees[i.email.lower()] = i
+        api_endpoint = f"https://orsp.pdpu.ac.in/API/APAS.asmx/Getbook?key=B77A5C561934E089&year={school_active_year_map[school]}"
+        resp = requests.get(api_endpoint)
+        data = json.loads(fromstring(resp.content).text)
+        # f = open(f"HR/books.json", "r")
+        # data = json.load(f)
+        # f.close()
+        context = {
+            'pagename': 'hr-api-books-home',
+            'request': request,
+            'title': "Verify Book Data from API",
+            'headers': data[0].keys(),
+            'data': []
+        }
+        for i in list(data):
+            if i['Email'].lower() in included_appraisees:
+                i['hash'] = BookRecords.calculate_hash(i)
+                verified = BookRecords.objects.filter(internal_id=i['internal_ID']).first()
+                if verified:
+                    i['remarks'] = verified.remarks
+                    i['is_verified'] = verified.is_verified
+                    i['is_rejected'] = verified.is_rejected
+                    if i['hash'] == verified.hash:
+                        if verified.is_verified:
+                            i['status'] = 'verified'
+                            i['status_code'] = 0
+                        if verified.is_rejected:
+                            i['status'] = 'rejected'
+                            i['status_code'] = 1
+                    else:
+                        if verified.is_verified:
+                            i['status'] = 'modified_after_verification'
+                            i['status_code'] = 4
+                        if verified.is_rejected:
+                            i['status'] = 'modified'
+                            i['status_code'] = 3
+                        i['old_data'] = verified.to_dict()
+                else:
+                    i['status'] = 'unverified'
+                    i['status_code'] = 2
+                context['data'].append(i)
+        context['data_json'] = json.dumps(context['data'])
+        if request.method == 'POST':
+            errors = []
+            for d in context['data']:
+                if request.POST.get(f'book-record-{d["internal_ID"]}') is None:
+                    continue
+                decision = request.POST.get(f'book-record-{d["internal_ID"]}').strip()
+                remarks = request.POST.get(f'book-record-{d["internal_ID"]}-remarks').strip()
+                if d['status'] == 'unverified':
+                    v = BookRecords()
+                else:
+                    v = BookRecords.objects.filter(internal_id=d['internal_ID']).first()
+                v.populate(d)
+                v.faculty = included_appraisees[d['Email'].lower()]
+                v.hash = d['hash']
+                if decision == "reject":
+                    v.is_rejected = True
+                    v.is_verified = False
+                    v.rejected_by = request.user
+                if decision == 'accept':
+                    v.is_rejected = False
+                    v.is_verified = True
+                    v.verified_by = request.user
+                v.remarks = remarks
+                try:
+                    v.save()
+                except Exception as e:
+                    errors.append(f"Error saving record {d['internal_ID']}: {str(e)}")
+            if errors:
+                errors = '\n\n\n'.join(errors).replace('\n', '<br>')
+                return HttpResponse(f"<p>The following records werernt saved due to data errors<br><br>{errors}:</p>")
+            return redirect('hr-api-books', school=school)
+        return render(request, 'html/hr/verify_book.html', context)
+
+    @staticmethod
+    @login_required(login_url='/')
+    def book_reverse(request, school, internal_id):
+        try:
+            paper_record = BookRecords.objects.get(internal_id=internal_id)
+            if paper_record:
+                paper_record.delete()
+        except Exception as e:
+            print(e)
+        return redirect('hr-api-books', school=school)

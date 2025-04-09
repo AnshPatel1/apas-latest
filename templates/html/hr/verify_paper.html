@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        class="light-style layout-menu-fixed layout-navbar-fixed layout-menu-collapsed"
+        dir="ltr"
+        data-theme="theme-default"
+        data-assets-path="/static/assets/"
+        data-template="vertical-menu-template-free"
+>
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>HR - Verify API Data</title>
+    <link rel="icon" type="image/x-icon"
+          href="../../../media/admin-interface/favicon/Pandit_Deendayal_Energy_University_logo-2.png">
+    <meta name="description" content=""/>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <script src="https://kit.fontawesome.com/5fbd3e2d5f.js" crossorigin="anonymous"></script>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"
+    />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="/static/assets/vendor/fonts/boxicons.css"/>
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/css/core.css" class="template-customizer-core-css"/>
+    <link rel="stylesheet" href="/static/assets/vendor/css/theme-default.css" class="template-customizer-theme-css"/>
+    <link rel="stylesheet" href="/static/assets/css/demo.css"/>
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"/>
+
+    <link rel="stylesheet" href="/static/assets/vendor/libs/apex-charts/apex-charts.css"/>
+
+    <!-- Page CSS -->
+
+    <link rel="stylesheet" href="/static/assets/vendor/css/tm2.css"/>
+
+    <!-- Helpers -->
+    <script src="/static/assets/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="/static/assets/js/config.js"></script>
+    {#    <script src="/static/assets/js/show-spinner.js"></script>#}
+
+</head>
+<body>
+
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <!-- Menu -->
+
+        {% include 'html/hr/includes/hr-dashboard-sidebar.html' %}
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+
+            <!-- Navbar -->
+            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme justify-content-between"
+                 id="layout-navbar">
+                <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                    <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                        <i class="bx bx-menu bx-sm"></i>
+                    </a>
+                </div>
+
+                {% include 'html/hr/includes/dashboard-nav.html' %}
+            </nav>            <!-- / Navbar -->
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <!-- Content -->
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="container-p-y pe-3 ps-3">
+                        <div class="row">
+                            <div class="col-12 mb-4 h-100">
+                                <div class="card border">
+                                    <div class="d-flex align-items-end row">
+                                        <div class="col-12">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <h5 class="card-title text-primary m-4">{{ title }}</h5>
+                                                <div>
+                                                    <button class="btn btn-primary me-2 my-2" type="button"
+                                                            onclick="download_data('rejected')">Download Incorrect Data
+                                                    </button>
+                                                    <button class="btn btn-primary me-2 my-2" type="button"
+                                                            onclick="download_data('accepted')">Download Accepted Data
+                                                    </button>
+                                                    <button class="btn btn-success me-4 my-2" type="submit">Save
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="card-body w-100 m-0 p-0 mb-4">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="ms-3">
+                                                        Total Records Found: <strong>{{ data|length }}</strong>
+                                                    </div>
+                                                    <div class="d-flex justify-content-end align-items-center">
+                                                        <label for="filter"
+                                                               class="form-label me-2 mb-2 text-center"></label>
+                                                        <select class="form-select me-2 mb-2" style="max-width: 300px"
+                                                                id="filter">
+                                                            <option value="select">Select a Bulk Action</option>
+                                                            <option value="accept">Accept</option>
+                                                            <option value="reject">Reject</option>
+                                                            <option value="clear">Clear</option>
+                                                        </select>
+                                                        <button class="btn btn-primary me-2 mb-2" type="button"
+                                                                onclick="bulk_action()">Apply
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                        <tr>
+                                                            <th class="p-2 m-0"><input type="checkbox"
+                                                                                       class="form-check-input"
+                                                                                       name="paper-record-all-check"
+                                                                                       onclick="check_all()"/></th>
+                                                            <th>ID</th>
+                                                            <th>UID</th>
+                                                            <th>Faculty Details</th>
+                                                            <th>Month</th>
+                                                            <th>Year</th>
+                                                            <th>Type</th>
+                                                            <th>Title</th>
+                                                            <th>Entity</th>
+                                                            <th>Conference Organization</th>
+                                                            <th>Conference Level</th>
+                                                            <th>Quality</th>
+                                                            <th>ISBN</th>
+                                                            <th>Main Author</th>
+                                                            <th>Co Author</th>
+                                                            <th>Is Scopus</th>
+                                                            <th>Is WOS</th>
+                                                            <th>Is UGC</th>
+                                                            <th>Is ABDC</th>
+                                                            <th style="min-width: 300px">Actions</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for paper in data|dictsortreversed:"status_code" %}
+                                                            <tr
+                                                                    {% if paper.status == 'verified' %}
+                                                                        class="bg-label-success"
+                                                                    {% elif paper.status == 'rejected' %}
+                                                                        class="bg-label-danger"
+                                                                    {% elif paper.status == 'modified' %}
+                                                                        class="bg-label-primary"
+                                                                    {% elif paper.status == 'modified_after_verification' %}
+                                                                        class="bg-label-warning"
+                                                                    {% endif %}
+                                                            >
+                                                                <td class="m-0 p-2 ">
+                                                                    {% if paper.status == 'verified' %}
+                                                                        <input type="checkbox"
+                                                                               class="form-check-input bulk-action-check"
+                                                                               data-paper-id="{{ paper.internal_ID }}"
+                                                                               name="paper-record-{{ paper.internal_ID }}-check"
+                                                                               disabled/>
+                                                                    {% elif paper.status == 'rejected' %}
+                                                                        <input type="checkbox"
+                                                                               class="form-check-input bulk-action-check"
+                                                                               data-paper-id="{{ paper.internal_ID }}"
+                                                                               name="paper-record-{{ paper.internal_ID }}-check"
+                                                                               disabled/>
+                                                                    {% elif paper.status == 'modified' %}
+                                                                        <input type="checkbox"
+                                                                               class="form-check-input bulk-action-check"
+                                                                               data-paper-id="{{ paper.internal_ID }}"
+                                                                               name="paper-record-{{ paper.internal_ID }}-check"/>
+                                                                    {% elif paper.status == 'modified_after_verification' %}
+                                                                        <input type="checkbox"
+                                                                               class="form-check-input bulk-action-check"
+                                                                               data-paper-id="{{ paper.internal_ID }}"
+                                                                               name="paper-record-{{ paper.internal_ID }}-check"
+                                                                               disabled/>
+                                                                    {% elif paper.status == 'unverified' %}
+                                                                        <input type="checkbox"
+                                                                               class="form-check-input bulk-action-check"
+                                                                               data-paper-id="{{ paper.internal_ID }}"
+                                                                               name="paper-record-{{ paper.internal_ID }}-check"/>
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {{ paper.internal_ID }}
+                                                                </td>
+                                                                <td>
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'modified' %}
+                                                                        {% if paper.uid != paper.old_data.uid %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ paper.old_data.uid }}
+                                                                            <br/><strong>NEW:</strong> {{ paper.uid }}
+                                                                        {% else %}
+                                                                            {{ paper.uid }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ paper.uid }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'modified' %}
+                                                                        {% if paper.Email != paper.old_data.Email or  paper.department != paper.old_data.department or  paper.school != paper.old_data.school or paper.brief_school != paper.old_data.brief_school %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong> <br/>
+                                                                            {{ paper.old_data.Email }} <br/>
+                                                                            {{ paper.old_data.department }} <br/>
+                                                                            {{ paper.old_data.school }} (
+                                                                            {{ paper.old_data.brief_school }})
+                                                                            <br/><strong>NEW:</strong> <br>
+                                                                            {{ paper.Email }} <br/>
+                                                                            {{ paper.department }} <br/>
+                                                                            {{ paper.school }} (
+                                                                            {{ paper.brief_school }})
+                                                                        {% else %}
+                                                                            {{ paper.Email }} <br/>
+                                                                            {{ paper.department }} <br/>
+                                                                            {{ paper.school }} (
+                                                                            {{ paper.brief_school }})
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ paper.Email }} <br/>
+                                                                        {{ paper.department }} <br/>
+                                                                        {{ paper.school }} (
+                                                                        {{ paper.brief_school }})
+                                                                    {% endif %}
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'modified' %}
+                                                                        {% if paper.month != paper.old_data.month %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ paper.old_data.month }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ paper.month }}
+                                                                        {% else %}
+                                                                            {{ paper.month }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ paper.month }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'modified' %}
+                                                                        {% if paper.yr != paper.old_data.yr %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ paper.old_data.yr }}
+                                                                            <br/><strong>NEW:</strong> {{ paper.yr }}
+                                                                        {% else %}
+                                                                            {{ paper.yr }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ paper.yr }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'modified' %}
+                                                                        {% if paper.type != paper.old_data.type %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ paper.old_data.type }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ paper.type }}
+                                                                        {% else %}
+                                                                            {{ paper.type }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ paper.type }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'modified' %}
+                                                                        {% if paper.title != paper.old_data.title %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ paper.old_data.title }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ paper.title }}
+                                                                        {% else %}
+                                                                            {{ paper.title }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ paper.title }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'modified' %}
+                                                                        {% if paper.entity != paper.old_data.entity %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ paper.old_data.entity }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ paper.entity }}
+                                                                        {% else %}
+                                                                            {{ paper.entity }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ paper.entity }}
+                                                                    {% endif %}
+                                                                </td>
+
+                                                                <td>
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'modified' %}
+                                                                        {% if paper.conference_organization != paper.old_data.conference_organization %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ paper.old_data.conference_organization }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ paper.conference_organization }}
+                                                                        {% else %}
+                                                                            {{ paper.conference_organization }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ paper.conference_organization }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'modified' %}
+                                                                        {% if paper.conference_level != paper.old_data.conference_level %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ paper.old_data.conference_level }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ paper.conference_level }}
+                                                                        {% else %}
+                                                                            {{ paper.conference_level }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ paper.conference_level }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'modified' %}
+                                                                        {% if paper.quality != paper.old_data.quality %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ paper.old_data.quality }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ paper.quality }}
+                                                                        {% else %}
+                                                                            {{ paper.quality }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ paper.quality }}
+                                                                    {% endif %}
+                                                                </td>
+
+                                                                <td>
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'modified' %}
+                                                                        {% if paper.isbn != paper.old_data.isbn %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ paper.old_data.isbn }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ paper.isbn }}
+                                                                        {% else %}
+                                                                            {{ paper.isbn }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ paper.isbn }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'modified' %}
+                                                                        {% if paper.mainauthor != paper.old_data.mainauthor %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ paper.old_data.mainauthor }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ paper.mainauthor }}
+                                                                        {% else %}
+                                                                            {{ paper.mainauthor }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ paper.mainauthor }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'modified' %}
+                                                                        {% if paper.coauthor_count != paper.old_data.coauthor_count %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ paper.old_data.coauthor_count }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ paper.coauthor_count }}
+                                                                        {% else %}
+                                                                            {{ paper.coauthor_count }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ paper.coauthor_count }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'modified' %}
+                                                                        {% if paper.Is_scopus != paper.old_data.Is_scopus %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ paper.old_data.Is_scopus }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ paper.Is_scopus }}
+                                                                        {% else %}
+                                                                            {{ paper.Is_scopus }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ paper.Is_scopus }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'modified' %}
+                                                                        {% if paper.is_web_of_science != paper.old_data.is_web_of_science %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ paper.old_data.is_web_of_science }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ paper.is_web_of_science }}
+                                                                        {% else %}
+                                                                            {{ paper.is_web_of_science }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ paper.is_web_of_science }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'modified' %}
+                                                                        {% if paper.ugc != paper.old_data.ugc %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ paper.old_data.ugc }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ paper.ugc }}
+                                                                        {% else %}
+                                                                            {{ paper.ugc }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ paper.ugc }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'modified' %}
+                                                                        {% if paper.abdc != paper.old_data.abdc %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ paper.old_data.abdc }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ paper.abdc }}
+                                                                        {% else %}
+                                                                            {{ paper.abdc }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ paper.abdc }}
+                                                                    {% endif %}
+                                                                </td>
+
+
+                                                                <td>
+                                                                    {% if paper.status == 'modified' %}
+                                                                        <span class="badge bg-warning mb-2">Modified After Rejection. Review Changes</span>
+                                                                    {% elif paper.status == 'modified_after_verification' %}
+                                                                        <span class="badge bg-danger mb-2">Critical: Data Modified after Verification</span>
+                                                                    {% endif %}
+                                                                    <div
+                                                                            style="margin: 0px"
+                                                                            class="btn-group d-flex"
+                                                                            role="group"
+                                                                            aria-label="Basic radio toggle button group"
+                                                                    >
+
+                                                                        <input
+                                                                                type="radio"
+                                                                                class="btn-check"
+                                                                                name="paper-record-{{ paper.internal_ID }}"
+                                                                                id="paper-record-{{ paper.internal_ID }}-accept"
+                                                                                value="accept"
+                                                                                {% if paper.is_verified %}checked{% endif %}
+                                                                                autocomplete="off"
+                                                                                {% if paper.status == 'unverified' or paper.status == 'modified' %}
+                                                                                required
+                                                                                {% else %}
+                                                                                disabled
+                                                                                {% endif %}
+                                                                        />
+                                                                        <label
+                                                                                class="btn btn-outline-primary"
+                                                                                for="paper-record-{{ paper.internal_ID }}-accept"
+                                                                        >Accept</label
+                                                                        >
+                                                                        <input
+                                                                                type="radio"
+                                                                                class="btn-check"
+                                                                                name="paper-record-{{ paper.internal_ID }}"
+                                                                                id="paper-record-{{ paper.internal_ID }}-reject"
+                                                                                value="reject"
+                                                                                {% if paper.is_rejected %}checked{% endif %}
+                                                                                autocomplete="off"
+                                                                                {% if paper.status == 'unverified' or paper.status == 'modified' %}
+                                                                                required
+                                                                                {% else %}
+                                                                                disabled
+                                                                                {% endif %}
+                                                                        />
+                                                                        <label
+                                                                                class="btn btn-outline-danger"
+                                                                                for="paper-record-{{ paper.internal_ID }}-reject"
+                                                                        >Reject</label
+                                                                        >
+                                                                    </div>
+                                                                    <textarea class="form-control mt-2"
+                                                                              rows="3"
+                                                                            {% if paper.status == 'unverified' or paper.status == 'modified' %}
+                                                                              required
+                                                                            {% else %}
+                                                                              disabled
+                                                                            {% endif %}
+                                                                              name="paper-record-{{ paper.internal_ID }}-remarks"
+                                                                              placeholder="Remarks">{{ paper.remarks }}</textarea>
+                                                                    Hash: <strong
+                                                                        id="paper-record-{{ paper.internal_ID }}-hash">{{ paper.hash }}</strong>
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'modified' %}
+                                                                        Old Hash: <strong
+                                                                            id="paper-record-{{ paper.internal_ID }}-old-hash">{{ paper.old_data.hash }}</strong>
+                                                                    {% endif %}
+                                                                    {% if paper.status == 'modified_after_verification' or paper.status == 'verified' or paper.status == 'rejected' %}
+                                                                        <button type="button"
+                                                                                class="btn btn-warning mt-4 w-100"
+                                                                                onclick="deleteRecord(`{{ paper.internal_ID }}`)">
+                                                                            Reverse Verification
+                                                                        </button>
+                                                                    {% endif %}
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {#                    {% include "html/staff/includes/staff-timeline.html" %}#}
+                        <!--/ Total Revenue -->
+
+                    </div>
+                </form>
+            </div>
+            <!-- / Content -->
+
+            <!-- Footer -->
+            {% include "includes/footer.html" %}
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade m-0"></div>
+        </div>
+        <!-- Content wrapper -->
+    </div>
+    <!-- / Layout page -->
+</div>
+
+<!-- Overlay -->
+<div class="layout-overlay layout-menu-toggle"></div>
+</div>
+<!-- / Layout wrapper -->
+
+
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+<script src="/static/assets/vendor/libs/jquery/jquery.js"></script>
+<script src="/static/assets/vendor/libs/popper/popper.js"></script>
+<script src="/static/assets/vendor/js/bootstrap.js"></script>
+<script src="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+<script src="/static/assets/vendor/js/menu.js"></script>
+<!-- endbuild -->
+
+<!-- Vendors JS -->
+<script src="/static/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+
+<!-- Main JS -->
+<script src="/static/assets/js/main.js"></script>
+
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script>
+  const data = {{ data_json | safe }};
+  let rejectedIds = [];
+  let acceptedIds = [];
+  data.forEach((paper) => {
+    if (document.querySelector(`input[id='paper-record-${paper.internal_ID}-reject']`).checked) {
+      rejectedIds.push(paper.internal_ID);
+    }
+    if (document.querySelector(`input[id='paper-record-${paper.internal_ID}-accept']`).checked) {
+      acceptedIds.push(paper.internal_ID);
+    }
+  })
+
+  function deleteRecord(internal_id) {
+    confirm("Are you sure you want to reverse the verification of this record?") ? window.location.href = 'delete/' + internal_id + '/' : null;
+  }
+
+  function setRecord(id, status) {
+    if (status === 'accept') {
+      document.querySelector(`textarea[name='paper-record-${id}-remarks']`).value = "Approved with hash " + document.querySelector(`#paper-record-${id}-hash`).innerText + "\n";
+      document.querySelector(`input[id='paper-record-${id}-accept']`).checked = true;
+      document.querySelector(`input[id='paper-record-${id}-reject']`).checked = false;
+      if (rejectedIds.includes(id)) {
+        rejectedIds = rejectedIds.filter((_id) => _id !== id);
+      }
+      if (!acceptedIds.includes(id)) {
+        acceptedIds.push(id);
+      }
+    } else if (status === 'reject') {
+      document.querySelector(`textarea[name='paper-record-${id}-remarks']`).value = "";
+      document.querySelector(`input[id='paper-record-${id}-accept']`).checked = false;
+      document.querySelector(`input[id='paper-record-${id}-reject']`).checked = true;
+      if (!rejectedIds.includes(id)) {
+        rejectedIds.push(id);
+      }
+      if (acceptedIds.includes(id)) {
+        acceptedIds = acceptedIds.filter((_id) => _id !== id);
+      }
+
+    } else if (status === 'clear') {
+      document.querySelector(`textarea[name='paper-record-${id}-remarks']`).value = "";
+      document.querySelector(`input[id='paper-record-${id}-accept']`).checked = false;
+      document.querySelector(`input[id='paper-record-${id}-reject']`).checked = false;
+      if (rejectedIds.includes(id)) {
+        rejectedIds = rejectedIds.filter((_id) => _id !== id);
+      }
+      if (acceptedIds.includes(id)) {
+        acceptedIds = acceptedIds.filter((_id) => _id !== id);
+      }
+    }
+  }
+
+  data.forEach((paper) => {
+    document.querySelectorAll(`input[name='paper-record-${paper.internal_ID}']`).forEach((i) => i.addEventListener('change', function (e) {
+      if (e.target.value === 'accept') {
+        setRecord(paper.internal_ID, 'accept');
+      }
+      if (e.target.value === 'reject') {
+        setRecord(paper.internal_ID, 'reject');
+      }
+    }));
+  });
+
+  function download_data(method) {
+    const rows = [
+      ["ID", "UID", "Email", "Department", "School", "Brief School", "Type", "Description", "Month", "Year", "Application No.", "Remarks", "Status"]
+    ];
+    if (method === 'rejected') {
+      data.forEach((paper) => {
+        if (rejectedIds.includes(paper.internal_ID)) {
+          if (document.querySelector(`textarea[name='paper-record-${paper.internal_ID}-remarks']`).value === "") {
+            alert("Please fill remarks for all records before downloading.");
+            throw new Error("Please fill remarks for all records before downloading.");
+          }
+          rows.push([
+            paper.internal_ID,
+            paper.uid,
+            paper.Email,
+            paper.department,
+            paper.school,
+            paper.brief_school,
+            paper.ptn_type,
+            paper.ptn_desc,
+            paper.month,
+            paper.yr,
+            paper.application_no,
+            '" ' + document.querySelector(`textarea[name='paper-record-${paper.internal_ID}-remarks']`).value + ' "',
+            paper.status
+          ]);
+        }
+      });
+    } else if (method === 'accepted') {
+      data.forEach((paper) => {
+        if (acceptedIds.includes(paper.internal_ID)) {
+          rows.push([
+            paper.internal_ID,
+            paper.uid,
+            paper.Email,
+            paper.department,
+            paper.school,
+            paper.brief_school,
+            paper.ptn_type,
+            paper.ptn_desc,
+            paper.month,
+            paper.yr,
+            paper.application_no,
+            '" ' + document.querySelector(`textarea[name='paper-record-${paper.internal_ID}-remarks']`).value + ' "',
+            paper.status
+          ]);
+        }
+      });
+    }
+    const csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "rejected_papers.csv");
+    document.body.appendChild(link);
+    link.click();
+  }
+
+  function bulk_action() {
+    const action = document.querySelector('#filter').value;
+    let ids = []
+    document.querySelectorAll('.bulk-action-check').forEach((i) => {
+      if (i.getAttribute('data-paper-id') && i.checked) {
+        ids.push(i.getAttribute('data-paper-id'));
+      }
+    });
+    ids.forEach((id) => {
+      setRecord(id, action);
+    })
+  }
+
+  function check_all() {
+    const checked = document.querySelector('input[name="paper-record-all-check"]').checked;
+    document.querySelectorAll('.bulk-action-check').forEach((i) => {
+      if (!i.disabled) i.checked = checked;
+    });
+  }
+
+  {#document.querySelector('form').addEventListener('submit', (e) => {#}
+  {#    e.preventDefault();#}
+  {#    let isValid = true;#}
+  {#    data.forEach((paper) => {#}
+  {#        const decision_value = document.querySelector(`input[name='paper-record-${paper.ID}']`).value;#}
+  {#        console.log(decision_value)#}
+  {#        if (decision_value === 'accepted' || decision_value === 'rejected') {#}
+  {#            if (document.querySelector(`textarea[name='paper-record-${paper.ID}-remarks']`).value === "") {#}
+  {#                isValid = false;#}
+  {#            }#}
+  {#        }#}
+  {#    });#}
+  {#    if (!isValid) {#}
+  {#        alert("Please fill remarks for all records before saving.");#}
+  {#        e.preventDefault();#}
+  {#    }#}
+  {# });#}
+</script>
+</body>
+</html>

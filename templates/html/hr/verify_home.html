@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        class="light-style layout-menu-fixed layout-navbar-fixed layout-menu-collapsed"
+        dir="ltr"
+        data-theme="theme-default"
+        data-assets-path="/static/assets/"
+        data-template="vertical-menu-template-free"
+>
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>HR - Verify API Data</title>
+    <link rel="icon" type="image/x-icon"
+          href="../../../media/admin-interface/favicon/Pandit_Deendayal_Energy_University_logo-2.png">
+    <meta name="description" content=""/>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <script src="https://kit.fontawesome.com/5fbd3e2d5f.js" crossorigin="anonymous"></script>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"
+    />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="/static/assets/vendor/fonts/boxicons.css"/>
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/css/core.css" class="template-customizer-core-css"/>
+    <link rel="stylesheet" href="/static/assets/vendor/css/theme-default.css" class="template-customizer-theme-css"/>
+    <link rel="stylesheet" href="/static/assets/css/demo.css"/>
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"/>
+
+    <link rel="stylesheet" href="/static/assets/vendor/libs/apex-charts/apex-charts.css"/>
+
+    <!-- Page CSS -->
+
+    <link rel="stylesheet" href="/static/assets/vendor/css/tm2.css"/>
+
+    <!-- Helpers -->
+    <script src="/static/assets/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="/static/assets/js/config.js"></script>
+    {#    <script src="/static/assets/js/show-spinner.js"></script>#}
+
+</head>
+<body>
+
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <!-- Menu -->
+
+        {% include 'html/hr/includes/hr-dashboard-sidebar.html' %}
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+
+            <!-- Navbar -->
+            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme justify-content-between"
+                 id="layout-navbar">
+                <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                    <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                        <i class="bx bx-menu bx-sm"></i>
+                    </a>
+                </div>
+
+                {% include 'html/hr/includes/dashboard-nav.html' %}
+            </nav>            <!-- / Navbar -->
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <!-- Content -->
+
+                <div class="container-p-y pe-3 ps-3">
+                    <div class="row">
+                        <div class="col-12 mb-4 h-100">
+                            <div class="card border">
+                                <div class="d-flex align-items-end row">
+                                    <div class="col-12">
+                                        <h5 class="card-title text-primary m-4">{{ title }}</h5>
+                                        <hr>
+                                        <div class="card-body">
+                                            <div class="d-flex gap-4">
+                                                <a href="sot/" class="w-100">
+                                                    <div class="card bg-dark w-100" style="height: 100%">
+                                                        <div class="card-body justify-content-center">
+                                                            <div class="row">
+                                                                <div class="col-12 d-flex justify-content-center align-items-center">
+                                                                    <h5
+                                                                            class="text-white mb-0">Verify SOT</h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <a href="sls/" class="w-100">
+                                                    <div class="card bg-primary w-100" style="height: 100%">
+                                                        <div class="card-body justify-content-center">
+                                                            <div class="row">
+                                                                <div class="col-12 d-flex justify-content-center align-items-center">
+                                                                    <h5
+                                                                            class="text-white mb-0">Verify SLS</h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <a href="som/" class="w-100">
+                                                    <div class="card bg-info w-100" style="height: 100%">
+                                                        <div class="card-body justify-content-center">
+                                                            <div class="row">
+                                                                <div class="col-12 d-flex justify-content-center align-items-center">
+                                                                    <h5
+                                                                            class="text-white mb-0">Verify SOM</h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <a href="math/" class="w-100">
+                                                    <div class="card bg-warning w-100" style="height: 100%">
+                                                        <div class="card-body justify-content-center">
+                                                            <div class="row">
+                                                                <div class="col-12 d-flex justify-content-center align-items-center">
+                                                                    <h5
+                                                                            class="text-white mb-0">Verify Math</h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                                <a href="science/" class="w-100">
+                                                    <div class="card bg-success w-100" style="height: 100%">
+                                                        <div class="card-body justify-content-center">
+                                                            <div class="row">
+                                                                <div class="col-12 d-flex justify-content-center align-items-center">
+                                                                    <h5
+                                                                            class="text-white mb-0">Verify Science</h5>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 mb-4 h-100">
+                            <div class="card border">
+                                <div class="d-flex align-items-end row">
+                                    <div class="col-12">
+                                        <h5 class="card-title text-primary m-4">Unmatched Records ({{ unmatched_records|length }} / {{ total_records }})</h5>
+                                        <hr>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered">
+                                                    <thead>
+                                                    {% for head in headers %}
+                                                        <th scope="col">{{ head }}</th>
+                                                    {% endfor %}
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for row in unmatched_records %}
+                                                        <tr>
+                                                            {% for cell in row %}
+                                                                <td>{{ cell }}</td>
+                                                            {% endfor %}
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {#                    {% include "html/staff/includes/staff-timeline.html" %}#}
+                    <!--/ Total Revenue -->
+
+                </div>
+            </div>
+            <!-- / Content -->
+
+            <!-- Footer -->
+            {% include "includes/footer.html" %}
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade m-0"></div>
+        </div>
+        <!-- Content wrapper -->
+    </div>
+    <!-- / Layout page -->
+</div>
+
+<!-- Overlay -->
+<div class="layout-overlay layout-menu-toggle"></div>
+</div>
+<!-- / Layout wrapper -->
+
+
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+<script src="/static/assets/vendor/libs/jquery/jquery.js"></script>
+<script src="/static/assets/vendor/libs/popper/popper.js"></script>
+<script src="/static/assets/vendor/js/bootstrap.js"></script>
+<script src="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+<script src="/static/assets/vendor/js/menu.js"></script>
+<!-- endbuild -->
+
+<!-- Vendors JS -->
+<script src="/static/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+
+<!-- Main JS -->
+<script src="/static/assets/js/main.js"></script>
+
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+</body>
+</html>

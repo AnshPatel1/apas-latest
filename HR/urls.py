@@ -14,4 +14,13 @@ urlpatterns = [
     path('tally/', hr_data_tally, name='hr-tally'),
     path('detail/<str:goalsheet>/', inclusion_detail, name='hr-inclusion'),
     path('detail/<str:goalsheet>/<str:status>/', detail_status, name='hr-inclusion-filtered'),
+    path('api/patent/<str:school>/', APIVerifyViews.patent, name='hr-api-patent'),
+    path('api/patent/<str:school>/delete/<str:internal_id>/', APIVerifyViews.patent_reverse, name='hr-api-patent-reverse'),
+    path('api/paper/<str:school>/', APIVerifyViews.paper, name='hr-api-paper'),
+    path('api/paper/<str:school>/delete/<str:internal_id>/', APIVerifyViews.paper_reverse, name='hr-api-paper-reverse'),
+    path('api/books/<str:school>/', APIVerifyViews.books, name='hr-api-books'),
+    path('api/books/<str:school>/delete/<str:internal_id>/', APIVerifyViews.book_reverse, name='hr-api-book-reverse'),
+    path('api/patent/', APIVerifyViews.patent_home, name='hr-api-patent-home'),
+    path('api/paper/', APIVerifyViews.paper_home, name='hr-api-paper-home'),
+    path('api/books/', APIVerifyViews.books_home, name='hr-api-books-home'),
 ]

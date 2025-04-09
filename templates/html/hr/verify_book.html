@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        class="light-style layout-menu-fixed layout-navbar-fixed layout-menu-collapsed"
+        dir="ltr"
+        data-theme="theme-default"
+        data-assets-path="/static/assets/"
+        data-template="vertical-menu-template-free"
+>
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>HR - Verify API Data</title>
+    <link rel="icon" type="image/x-icon"
+          href="../../../media/admin-interface/favicon/Pandit_Deendayal_Energy_University_logo-2.png">
+    <meta name="description" content=""/>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <script src="https://kit.fontawesome.com/5fbd3e2d5f.js" crossorigin="anonymous"></script>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"
+    />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="/static/assets/vendor/fonts/boxicons.css"/>
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/css/core.css" class="template-customizer-core-css"/>
+    <link rel="stylesheet" href="/static/assets/vendor/css/theme-default.css" class="template-customizer-theme-css"/>
+    <link rel="stylesheet" href="/static/assets/css/demo.css"/>
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"/>
+
+    <link rel="stylesheet" href="/static/assets/vendor/libs/apex-charts/apex-charts.css"/>
+
+    <!-- Page CSS -->
+
+    <link rel="stylesheet" href="/static/assets/vendor/css/tm2.css"/>
+
+    <!-- Helpers -->
+    <script src="/static/assets/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="/static/assets/js/config.js"></script>
+    {#    <script src="/static/assets/js/show-spinner.js"></script>#}
+
+</head>
+<body>
+
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <!-- Menu -->
+
+        {% include 'html/hr/includes/hr-dashboard-sidebar.html' %}
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+
+            <!-- Navbar -->
+            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme justify-content-between"
+                 id="layout-navbar">
+                <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                    <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                        <i class="bx bx-menu bx-sm"></i>
+                    </a>
+                </div>
+
+                {% include 'html/hr/includes/dashboard-nav.html' %}
+            </nav>            <!-- / Navbar -->
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <!-- Content -->
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="container-p-y pe-3 ps-3">
+                        <div class="row">
+                            <div class="col-12 mb-4 h-100">
+                                <div class="card border">
+                                    <div class="d-flex align-items-end row">
+                                        <div class="col-12">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <h5 class="card-title text-primary m-4">{{ title }}</h5>
+                                                <div>
+                                                    <button class="btn btn-primary me-2 my-2" type="button"
+                                                            onclick="download_data('rejected')">Download Incorrect Data
+                                                    </button>
+                                                    <button class="btn btn-primary me-2 my-2" type="button"
+                                                            onclick="download_data('accepted')">Download Accepted Data
+                                                    </button>
+                                                    <button class="btn btn-success me-4 my-2" type="submit">Save
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="card-body w-100 m-0 p-0 mb-4">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="ms-3">
+                                                        Total Records Found: <strong>{{ data|length }}</strong>
+                                                    </div>
+                                                    <div class="d-flex justify-content-end align-items-center">
+                                                        <label for="filter"
+                                                               class="form-label me-2 mb-2 text-center"></label>
+                                                        <select class="form-select me-2 mb-2" style="max-width: 300px"
+                                                                id="filter">
+                                                            <option value="select">Select a Bulk Action</option>
+                                                            <option value="accept">Accept</option>
+                                                            <option value="reject">Reject</option>
+                                                            <option value="clear">Clear</option>
+                                                        </select>
+                                                        <button class="btn btn-primary me-2 mb-2" type="button"
+                                                                onclick="bulk_action()">Apply
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                        <tr>
+                                                            <th class="p-2 m-0"><input type="checkbox"
+                                                                                       class="form-check-input"
+                                                                                       name="book-record-all-check"
+                                                                                       onclick="check_all()"/></th>
+                                                            <th>ID</th>
+                                                            <th>UID</th>
+                                                            <th>Faculty Details</th>
+                                                            <th>Month</th>
+                                                            <th>Year</th>
+                                                            <th>Level</th>
+                                                            <th>Title</th>
+                                                            <th>Category</th>
+                                                            <th>Type</th>
+                                                            <th>ISBN</th>
+                                                            <th>Main Author</th>
+                                                            <th>Co Author</th>
+                                                            <th>Editor</th>
+                                                            <th style="min-width: 300px">Actions</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for book in data|dictsortreversed:"status_code" %}
+                                                            <tr
+                                                                    {% if book.status == 'verified' %}
+                                                                        class="bg-label-success"
+                                                                    {% elif book.status == 'rejected' %}
+                                                                        class="bg-label-danger"
+                                                                    {% elif book.status == 'modified' %}
+                                                                        class="bg-label-primary"
+                                                                    {% elif book.status == 'modified_after_verification' %}
+                                                                        class="bg-label-warning"
+                                                                    {% endif %}
+                                                            >
+                                                                <td class="m-0 p-2 ">
+                                                                    {% if book.status == 'verified' %}
+                                                                        <input type="checkbox"
+                                                                               class="form-check-input bulk-action-check"
+                                                                               data-book-id="{{ book.internal_ID }}"
+                                                                               name="book-record-{{ book.internal_ID }}-check"
+                                                                               disabled/>
+                                                                    {% elif book.status == 'rejected' %}
+                                                                        <input type="checkbox"
+                                                                               class="form-check-input bulk-action-check"
+                                                                               data-book-id="{{ book.internal_ID }}"
+                                                                               name="book-record-{{ book.internal_ID }}-check"
+                                                                               disabled/>
+                                                                    {% elif book.status == 'modified' %}
+                                                                        <input type="checkbox"
+                                                                               class="form-check-input bulk-action-check"
+                                                                               data-book-id="{{ book.internal_ID }}"
+                                                                               name="book-record-{{ book.internal_ID }}-check"/>
+                                                                    {% elif book.status == 'modified_after_verification' %}
+                                                                        <input type="checkbox"
+                                                                               class="form-check-input bulk-action-check"
+                                                                               data-book-id="{{ book.internal_ID }}"
+                                                                               name="book-record-{{ book.internal_ID }}-check"
+                                                                               disabled/>
+                                                                    {% elif book.status == 'unverified' %}
+                                                                        <input type="checkbox"
+                                                                               class="form-check-input bulk-action-check"
+                                                                               data-book-id="{{ book.internal_ID }}"
+                                                                               name="book-record-{{ book.internal_ID }}-check"/>
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {{ book.internal_ID }}
+                                                                </td>
+                                                                <td>
+                                                                    {% if book.status == 'modified_after_verification' or book.status == 'modified' %}
+                                                                        {% if book.uid != book.old_data.uid %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ book.old_data.uid }}
+                                                                            <br/><strong>NEW:</strong> {{ book.uid }}
+                                                                        {% else %}
+                                                                            {{ book.uid }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ book.uid }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if book.status == 'modified_after_verification' or book.status == 'modified' %}
+                                                                        {% if book.Email != book.old_data.Email or  book.department != book.old_data.department or  book.school != book.old_data.school or book.brief_school != book.old_data.brief_school %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong> <br/>
+                                                                            {{ book.old_data.Email }} <br/>
+                                                                            {{ book.old_data.department }} <br/>
+                                                                            {{ book.old_data.school }} (
+                                                                            {{ book.old_data.brief_school }})
+                                                                            <br/><strong>NEW:</strong> <br>
+                                                                            {{ book.Email }} <br/>
+                                                                            {{ book.department }} <br/>
+                                                                            {{ book.school }} (
+                                                                            {{ book.brief_school }})
+                                                                        {% else %}
+                                                                            {{ book.Email }} <br/>
+                                                                            {{ book.department }} <br/>
+                                                                            {{ book.school }} (
+                                                                            {{ book.brief_school }})
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ book.Email }} <br/>
+                                                                        {{ book.department }} <br/>
+                                                                        {{ book.school }} (
+                                                                        {{ book.brief_school }})
+                                                                    {% endif %}
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    {% if book.status == 'modified_after_verification' or book.status == 'modified' %}
+                                                                        {% if book.month != book.old_data.month %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ book.old_data.month }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ book.month }}
+                                                                        {% else %}
+                                                                            {{ book.month }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ book.month }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if book.status == 'modified_after_verification' or book.status == 'modified' %}
+                                                                        {% if book.yr != book.old_data.yr %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ book.old_data.yr }}
+                                                                            <br/><strong>NEW:</strong> {{ book.yr }}
+                                                                        {% else %}
+                                                                            {{ book.yr }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ book.yr }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if book.status == 'modified_after_verification' or book.status == 'modified' %}
+                                                                        {% if book.level != book.old_data.level %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ book.old_data.level }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ book.level }}
+                                                                        {% else %}
+                                                                            {{ book.level }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ book.level }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if book.status == 'modified_after_verification' or book.status == 'modified' %}
+                                                                        {% if book.title != book.old_data.title %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ book.old_data.title }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ book.title }}
+                                                                        {% else %}
+                                                                            {{ book.title }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ book.title }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if book.status == 'modified_after_verification' or book.status == 'modified' %}
+                                                                        {% if book.category != book.old_data.category %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ book.old_data.category }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ book.category }}
+                                                                        {% else %}
+                                                                            {{ book.category }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ book.category }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if book.status == 'modified_after_verification' or book.status == 'modified' %}
+                                                                        {% if book.type != book.old_data.type %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ book.old_data.type }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ book.type }}
+                                                                        {% else %}
+                                                                            {{ book.type }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ book.type }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if book.status == 'modified_after_verification' or book.status == 'modified' %}
+                                                                        {% if book.isbn != book.old_data.isbn %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ book.old_data.isbn }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ book.isbn }}
+                                                                        {% else %}
+                                                                            {{ book.isbn }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ book.isbn }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if book.status == 'modified_after_verification' or book.status == 'modified' %}
+                                                                        {% if book.mainauthor != book.old_data.mainauthor %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ book.old_data.mainauthor }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ book.mainauthor }}
+                                                                        {% else %}
+                                                                            {{ book.mainauthor }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ book.mainauthor }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if book.status == 'modified_after_verification' or book.status == 'modified' %}
+                                                                        {% if book.coauthor_count != book.old_data.coauthor_count %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ book.old_data.coauthor_count }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ book.coauthor_count }}
+                                                                        {% else %}
+                                                                            {{ book.coauthor_count }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ book.coauthor_count }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if book.status == 'modified_after_verification' or book.status == 'modified' %}
+                                                                        {% if book.editor != book.old_data.editor %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ book.old_data.editor }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ book.editor }}
+                                                                        {% else %}
+                                                                            {{ book.editor }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ book.editor }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if book.status == 'modified' %}
+                                                                        <span class="badge bg-warning mb-2">Modified After Rejection. Review Changes</span>
+                                                                    {% elif book.status == 'modified_after_verification' %}
+                                                                        <span class="badge bg-danger mb-2">Critical: Data Modified after Verification</span>
+                                                                    {% endif %}
+                                                                    <div
+                                                                            style="margin: 0px"
+                                                                            class="btn-group d-flex"
+                                                                            role="group"
+                                                                            aria-label="Basic radio toggle button group"
+                                                                    >
+
+                                                                        <input
+                                                                                type="radio"
+                                                                                class="btn-check"
+                                                                                name="book-record-{{ book.internal_ID }}"
+                                                                                id="book-record-{{ book.internal_ID }}-accept"
+                                                                                value="accept"
+                                                                                {% if book.is_verified %}checked{% endif %}
+                                                                                autocomplete="off"
+                                                                                {% if book.status == 'unverified' or book.status == 'modified' %}
+                                                                                required
+                                                                                {% else %}
+                                                                                disabled
+                                                                                {% endif %}
+                                                                        />
+                                                                        <label
+                                                                                class="btn btn-outline-primary"
+                                                                                for="book-record-{{ book.internal_ID }}-accept"
+                                                                        >Accept</label
+                                                                        >
+                                                                        <input
+                                                                                type="radio"
+                                                                                class="btn-check"
+                                                                                name="book-record-{{ book.internal_ID }}"
+                                                                                id="book-record-{{ book.internal_ID }}-reject"
+                                                                                value="reject"
+                                                                                {% if book.is_rejected %}checked{% endif %}
+                                                                                autocomplete="off"
+                                                                                {% if book.status == 'unverified' or book.status == 'modified' %}
+                                                                                required
+                                                                                {% else %}
+                                                                                disabled
+                                                                                {% endif %}
+                                                                        />
+                                                                        <label
+                                                                                class="btn btn-outline-danger"
+                                                                                for="book-record-{{ book.internal_ID }}-reject"
+                                                                        >Reject</label
+                                                                        >
+                                                                    </div>
+                                                                    <textarea class="form-control mt-2"
+                                                                              rows="3"
+                                                                            {% if book.status == 'unverified' or book.status == 'modified' %}
+                                                                              required
+                                                                            {% else %}
+                                                                              disabled
+                                                                            {% endif %}
+                                                                              name="book-record-{{ book.internal_ID }}-remarks"
+                                                                              placeholder="Remarks">{{ book.remarks }}</textarea>
+                                                                    Hash: <strong
+                                                                        id="book-record-{{ book.internal_ID }}-hash">{{ book.hash }}</strong>
+                                                                    {% if book.status == 'modified_after_verification' or book.status == 'modified' %}
+                                                                        Old Hash: <strong
+                                                                            id="book-record-{{ book.internal_ID }}-old-hash">{{ book.old_data.hash }}</strong>
+                                                                    {% endif %}
+                                                                    {% if book.status == 'modified_after_verification' or book.status == 'verified' or book.status == 'rejected' %}
+                                                                        <button type="button"
+                                                                                class="btn btn-warning mt-4 w-100"
+                                                                                onclick="deleteRecord(`{{ book.internal_ID }}`)">
+                                                                            Reverse Verification
+                                                                        </button>
+                                                                    {% endif %}
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {#                    {% include "html/staff/includes/staff-timeline.html" %}#}
+                        <!--/ Total Revenue -->
+
+                    </div>
+                </form>
+            </div>
+            <!-- / Content -->
+
+            <!-- Footer -->
+            {% include "includes/footer.html" %}
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade m-0"></div>
+        </div>
+        <!-- Content wrapper -->
+    </div>
+    <!-- / Layout page -->
+</div>
+
+<!-- Overlay -->
+<div class="layout-overlay layout-menu-toggle"></div>
+</div>
+<!-- / Layout wrapper -->
+
+
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+<script src="/static/assets/vendor/libs/jquery/jquery.js"></script>
+<script src="/static/assets/vendor/libs/popper/popper.js"></script>
+<script src="/static/assets/vendor/js/bootstrap.js"></script>
+<script src="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+<script src="/static/assets/vendor/js/menu.js"></script>
+<!-- endbuild -->
+
+<!-- Vendors JS -->
+<script src="/static/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+
+<!-- Main JS -->
+<script src="/static/assets/js/main.js"></script>
+
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script>
+  const data = {{ data_json | safe }};
+  let rejectedIds = [];
+  let acceptedIds = [];
+  data.forEach((book) => {
+    if (document.querySelector(`input[id='book-record-${book.internal_ID}-reject']`).checked) {
+      rejectedIds.push(book.internal_ID);
+    }
+    if (document.querySelector(`input[id='book-record-${book.internal_ID}-accept']`).checked) {
+      acceptedIds.push(book.internal_ID);
+    }
+  })
+
+  function deleteRecord(internal_id) {
+    confirm("Are you sure you want to reverse the verification of this record?") ? window.location.href = 'delete/' + internal_id + '/' : null;
+  }
+
+  function setRecord(id, status) {
+    if (status === 'accept') {
+      document.querySelector(`textarea[name='book-record-${id}-remarks']`).value = "Approved with hash " + document.querySelector(`#book-record-${id}-hash`).innerText + "\n";
+      document.querySelector(`input[id='book-record-${id}-accept']`).checked = true;
+      document.querySelector(`input[id='book-record-${id}-reject']`).checked = false;
+      if (rejectedIds.includes(id)) {
+        rejectedIds = rejectedIds.filter((_id) => _id !== id);
+      }
+      if (!acceptedIds.includes(id)) {
+        acceptedIds.push(id);
+      }
+    } else if (status === 'reject') {
+      document.querySelector(`textarea[name='book-record-${id}-remarks']`).value = "";
+      document.querySelector(`input[id='book-record-${id}-accept']`).checked = false;
+      document.querySelector(`input[id='book-record-${id}-reject']`).checked = true;
+      if (!rejectedIds.includes(id)) {
+        rejectedIds.push(id);
+      }
+      if (acceptedIds.includes(id)) {
+        acceptedIds = acceptedIds.filter((_id) => _id !== id);
+      }
+
+    } else if (status === 'clear') {
+      document.querySelector(`textarea[name='book-record-${id}-remarks']`).value = "";
+      document.querySelector(`input[id='book-record-${id}-accept']`).checked = false;
+      document.querySelector(`input[id='book-record-${id}-reject']`).checked = false;
+      if (rejectedIds.includes(id)) {
+        rejectedIds = rejectedIds.filter((_id) => _id !== id);
+      }
+      if (acceptedIds.includes(id)) {
+        acceptedIds = acceptedIds.filter((_id) => _id !== id);
+      }
+    }
+  }
+
+  data.forEach((book) => {
+    document.querySelectorAll(`input[name='book-record-${book.internal_ID}']`).forEach((i) => i.addEventListener('change', function (e) {
+      if (e.target.value === 'accept') {
+        setRecord(book.internal_ID, 'accept');
+      }
+      if (e.target.value === 'reject') {
+        setRecord(book.internal_ID, 'reject');
+      }
+    }));
+  });
+
+  function download_data(method) {
+    const rows = [
+      ["ID", "UID", "Email", "Department", "School", "Brief School", "Type", "Description", "Month", "Year", "Application No.", "Remarks", "Status"]
+    ];
+    if (method === 'rejected') {
+      data.forEach((book) => {
+        if (rejectedIds.includes(book.internal_ID)) {
+          if (document.querySelector(`textarea[name='book-record-${book.internal_ID}-remarks']`).value === "") {
+            alert("Please fill remarks for all records before downloading.");
+            throw new Error("Please fill remarks for all records before downloading.");
+          }
+          rows.push([
+            book.internal_ID,
+            book.uid,
+            book.Email,
+            book.department,
+            book.school,
+            book.brief_school,
+            book.ptn_type,
+            book.ptn_desc,
+            book.month,
+            book.yr,
+            book.application_no,
+            '" ' + document.querySelector(`textarea[name='book-record-${book.internal_ID}-remarks']`).value + ' "',
+            book.status
+          ]);
+        }
+      });
+    } else if (method === 'accepted') {
+      data.forEach((book) => {
+        if (acceptedIds.includes(book.internal_ID)) {
+          rows.push([
+            book.internal_ID,
+            book.uid,
+            book.Email,
+            book.department,
+            book.school,
+            book.brief_school,
+            book.ptn_type,
+            book.ptn_desc,
+            book.month,
+            book.yr,
+            book.application_no,
+            '" ' + document.querySelector(`textarea[name='book-record-${book.internal_ID}-remarks']`).value + ' "',
+            book.status
+          ]);
+        }
+      });
+    }
+    const csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "rejected_books.csv");
+    document.body.appendChild(link);
+    link.click();
+  }
+
+  function bulk_action() {
+    const action = document.querySelector('#filter').value;
+    let ids = []
+    document.querySelectorAll('.bulk-action-check').forEach((i) => {
+      if (i.getAttribute('data-book-id') && i.checked) {
+        ids.push(i.getAttribute('data-book-id'));
+      }
+    });
+    ids.forEach((id) => {
+      setRecord(id, action);
+    })
+  }
+
+  function check_all() {
+    const checked = document.querySelector('input[name="book-record-all-check"]').checked;
+    document.querySelectorAll('.bulk-action-check').forEach((i) => {
+      if (!i.disabled) i.checked = checked;
+    });
+  }
+
+  {#document.querySelector('form').addEventListener('submit', (e) => {#}
+  {#    e.preventDefault();#}
+  {#    let isValid = true;#}
+  {#    data.forEach((book) => {#}
+  {#        const decision_value = document.querySelector(`input[name='book-record-${book.ID}']`).value;#}
+  {#        console.log(decision_value)#}
+  {#        if (decision_value === 'accepted' || decision_value === 'rejected') {#}
+  {#            if (document.querySelector(`textarea[name='book-record-${book.ID}-remarks']`).value === "") {#}
+  {#                isValid = false;#}
+  {#            }#}
+  {#        }#}
+  {#    });#}
+  {#    if (!isValid) {#}
+  {#        alert("Please fill remarks for all records before saving.");#}
+  {#        e.preventDefault();#}
+  {#    }#}
+  {# });#}
+</script>
+</body>
+</html>

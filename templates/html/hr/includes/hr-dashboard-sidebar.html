@@ -95,6 +95,26 @@
                 <div data-i18n="Analytics">Tally Bulk Upload</div>
             </a>
         </li>
+        <li class="menu-header small text-uppercase"><span class="menu-header-text">Verify API Data</span></li>
+        <!-- Cards -->
+        <li class="menu-item {% if pagename == 'hr-api-patent-home' %}active{% endif %}">
+            <a href="{% url 'hr-api-patent-home' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-check"></i>
+                <div data-i18n="Analytics">Verify Patent</div>
+            </a>
+        </li>
+        <li class="menu-item {% if pagename == 'hr-api-paper-home' %}active{% endif %}">
+            <a href="{% url 'hr-api-paper-home' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-check"></i>
+                <div data-i18n="Analytics">Verify Paper Publications</div>
+            </a>
+        </li>
+        <li class="menu-item {% if pagename == 'hr-api-books-home' %}active{% endif %}">
+            <a href="{% url 'hr-api-books-home' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-check"></i>
+                <div data-i18n="Analytics">Verify Books</div>
+            </a>
+        </li>
         {#        <li class="menu-item {% if pagename == 'faculty_review' %}active{% endif %}">#}
         {#            <a href="{% if pagename != "hr_home" %}../{% endif %}review/" class="menu-link">#}
         {#                <i class="menu-icon tf-icons bx bx-table"></i>#}

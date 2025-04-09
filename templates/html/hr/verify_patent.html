@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html
+        lang="en"
+        class="light-style layout-menu-fixed layout-navbar-fixed layout-menu-collapsed"
+        dir="ltr"
+        data-theme="theme-default"
+        data-assets-path="/static/assets/"
+        data-template="vertical-menu-template-free"
+>
+<head>
+    <meta charset="utf-8"/>
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+
+    <title>HR - Verify API Data</title>
+    <link rel="icon" type="image/x-icon"
+          href="../../../media/admin-interface/favicon/Pandit_Deendayal_Energy_University_logo-2.png">
+    <meta name="description" content=""/>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <script src="https://kit.fontawesome.com/5fbd3e2d5f.js" crossorigin="anonymous"></script>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+            rel="stylesheet"
+    />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="/static/assets/vendor/fonts/boxicons.css"/>
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/css/core.css" class="template-customizer-core-css"/>
+    <link rel="stylesheet" href="/static/assets/vendor/css/theme-default.css" class="template-customizer-theme-css"/>
+    <link rel="stylesheet" href="/static/assets/css/demo.css"/>
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css"/>
+
+    <link rel="stylesheet" href="/static/assets/vendor/libs/apex-charts/apex-charts.css"/>
+
+    <!-- Page CSS -->
+
+    <link rel="stylesheet" href="/static/assets/vendor/css/tm2.css"/>
+
+    <!-- Helpers -->
+    <script src="/static/assets/vendor/js/helpers.js"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="/static/assets/js/config.js"></script>
+    {#    <script src="/static/assets/js/show-spinner.js"></script>#}
+
+</head>
+<body>
+
+<!-- Layout wrapper -->
+<div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+        <!-- Menu -->
+
+        {% include 'html/hr/includes/hr-dashboard-sidebar.html' %}
+        <!-- / Menu -->
+
+        <!-- Layout container -->
+        <div class="layout-page">
+
+            <!-- Navbar -->
+            <nav class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme justify-content-between"
+                 id="layout-navbar">
+                <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+                    <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+                        <i class="bx bx-menu bx-sm"></i>
+                    </a>
+                </div>
+
+                {% include 'html/hr/includes/dashboard-nav.html' %}
+            </nav>            <!-- / Navbar -->
+
+            <!-- Content wrapper -->
+            <div class="content-wrapper">
+                <!-- Content -->
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="container-p-y pe-3 ps-3">
+                        <div class="row">
+                            <div class="col-12 mb-4 h-100">
+                                <div class="card border">
+                                    <div class="d-flex align-items-end row">
+                                        <div class="col-12">
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <h5 class="card-title text-primary m-4">{{ title }}</h5>
+                                                <div>
+                                                    <button class="btn btn-primary me-2 my-2" type="button"
+                                                            onclick="download_data('rejected')">Download Incorrect Data
+                                                    </button>
+                                                    <button class="btn btn-primary me-2 my-2" type="button"
+                                                            onclick="download_data('accepted')">Download Accepted Data
+                                                    </button>
+                                                    <button class="btn btn-success me-4 my-2" type="submit">Save
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="card-body w-100 m-0 p-0 mb-4">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="ms-3">
+                                                        Total Records Found: <strong>{{ data|length }}</strong>
+                                                    </div>
+                                                    <div class="d-flex justify-content-end align-items-center">
+                                                        <label for="filter"
+                                                           class="form-label me-2 mb-2 text-center"></label>
+                                                    <select class="form-select me-2 mb-2" style="max-width: 300px"
+                                                            id="filter">
+                                                        <option value="select">Select a Bulk Action</option>
+                                                        <option value="accept">Accept</option>
+                                                        <option value="reject">Reject</option>
+                                                        <option value="clear">Clear</option>
+                                                    </select>
+                                                    <button class="btn btn-primary me-2 mb-2" type="button"
+                                                            onclick="bulk_action()">Apply
+                                                    </button>
+                                                    </div>
+                                                </div>
+                                                <div class="table-responsive">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                        <tr>
+                                                            <th class="p-2 m-0"><input type="checkbox"
+                                                                                       class="form-check-input"
+                                                                                       name="patent-record-all-check"
+                                                                                       onclick="check_all()"/></th>
+                                                            <th>ID</th>
+                                                            <th>UID</th>
+                                                            <th>Faculty Details</th>
+                                                            <th>Type</th>
+                                                            <th>Description</th>
+                                                            <th>Month</th>
+                                                            <th>Year</th>
+                                                            <th>Application No.</th>
+                                                            <th style="min-width: 300px">Actions</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for patent in data|dictsortreversed:"status_code" %}
+                                                            <tr
+                                                                    {% if patent.status == 'verified' %}
+                                                                        class="bg-label-success"
+                                                                    {% elif patent.status == 'rejected' %}
+                                                                        class="bg-label-danger"
+                                                                    {% elif patent.status == 'modified' %}
+                                                                        class="bg-label-primary"
+                                                                    {% elif patent.status == 'modified_after_verification' %}
+                                                                        class="bg-label-warning"
+                                                                    {% endif %}
+                                                            >
+                                                                <td class="m-0 p-2 ">
+                                                                    {% if patent.status == 'verified' %}
+                                                                        <input type="checkbox"
+                                                                               class="form-check-input bulk-action-check"
+                                                                               data-patent-id="{{ patent.internal_ID }}"
+                                                                               name="patent-record-{{ patent.internal_ID }}-check"
+                                                                               disabled/>
+                                                                    {% elif patent.status == 'rejected' %}
+                                                                        <input type="checkbox"
+                                                                               class="form-check-input bulk-action-check"
+                                                                               data-patent-id="{{ patent.internal_ID }}"
+                                                                               name="patent-record-{{ patent.internal_ID }}-check"
+                                                                               disabled/>
+                                                                    {% elif patent.status == 'modified' %}
+                                                                        <input type="checkbox"
+                                                                               class="form-check-input bulk-action-check"
+                                                                               data-patent-id="{{ patent.internal_ID }}"
+                                                                               name="patent-record-{{ patent.internal_ID }}-check"/>
+                                                                    {% elif patent.status == 'modified_after_verification' %}
+                                                                        <input type="checkbox"
+                                                                               class="form-check-input bulk-action-check"
+                                                                               data-patent-id="{{ patent.internal_ID }}"
+                                                                               name="patent-record-{{ patent.internal_ID }}-check"
+                                                                               disabled/>
+                                                                    {% elif patent.status == 'unverified' %}
+                                                                        <input type="checkbox"
+                                                                               class="form-check-input bulk-action-check"
+                                                                               data-patent-id="{{ patent.internal_ID }}"
+                                                                               name="patent-record-{{ patent.internal_ID }}-check"/>
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {{ patent.internal_ID }}
+                                                                </td>
+                                                                <td>
+                                                                    {% if patent.status == 'modified_after_verification' or patent.status == 'modified' %}
+                                                                        {% if patent.uid != patent.old_data.uid %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ patent.old_data.uid }}
+                                                                            <br/><strong>NEW:</strong> {{ patent.uid }}
+                                                                        {% else %}
+                                                                            {{ patent.uid }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ patent.uid }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if patent.status == 'modified_after_verification' or patent.status == 'modified' %}
+                                                                        {% if patent.Email != patent.old_data.Email or  patent.department != patent.old_data.department or  patent.school != patent.old_data.school or patent.brief_school != patent.old_data.brief_school %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong> <br/>
+                                                                            {{ patent.old_data.Email }} <br/>
+                                                                            {{ patent.old_data.department }} <br/>
+                                                                            {{ patent.old_data.school }} (
+                                                                            {{ patent.old_data.brief_school }})
+                                                                            <br/><strong>NEW:</strong> <br>
+                                                                            {{ patent.Email }} <br/>
+                                                                            {{ patent.department }} <br/>
+                                                                            {{ patent.school }} (
+                                                                            {{ patent.brief_school }})
+                                                                        {% else %}
+                                                                            {{ patent.Email }} <br/>
+                                                                            {{ patent.department }} <br/>
+                                                                            {{ patent.school }} (
+                                                                            {{ patent.brief_school }})
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ patent.Email }} <br/>
+                                                                        {{ patent.department }} <br/>
+                                                                        {{ patent.school }} (
+                                                                        {{ patent.brief_school }})
+                                                                    {% endif %}
+                                                                    <br/>
+                                                                </td>
+                                                                <td>
+                                                                    {% if patent.status == 'modified_after_verification' or patent.status == 'modified' %}
+                                                                        {% if patent.ptn_type != patent.old_data.ptn_type %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ patent.old_data.ptn_type }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ patent.ptn_type }}
+                                                                        {% else %}
+                                                                            {{ patent.ptn_type }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ patent.ptn_type }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if patent.status == 'modified_after_verification' or patent.status == 'modified' %}
+                                                                        {% if patent.ptn_desc != patent.old_data.ptn_desc %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ patent.old_data.ptn_desc }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ patent.ptn_desc }}
+                                                                        {% else %}
+                                                                            {{ patent.ptn_desc }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ patent.ptn_desc }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if patent.status == 'modified_after_verification' or patent.status == 'modified' %}
+                                                                        {% if patent.month != patent.old_data.month %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ patent.old_data.month }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ patent.month }}
+                                                                        {% else %}
+                                                                            {{ patent.month }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ patent.month }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                <td>
+                                                                    {% if patent.status == 'modified_after_verification' or patent.status == 'modified' %}
+                                                                        {% if patent.yr != patent.old_data.yr %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ patent.old_data.yr }}
+                                                                            <br/><strong>NEW:</strong> {{ patent.yr }}
+                                                                        {% else %}
+                                                                            {{ patent.yr }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ patent.yr }}
+                                                                    {% endif %}</td>
+                                                                <td>
+                                                                    {% if patent.status == 'modified_after_verification' or patent.status == 'modified' %}
+                                                                        {% if patent.application_no != patent.old_data.application_no %}
+                                                                            <span class="badge bg-warning">Modified</span>
+                                                                            <br/><strong>OLD:</strong>
+                                                                            {{ patent.old_data.application_no }}
+                                                                            <br/><strong>NEW:</strong>
+                                                                            {{ patent.application_no }}
+                                                                        {% else %}
+                                                                            {{ patent.application_no }}
+                                                                        {% endif %}
+                                                                    {% else %}
+                                                                        {{ patent.application_no }}
+                                                                    {% endif %}</td>
+                                                                <td>
+                                                                    {% if patent.status == 'modified' %}
+                                                                        <span class="badge bg-warning mb-2">Modified After Rejection. Review Changes</span>
+                                                                    {% elif patent.status == 'modified_after_verification' %}
+                                                                        <span class="badge bg-danger mb-2">Critical: Data Modified after Verification</span>
+                                                                    {% endif %}
+                                                                    <div
+                                                                            style="margin: 0px"
+                                                                            class="btn-group d-flex"
+                                                                            role="group"
+                                                                            aria-label="Basic radio toggle button group"
+                                                                    >
+
+                                                                        <input
+                                                                                type="radio"
+                                                                                class="btn-check"
+                                                                                name="patent-record-{{ patent.internal_ID }}"
+                                                                                id="patent-record-{{ patent.internal_ID }}-accept"
+                                                                                value="accept"
+                                                                                {% if patent.is_verified %}checked{% endif %}
+                                                                                autocomplete="off"
+                                                                                {% if patent.status == 'unverified' or patent.status == 'modified' %}
+                                                                                required
+                                                                                {% else %}
+                                                                                disabled
+                                                                                {% endif %}
+                                                                        />
+                                                                        <label
+                                                                                class="btn btn-outline-primary"
+                                                                                for="patent-record-{{ patent.internal_ID }}-accept"
+                                                                        >Accept</label
+                                                                        >
+                                                                        <input
+                                                                                type="radio"
+                                                                                class="btn-check"
+                                                                                name="patent-record-{{ patent.internal_ID }}"
+                                                                                id="patent-record-{{ patent.internal_ID }}-reject"
+                                                                                value="reject"
+                                                                                {% if patent.is_rejected %}checked{% endif %}
+                                                                                autocomplete="off"
+                                                                                {% if patent.status == 'unverified' or patent.status == 'modified' %}
+                                                                                required
+                                                                                {% else %}
+                                                                                disabled
+                                                                                {% endif %}
+                                                                        />
+                                                                        <label
+                                                                                class="btn btn-outline-danger"
+                                                                                for="patent-record-{{ patent.internal_ID }}-reject"
+                                                                        >Reject</label
+                                                                        >
+                                                                    </div>
+                                                                    <textarea class="form-control mt-2"
+                                                                              rows="3"
+                                                                            {% if patent.status == 'unverified' or patent.status == 'modified' %}
+                                                                              required
+                                                                            {% else %}
+                                                                              disabled
+                                                                            {% endif %}
+                                                                              name="patent-record-{{ patent.internal_ID }}-remarks"
+                                                                              placeholder="Remarks">{{ patent.remarks }}</textarea>
+                                                                    Hash: <strong
+                                                                        id="patent-record-{{ patent.internal_ID }}-hash">{{ patent.hash }}</strong>
+                                                                {% if patent.status == 'modified_after_verification' or patent.status == 'modified' %}
+                                                                Old Hash: <strong
+                                                                        id="patent-record-{{ patent.internal_ID }}-old-hash">{{ patent.old_data.hash }}</strong>
+                                                                {% endif %}
+                                                                {% if patent.status == 'modified_after_verification' or patent.status == 'verified' or patent.status == 'rejected' %}
+                                                                        <button type="button" class="btn btn-warning mt-4 w-100" onclick="deleteRecord(`{{ patent.internal_ID }}`)">Reverse Verification</button>
+                                                                    {% endif %}
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {#                    {% include "html/staff/includes/staff-timeline.html" %}#}
+                        <!--/ Total Revenue -->
+
+                    </div>
+                </form>
+            </div>
+            <!-- / Content -->
+
+            <!-- Footer -->
+            {% include "includes/footer.html" %}
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade m-0"></div>
+        </div>
+        <!-- Content wrapper -->
+    </div>
+    <!-- / Layout page -->
+</div>
+
+<!-- Overlay -->
+<div class="layout-overlay layout-menu-toggle"></div>
+</div>
+<!-- / Layout wrapper -->
+
+
+<!-- Core JS -->
+<!-- build:js assets/vendor/js/core.js -->
+<script src="/static/assets/vendor/libs/jquery/jquery.js"></script>
+<script src="/static/assets/vendor/libs/popper/popper.js"></script>
+<script src="/static/assets/vendor/js/bootstrap.js"></script>
+<script src="/static/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+
+<script src="/static/assets/vendor/js/menu.js"></script>
+<!-- endbuild -->
+
+<!-- Vendors JS -->
+<script src="/static/assets/vendor/libs/apex-charts/apexcharts.js"></script>
+
+<!-- Main JS -->
+<script src="/static/assets/js/main.js"></script>
+
+<!-- Place this tag in your head or just before your close body tag. -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<script>
+    const data = {{ data_json | safe }};
+    let rejectedIds = [];
+    let acceptedIds = [];
+    data.forEach((patent) => {
+        if (document.querySelector(`input[id='patent-record-${patent.internal_ID}-reject']`).checked) {
+            rejectedIds.push(patent.internal_ID);
+        }
+        if (document.querySelector(`input[id='patent-record-${patent.internal_ID}-accept']`).checked) {
+            acceptedIds.push(patent.internal_ID);
+        }
+    })
+
+    function deleteRecord(internal_id) {
+        confirm("Are you sure you want to reverse the verification of this record?") ? window.location.href = 'delete/' + internal_id + '/' : null;
+    }
+
+    function setRecord(id, status) {
+        if (status === 'accept') {
+            document.querySelector(`textarea[name='patent-record-${id}-remarks']`).value = "Approved with hash " + document.querySelector(`#patent-record-${id}-hash`).innerText + "\n";
+            document.querySelector(`input[id='patent-record-${id}-accept']`).checked = true;
+            document.querySelector(`input[id='patent-record-${id}-reject']`).checked = false;
+            if (rejectedIds.includes(id)) {
+                rejectedIds = rejectedIds.filter((_id) => _id !== id);
+            }
+            if (!acceptedIds.includes(id)) {
+                acceptedIds.push(id);
+            }
+        } else if (status === 'reject') {
+            document.querySelector(`textarea[name='patent-record-${id}-remarks']`).value = "";
+            document.querySelector(`input[id='patent-record-${id}-accept']`).checked = false;
+            document.querySelector(`input[id='patent-record-${id}-reject']`).checked = true;
+            if (!rejectedIds.includes(id)) {
+                rejectedIds.push(id);
+            }
+            if (acceptedIds.includes(id)) {
+                acceptedIds = acceptedIds.filter((_id) => _id !== id);
+            }
+
+        } else if (status === 'clear') {
+            document.querySelector(`textarea[name='patent-record-${id}-remarks']`).value = "";
+            document.querySelector(`input[id='patent-record-${id}-accept']`).checked = false;
+            document.querySelector(`input[id='patent-record-${id}-reject']`).checked = false;
+            if (rejectedIds.includes(id)) {
+                rejectedIds = rejectedIds.filter((_id) => _id !== id);
+            }
+            if (acceptedIds.includes(id)) {
+                acceptedIds = acceptedIds.filter((_id) => _id !== id);
+            }
+        }
+    }
+
+    data.forEach((patent) => {
+        document.querySelectorAll(`input[name='patent-record-${patent.internal_ID}']`).forEach((i) => i.addEventListener('change', function (e) {
+            if (e.target.value === 'accept') {
+                setRecord(patent.internal_ID, 'accept');
+            }
+            if (e.target.value === 'reject') {
+                setRecord(patent.internal_ID, 'reject');
+            }
+        }));
+    });
+
+    function download_data(method) {
+        const rows = [
+            ["ID", "UID", "Email", "Department", "School", "Brief School", "Type", "Description", "Month", "Year", "Application No.", "Remarks", "Status"]
+        ];
+        if (method === 'rejected') {
+            data.forEach((patent) => {
+                if (rejectedIds.includes(patent.internal_ID)) {
+                    if (document.querySelector(`textarea[name='patent-record-${patent.internal_ID}-remarks']`).value === "") {
+                        alert("Please fill remarks for all records before downloading.");
+                        throw new Error("Please fill remarks for all records before downloading.");
+                    }
+                    rows.push([
+                        patent.internal_ID,
+                        patent.uid,
+                        patent.Email,
+                        patent.department,
+                        patent.school,
+                        patent.brief_school,
+                        patent.ptn_type,
+                        patent.ptn_desc,
+                        patent.month,
+                        patent.yr,
+                        patent.application_no,
+                        '" ' + document.querySelector(`textarea[name='patent-record-${patent.internal_ID}-remarks']`).value + ' "',
+                        patent.status
+                    ]);
+                }
+            });
+        } else if (method === 'accepted') {
+            data.forEach((patent) => {
+                if (acceptedIds.includes(patent.internal_ID)) {
+                    rows.push([
+                        patent.internal_ID,
+                        patent.uid,
+                        patent.Email,
+                        patent.department,
+                        patent.school,
+                        patent.brief_school,
+                        patent.ptn_type,
+                        patent.ptn_desc,
+                        patent.month,
+                        patent.yr,
+                        patent.application_no,
+                        '" ' + document.querySelector(`textarea[name='patent-record-${patent.internal_ID}-remarks']`).value + ' "',
+                        patent.status
+                    ]);
+                }
+            });
+        }
+        const csvContent = "data:text/csv;charset=utf-8," + rows.map(e => e.join(",")).join("\n");
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "rejected_patents.csv");
+        document.body.appendChild(link);
+        link.click();
+    }
+
+    function bulk_action() {
+        const action = document.querySelector('#filter').value;
+        let ids = []
+        document.querySelectorAll('.bulk-action-check').forEach((i) => {
+            if (i.getAttribute('data-patent-id') && i.checked) {
+                ids.push(i.getAttribute('data-patent-id'));
+            }
+        });
+        ids.forEach((id) => {
+            setRecord(id, action);
+        })
+    }
+
+    function check_all() {
+        const checked = document.querySelector('input[name="patent-record-all-check"]').checked;
+        document.querySelectorAll('.bulk-action-check').forEach((i) => {
+            if (!i.disabled) i.checked = checked;
+        });
+    }
+
+    {#document.querySelector('form').addEventListener('submit', (e) => {#}
+    {#    e.preventDefault();#}
+    {#    let isValid = true;#}
+    {#    data.forEach((patent) => {#}
+    {#        const decision_value = document.querySelector(`input[name='patent-record-${patent.ID}']`).value;#}
+    {#        console.log(decision_value)#}
+    {#        if (decision_value === 'accepted' || decision_value === 'rejected') {#}
+    {#            if (document.querySelector(`textarea[name='patent-record-${patent.ID}-remarks']`).value === "") {#}
+    {#                isValid = false;#}
+    {#            }#}
+    {#        }#}
+    {#    });#}
+    {#    if (!isValid) {#}
+    {#        alert("Please fill remarks for all records before saving.");#}
+    {#        e.preventDefault();#}
+    {#    }#}
+    {# });#}
+</script>
+</body>
+</html>
