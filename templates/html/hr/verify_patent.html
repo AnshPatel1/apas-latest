@@ -145,6 +145,7 @@
                                                         </thead>
                                                         <tbody>
                                                         {% for patent in data|dictsortreversed:"status_code" %}
+                                                            {% if not patent.is_finalized %}
                                                             <tr
                                                                     {% if patent.status == 'verified' %}
                                                                         class="bg-label-success"
@@ -376,6 +377,7 @@
                                                                     {% endif %}
                                                                 </td>
                                                             </tr>
+                                                            {% endif %}
                                                         {% endfor %}
                                                         </tbody>
                                                     </table>

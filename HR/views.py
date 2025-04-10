@@ -22,6 +22,7 @@ import BulkUpload.BulkUploadMaths.models as bulk_math
 import BulkUpload.BulkUploadScience.models as bulk_science
 import json
 import requests
+import requests_cache
 from xml.etree.ElementTree import fromstring
 import hashlib
 from HR.models import *
@@ -1595,7 +1596,8 @@ class APIVerifyViews:
             'title': "Verify Patent Data from API",
             'child_view': 'hr-api-patent'
         }
-        school_wise_inclusion = SOTFacultyAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all().union(
+        school_wise_inclusion = SOTFacultyAppraisalCycleInclusion.objects.filter(
+            is_active=True).first().appraisee.all().union(
             SLSFacultyAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all()).union(
             SPMFacultyAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all()).union(
             MathFacultyAppraisalCycleInclusion.objects.filter(is_active=True).first().appraisee.all()).union(
@@ -1604,9 +1606,7 @@ class APIVerifyViews:
         included_appraisees = {}
         for i in school_wise_inclusion:
             included_appraisees[i.email.lower()] = i
-        api_endpoint = f"https://orsp.pdpu.ac.in/API/APAS.asmx/Getpatent?key=B77A5C561934E089&year={FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year}"
-        resp = requests.get(api_endpoint)
-        data = json.loads(fromstring(resp.content).text)
+        data = get_patents(FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year)
         unmatched_records = []
         for i in data:
             if i['Email'].lower() not in included_appraisees:
@@ -1636,9 +1636,7 @@ class APIVerifyViews:
         included_appraisees = {}
         for i in school_wise_inclusion[school].objects.filter(is_active=True).first().appraisee.all():
             included_appraisees[i.email.lower()] = i
-        api_endpoint = f"https://orsp.pdpu.ac.in/API/APAS.asmx/Getpatent?key=B77A5C561934E089&year={school_active_year_map[school]}"
-        resp = requests.get(api_endpoint)
-        data = json.loads(fromstring(resp.content).text)
+        data = get_patents(school_active_year_map[school])
         context = {
             'pagename': 'hr-api-patent-home',
             'request': request,
@@ -1667,6 +1665,7 @@ class APIVerifyViews:
                     i['remarks'] = verified.remarks
                     i['is_verified'] = verified.is_verified
                     i['is_rejected'] = verified.is_rejected
+                    i['is_finalized'] = verified.is_finalized
                     if i['hash'] == verified.hash:
                         if verified.is_verified:
                             i['status'] = 'verified'
@@ -1704,7 +1703,7 @@ class APIVerifyViews:
                 v.department = d['department']
                 v.school = d['school']
                 v.brief_school = d['brief_school']
-                v.ptn_type = d['ptn_type']
+                v.ptn_type = d['ptn_type'].lower()
                 v.ptn_desc = d['ptn_desc']
                 v.month = d['month']
                 v.yr = d['yr']
@@ -1734,7 +1733,6 @@ class APIVerifyViews:
             print(e)
         return redirect('hr-api-patent', school=school)
 
-
     @staticmethod
     def paper_home(request):
         context = {
@@ -1753,9 +1751,7 @@ class APIVerifyViews:
         included_appraisees = {}
         for i in school_wise_inclusion:
             included_appraisees[i.email.lower()] = i
-        api_endpoint = f"https://orsp.pdpu.ac.in/API/APAS.asmx/Getpaper?key=B77A5C561934E089&year={FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year}"
-        resp = requests.get(api_endpoint)
-        data = json.loads(fromstring(resp.content).text)
+        data = get_papers(FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year)
         unmatched_records = []
         for i in data:
             if i['Email'].lower() not in included_appraisees:
@@ -1785,9 +1781,7 @@ class APIVerifyViews:
         included_appraisees = {}
         for i in school_wise_inclusion[school].objects.filter(is_active=True).first().appraisee.all():
             included_appraisees[i.email.lower()] = i
-        api_endpoint = f"https://orsp.pdpu.ac.in/API/APAS.asmx/Getpaper?key=B77A5C561934E089&year={school_active_year_map[school]}"
-        resp = requests.get(api_endpoint)
-        data = json.loads(fromstring(resp.content).text)
+        data = get_papers(school_active_year_map[school])
         # f = open(f"HR/paper.json", "r")
         # data = json.load(f)
         # f.close()
@@ -1806,6 +1800,7 @@ class APIVerifyViews:
                     i['remarks'] = verified.remarks
                     i['is_verified'] = verified.is_verified
                     i['is_rejected'] = verified.is_rejected
+                    i['is_finalized'] = verified.is_finalized
                     if i['hash'] == verified.hash:
                         if verified.is_verified:
                             i['status'] = 'verified'
@@ -1870,7 +1865,6 @@ class APIVerifyViews:
             print(e)
         return redirect('hr-api-paper', school=school)
 
-
     @staticmethod
     @login_required(login_url='/')
     def books_home(request):
@@ -1890,9 +1884,7 @@ class APIVerifyViews:
         included_appraisees = {}
         for i in school_wise_inclusion:
             included_appraisees[i.email.lower()] = i
-        api_endpoint = f"https://orsp.pdpu.ac.in/API/APAS.asmx/Getbook?key=B77A5C561934E089&year={FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year}"
-        resp = requests.get(api_endpoint)
-        data = json.loads(fromstring(resp.content).text)
+        data = get_books(FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year)
         unmatched_records = []
         for i in data:
             if i['Email'].lower() not in included_appraisees:
@@ -1922,9 +1914,7 @@ class APIVerifyViews:
         included_appraisees = {}
         for i in school_wise_inclusion[school].objects.filter(is_active=True).first().appraisee.all():
             included_appraisees[i.email.lower()] = i
-        api_endpoint = f"https://orsp.pdpu.ac.in/API/APAS.asmx/Getbook?key=B77A5C561934E089&year={school_active_year_map[school]}"
-        resp = requests.get(api_endpoint)
-        data = json.loads(fromstring(resp.content).text)
+        data = get_books(school_active_year_map[school])
         # f = open(f"HR/books.json", "r")
         # data = json.load(f)
         # f.close()
@@ -1943,6 +1933,7 @@ class APIVerifyViews:
                     i['remarks'] = verified.remarks
                     i['is_verified'] = verified.is_verified
                     i['is_rejected'] = verified.is_rejected
+                    i['is_finalized'] = verified.is_finalized
                     if i['hash'] == verified.hash:
                         if verified.is_verified:
                             i['status'] = 'verified'
@@ -2006,3 +1997,155 @@ class APIVerifyViews:
         except Exception as e:
             print(e)
         return redirect('hr-api-books', school=school)
+
+    @staticmethod
+    @login_required(login_url='/')
+    def finalize_verified_patent(request):
+        # PatentRecords.objects.all().update(is_finalized=False)
+        if request.method == "POST":
+            from BulkUpload.BulkUploadFoET.models import ViewPatent as SOTViewPatent
+            from BulkUpload.BulkUploadFoLS.models import ViewPatent as SLSViewPatent
+            from BulkUpload.BulkUploadFoEM.models import ViewPatent as SOMViewPatent
+            from BulkUpload.BulkUploadScience.models import ViewPatent as ScienceViewPatent
+            school_map = {
+                'sot': SOTViewPatent,
+                'sls': SLSViewPatent,
+                'som': SOMViewPatent,
+                'math': None,
+                'science': ScienceViewPatent
+            }
+            school_wise_inclusion = {
+                'sot': SOTFacultyAppraisalCycleInclusion,
+                'sls': SLSFacultyAppraisalCycleInclusion,
+                'som': SPMFacultyAppraisalCycleInclusion,
+                'math': MathFacultyAppraisalCycleInclusion,
+                'science': ScienceFacultyAppraisalCycleInclusion
+            }
+            user_map = {}
+            for school, inclusion in school_wise_inclusion.items():
+                for i in inclusion.objects.filter(is_active=True).first().appraisee.all():
+                    user_map[i] = school
+            PatentRecords.bulk_create_prepopulated_data(
+                PatentRecords.objects.filter(is_verified=True, is_finalized=False),
+                school_map,
+                user_map
+            )
+            PatentRecords.objects.filter(is_verified=True, is_finalized=False).update(is_finalized=True)
+        context = {
+            'pagename': 'hr-api-patent-finalize',
+            'request': request,
+            'title': "Finalize Verified Patents",
+            'child_view': 'hr-api-patent',
+            'data': [i.to_dict().values() for i in PatentRecords.objects.filter(is_verified=True, is_finalized=False)],
+            'headers': PatentRecords.objects.filter(is_verified=True).first().to_dict().keys()
+        }
+        return render(request, 'html/hr/finalize_records.html', context)
+
+    @staticmethod
+    @login_required(login_url='/')
+    def finalize_verified_paper(request):
+        # PatentRecords.objects.all().update(is_finalized=False)
+        if request.method == "POST":
+            from BulkUpload.BulkUploadFoET.models import ViewScopusWos as SOTViewScopusWos
+            from BulkUpload.BulkUploadFoLS.models import ViewScopusWos as SLSViewScopusWos
+            from BulkUpload.BulkUploadFoEM.models import ViewScopusWos as SOMViewScopusWos
+            from BulkUpload.BulkUploadScience.models import ViewScopusWos as ScienceViewScopusWos
+            from BulkUpload.BulkUploadMaths.models import ViewScopusWos as MathViewScopusWos
+            school_map = {
+                'sot': SOTViewScopusWos,
+                'sls': SLSViewScopusWos,
+                'som': SOMViewScopusWos,
+                'math': MathViewScopusWos,
+                'science': ScienceViewScopusWos
+            }
+            school_wise_inclusion = {
+                'sot': SOTFacultyAppraisalCycleInclusion,
+                'sls': SLSFacultyAppraisalCycleInclusion,
+                'som': SPMFacultyAppraisalCycleInclusion,
+                'math': MathFacultyAppraisalCycleInclusion,
+                'science': ScienceFacultyAppraisalCycleInclusion
+            }
+            user_map = {}
+            for school, inclusion in school_wise_inclusion.items():
+                for i in inclusion.objects.filter(is_active=True).first().appraisee.all():
+                    user_map[i] = school
+            PaperRecords.bulk_create_prepopulated_data(
+                PaperRecords.objects.filter(is_verified=True, is_finalized=False),
+                school_map,
+                user_map
+            )
+            PaperRecords.objects.filter(is_verified=True, is_finalized=False).update(is_finalized=True)
+        context = {
+            'pagename': 'hr-api-paper-finalize',
+            'request': request,
+            'title': "Finalize Verified Papers",
+            'child_view': 'hr-api-paper',
+            'data': [i.to_dict().values() for i in PaperRecords.objects.filter(is_verified=True, is_finalized=False)],
+            'headers': PaperRecords.objects.filter(is_verified=True).first().to_dict().keys()
+        }
+        return render(request, 'html/hr/finalize_records.html', context)
+
+    @staticmethod
+    @login_required(login_url='/')
+    def finalize_verified_books(request):
+        # PatentRecords.objects.all().update(is_finalized=False)
+        if request.method == "POST":
+            from BulkUpload.BulkUploadFoET.models import ViewBook as SOTViewBook
+            from BulkUpload.BulkUploadFoLS.models import ViewBook as SLSViewBook
+            from BulkUpload.BulkUploadFoEM.models import ViewBook as SOMViewBook
+            from BulkUpload.BulkUploadScience.models import ViewBook as ScienceViewBook
+            from BulkUpload.BulkUploadMaths.models import ViewBook as MathViewBook
+            school_map = {
+                'sot': SOTViewBook,
+                'sls': SLSViewBook,
+                'som': SOMViewBook,
+                'math': MathViewBook,
+                'science': ScienceViewBook
+            }
+            school_wise_inclusion = {
+                'sot': SOTFacultyAppraisalCycleInclusion,
+                'sls': SLSFacultyAppraisalCycleInclusion,
+                'som': SPMFacultyAppraisalCycleInclusion,
+                'math': MathFacultyAppraisalCycleInclusion,
+                'science': ScienceFacultyAppraisalCycleInclusion
+            }
+            user_map = {}
+            for school, inclusion in school_wise_inclusion.items():
+                for i in inclusion.objects.filter(is_active=True).first().appraisee.all():
+                    user_map[i] = school
+            BookRecords.bulk_create_prepopulated_data(
+                BookRecords.objects.filter(is_verified=True, is_finalized=False),
+                school_map,
+                user_map
+            )
+            BookRecords.objects.filter(is_verified=True, is_finalized=False).update(is_finalized=True)
+        context = {
+            'pagename': 'hr-api-books-finalize',
+            'request': request,
+            'title': "Finalize Verified Books",
+            'child_view': 'hr-api-books',
+            'data': [i.to_dict().values() for i in BookRecords.objects.filter(is_verified=True, is_finalized=False)],
+            'headers': BookRecords.objects.filter(is_verified=True).first().to_dict().keys()
+        }
+        return render(request, 'html/hr/finalize_records.html', context)
+
+
+def get_patents(year):
+    session = requests_cache.CachedSession('orsp_cache', expire_after=360)
+    api_endpoint = f"https://orsp.pdpu.ac.in/API/APAS.asmx/Getpatent?key=B77A5C561934E089&year={year}"
+    resp = session.get(api_endpoint)
+    return json.loads(fromstring(resp.content).text)
+
+
+def get_papers(year):
+    session = requests_cache.CachedSession('orsp_cache', expire_after=360)
+    api_endpoint = f"https://orsp.pdpu.ac.in/API/APAS.asmx/Getpaper?key=B77A5C561934E089&year={year}"
+    resp = session.get(api_endpoint)
+    return json.loads(fromstring(resp.content).text)
+
+
+def get_books(year):
+    session = requests_cache.CachedSession('orsp_cache', expire_after=360)
+    api_endpoint = f"https://orsp.pdpu.ac.in/API/APAS.asmx/Getbook?key=B77A5C561934E089&year={year}"
+    resp = session.get(api_endpoint)
+    return json.loads(fromstring(resp.content).text)

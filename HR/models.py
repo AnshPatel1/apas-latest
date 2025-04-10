@@ -2,6 +2,7 @@ from django.db import models
 
 from APAS.settings import DEBUG
 from Account.models import User
+from BulkUpload.BulkUploadFoEM.models import ViewScopusWos
 
 
 # Create your models here.
@@ -22,6 +23,7 @@ class PatentRecords(models.Model):
     hash = models.CharField(max_length=100)
     is_rejected = models.BooleanField(null=True)
     is_verified = models.BooleanField(null=True)
+    is_finalized = models.BooleanField(default=False)
     remarks = models.TextField()
     rejected_by = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='patent_rejected_by', null=True)
     verified_by = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='patent_verified_by', null=True)
@@ -29,9 +31,24 @@ class PatentRecords(models.Model):
     def __str__(self):
         return ' '.join([self.faculty.email, self.brief_school, self.yr, self.month, self.internal_id])
 
+    def save(self, *args, **kwargs):
+        error_messages = {
+            'ptn_type': 'ptn_type level. Must be one of: filed, published, granted, licensed.'
+        }
+        validations = {
+            'ptn_type': self.ptn_type in ['filed', 'published', 'granted', 'licensed'],
+        }
+        if not all(validations.values()):
+            import json
+            messages = '\n'.join([error_messages[key] for key, valid in validations.items() if not valid]) + f'\n {json.dumps(self.to_dict())}'
+            raise Exception(f"Validation Error ({self.internal_id}): \n{messages}")
+
+        super().save(*args, **kwargs)
+
     def to_dict(self):
         return {
             'internal_ID': self.internal_id,
+            'apas_id': self.faculty.username,
             'uid': self.faculty.username,
             'Email': self.Email,
             'department': self.department,
@@ -47,6 +64,27 @@ class PatentRecords(models.Model):
             'is_verified': self.is_verified,
             'remarks': self.remarks,
         }
+
+    @staticmethod
+    def bulk_create_prepopulated_data(finalized, model_map, inclusion_map):
+        patents = {}
+        for i in model_map.keys():
+            patents[i] = []
+        for i in finalized:
+            ptn_model = model_map[inclusion_map[i.faculty]]()
+            ptn_model.faculty = i.faculty
+            ptn_model.designation = i.faculty.designation_abbreviation
+            ptn_model.department = i.department
+            ptn_model.description = i.ptn_desc
+            ptn_model.application_no = i.application_no
+            ptn_model.status = i.ptn_type
+            ptn_model.month = i.month
+            ptn_model.year = i.yr
+            patents[inclusion_map[i.faculty]].append(ptn_model)
+        for model, ptns in patents.items():
+            if not model_map[model]:
+                continue
+            model_map[model].objects.bulk_create(ptns)
 
     class Meta:
         ordering = ['-yr', '-month']
@@ -80,6 +118,7 @@ class PaperRecords(models.Model):
     hash = models.CharField(max_length=100)
     is_rejected = models.BooleanField(null=True)
     is_verified = models.BooleanField(null=True)
+    is_finalized = models.BooleanField(default=False)
     remarks = models.TextField()
     rejected_by = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='paper_rejected_by', null=True)
     verified_by = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='paper_verified_by', null=True)
@@ -89,22 +128,21 @@ class PaperRecords(models.Model):
 
     def save(self, *args, **kwargs):
         if DEBUG:
-            additional_cats = ['e-journal']
+            additional_cats = []
         validations = {
-            'type': self.type in ['journal', 'conf', 'epub', 'article', *additional_cats],
-            'quality': self.quality in ['q1', 'q2', 'q3', 'q4', 'na'],
+            'type': self.type.lower() in ['journal', 'conf', 'epub', 'article', *additional_cats],
+            'quality': self.type.lower() in ['journal', 'conf'] and self.quality.lower() in ['q1', 'q2', 'q3', 'q4', 'na'],
             'is_main_or_author': self.is_main_author or self.co_author_count > 0,
-            'platform': self.type in ['epub', 'article', *additional_cats] or (self.type in ['journal', 'conf'] and (
-                    self.is_scopus or self.is_wos or self.is_ugc or self.is_abdc)),
         }
         error_messages = {
             'type': 'Invalid type. Must be one of: journal, conf, epub, article.',
             'quality': 'Invalid quality. Must be one of: q1, q2, q3, q4.',
             'is_main_or_author': 'Either is_main_author must be true/1 or co_author_count must be greater than 0.',
-            'platform': 'Invalid platform. Must be one of: scopus, wos, ugc, abdc for journal/conf types.',
+            'platform': 'Invalid platform. Must be one of: scopus, wos, ugc for journal/conf types.',
         }
         if not all(validations.values()):
-            messages = '\n'.join([error_messages[key] for key, valid in validations.items() if not valid])
+            import json
+            messages = '\n'.join([error_messages[key] for key, valid in validations.items() if not valid]) + f'\n {json.dumps(self.to_dict())}'
             raise Exception(f"Validation Error ({self.internal_id}): \n{messages}")
 
         super().save(*args, **kwargs)
@@ -112,6 +150,7 @@ class PaperRecords(models.Model):
     def to_dict(self):
         return {
             'internal_ID': self.internal_id,
+            'apas_id': self.faculty.username,
             'uid': self.uid,
             'Email': self.Email,
             'department': self.department,
@@ -201,12 +240,12 @@ class PaperRecords(models.Model):
         self.brief_school = data['brief_school']
         self.month = data['month']
         self.yr = data['yr']
-        self.type = data['type'].lower()
+        self.type = data['type']
         self.title = data['title']
         self.entity = data['entity']
         self.conference_organization = data['conference_organization']
         self.conference_level = data['conference_level']
-        self.quality = data['quality'].lower()
+        self.quality = data['quality']
         self.isbn = data['isbn']
         self.is_main_author = data['mainauthor'] == '1'
         self.co_author_count = int(data['coauthor_count'])
@@ -219,6 +258,37 @@ class PaperRecords(models.Model):
         ordering = ['-yr', '-month']
         verbose_name = 'Paper Record'
         verbose_name_plural = 'Papers Records'
+
+    @staticmethod
+    def bulk_create_prepopulated_data(finalized, model_map, inclusion_map):
+        papers = {}
+        for i in model_map.keys():
+            papers[i] = []
+        for i in finalized:
+            paper_model = model_map[inclusion_map[i.faculty]]()
+            paper_model.faculty = i.faculty
+            paper_model.designation = i.faculty.designation_abbreviation
+            paper_model.department = i.department
+            paper_model.month = i.month
+            paper_model.year = i.yr
+            paper_model.type = i.type.lower()
+            paper_model.title = i.title
+            paper_model.entity_name = i.entity
+            paper_model.isbn = i.isbn
+            paper_model.paper_quality = i.quality.lower()
+            if i.type == 'conf':
+                paper_model.conference_organization = i.conference_organization
+                paper_model.conference_level = i.conference_level
+            paper_model.is_main_author = i.is_main_author
+            paper_model.co_author_count = i.co_author_count
+            paper_model.is_wos = i.is_wos
+            paper_model.is_scopus = i.is_scopus
+            paper_model.is_ugc = i.is_ugc
+            papers[inclusion_map[i.faculty]].append(paper_model)
+        for model, ppers in papers.items():
+            if not model_map[model]:
+                continue
+            model_map[model].objects.bulk_create(ppers)
 
 
 class BookRecords(models.Model):
@@ -242,6 +312,7 @@ class BookRecords(models.Model):
     hash = models.CharField(max_length=100)
     is_rejected = models.BooleanField(null=True)
     is_verified = models.BooleanField(null=True)
+    is_finalized = models.BooleanField(default=False)
     remarks = models.TextField()
     rejected_by = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='book_rejected_by', null=True)
     verified_by = models.ForeignKey(User, on_delete=models.DO_NOTHING, related_name='book_verified_by', null=True)
@@ -257,9 +328,9 @@ class BookRecords(models.Model):
             'type': 'Invalid type. Must be one of: chapter / book',
         }
         validations = {
-            'level': self.level in ['INTERNATIONAL', 'NATIONAL'],
-            'category': self.category in ['research', 'text', 'literary'],
-            'type': self.type in ['chapter', 'book'],
+            'level': self.level.upper() in ['INTERNATIONAL', 'NATIONAL'],
+            'category': self.category.lower() in ['research', 'text', 'literary'],
+            'type': self.type.lower() in ['chapter', 'book'],
         }
         if not all(validations.values()):
             import json
@@ -271,6 +342,7 @@ class BookRecords(models.Model):
     def to_dict(self):
         return {
             'internal_ID': self.internal_id,
+            'apas_id': self.faculty.username,
             'uid': self.uid,
             'Email': self.Email,
             'department': self.department,
@@ -345,10 +417,10 @@ class BookRecords(models.Model):
         self.brief_school = data['brief_school']
         self.month = data['month']
         self.yr = data['yr']
-        self.level = data['level'].upper()
+        self.level = data['level']
         self.title = data['title']
-        self.category = data['category'].lower()
-        self.type = data['type'].lower()
+        self.category = data['category']
+        self.type = data['type']
         self.isbn = data['isbn']
         self.is_main_author = data['mainauthor'] == '1'
         self.co_author_count = int(data['coauthor_count'])
@@ -358,3 +430,28 @@ class BookRecords(models.Model):
         ordering = ['-yr', '-month']
         verbose_name = 'Book Record'
         verbose_name_plural = 'Book Records'
+
+    @staticmethod
+    def bulk_create_prepopulated_data(finalized, model_map, inclusion_map):
+        books = {}
+        for i in model_map.keys():
+            books[i] = []
+        for i in finalized:
+            book_model = model_map[inclusion_map[i.faculty]]()
+            book_model.faculty = i.faculty
+            book_model.designation = i.faculty.designation_abbreviation
+            book_model.department = i.department
+            book_model.month = i.month
+            book_model.year = i.yr
+            book_model.level = i.level.upper()
+            book_model.title = i.title
+            book_model.category = i.category.lower()
+            book_model.type = i.type.lower()
+            book_model.is_main_author = i.is_main_author
+            book_model.co_author_count = i.co_author_count
+            book_model.is_editor = i.is_editor
+            books[inclusion_map[i.faculty]].append(book_model)
+        for model, book in books.items():
+            if not model_map[model]:
+                continue
+            model_map[model].objects.bulk_create(book)

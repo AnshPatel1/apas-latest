@@ -93,80 +93,22 @@
                                         <hr>
                                         <div class="card-body">
                                             <div class="d-flex gap-4">
-                                                <a href="sot/" class="w-100">
-                                                    <div class="card bg-dark w-100" style="height: 100%">
-                                                        <div class="card-body justify-content-center">
-                                                            <div class="row">
-                                                                <div class="col-12 d-flex justify-content-center align-items-center">
-                                                                    <h5
-                                                                            class="text-white mb-0">Verify SOT</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                <div class="alert alert-warning">
+                                                    By finalizing the records, you are confirming that the data is
+                                                    verified and will be visible for faculty Phase 1 (Self
+                                                    Verification). This action is irreversible. Please ensure that only
+                                                    finalized records are submitted for verification. In case of any
+                                                    expected changes, please first reverse decision and later finalize
+                                                    the records.
+                                                </div>
+                                                <form method="post">
+                                                    {% csrf_token %}
+                                                    <div class="w-100">
+                                                        <button type="submit" class="btn btn-lg btn-dark">
+                                                            Verify Below Records (Irreversible)
+                                                        </button>
                                                     </div>
-                                                </a>
-                                                <a href="sls/" class="w-100">
-                                                    <div class="card bg-primary w-100" style="height: 100%">
-                                                        <div class="card-body justify-content-center">
-                                                            <div class="row">
-                                                                <div class="col-12 d-flex justify-content-center align-items-center">
-                                                                    <h5
-                                                                            class="text-white mb-0">Verify SLS</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                                <a href="som/" class="w-100">
-                                                    <div class="card bg-info w-100" style="height: 100%">
-                                                        <div class="card-body justify-content-center">
-                                                            <div class="row">
-                                                                <div class="col-12 d-flex justify-content-center align-items-center">
-                                                                    <h5
-                                                                            class="text-white mb-0">Verify SOM</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                                <a href="math/" class="w-100">
-                                                    <div class="card bg-warning w-100" style="height: 100%">
-                                                        <div class="card-body justify-content-center">
-                                                            <div class="row">
-                                                                <div class="col-12 d-flex justify-content-center align-items-center">
-                                                                    <h5
-                                                                            class="text-white mb-0">Verify Math</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                                <a href="science/" class="w-100">
-                                                    <div class="card bg-success w-100" style="height: 100%">
-                                                        <div class="card-body justify-content-center">
-                                                            <div class="row">
-                                                                <div class="col-12 d-flex justify-content-center align-items-center">
-                                                                    <h5
-                                                                            class="text-white mb-0">Verify Science</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            <div class="d-flex gap-4 mt-4">
-                                                <a href="finalize/" class="w-100">
-                                                    <div class="card bg-danger w-100" style="height: 100%">
-                                                        <div class="card-body justify-content-center">
-                                                            <div class="row">
-                                                                <div class="col-12 d-flex justify-content-center align-items-center">
-                                                                    <h5
-                                                                            class="text-white mb-0">Finalize All Verified Data</h5>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </a>
+                                                </form>
                                             </div>
                                         </div>
                                     </div>
@@ -179,7 +121,8 @@
                             <div class="card border">
                                 <div class="d-flex align-items-end row">
                                     <div class="col-12">
-                                        <h5 class="card-title text-primary m-4">Unmatched Records ({{ unmatched_records|length }} / {{ total_records }})</h5>
+                                        <h5 class="card-title text-primary m-4">Pending to Finalize Records
+                                            ({{ data|length }})</h5>
                                         <hr>
                                         <div class="card-body">
                                             <div class="table-responsive">
@@ -190,7 +133,7 @@
                                                     {% endfor %}
                                                     </thead>
                                                     <tbody>
-                                                    {% for row in unmatched_records %}
+                                                    {% for row in data %}
                                                         <tr>
                                                             {% for cell in row %}
                                                                 <td>{{ cell }}</td>

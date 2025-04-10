@@ -175,7 +175,7 @@ class CalculationEngine:
                     elif paper.category == 'wos':
                         total += self.file.configuration.section_2a_a_i_per_wos * main_author_cut
                         paper.marks.ro1 = self.file.configuration.section_2a_a_i_per_wos * main_author_cut
-                    elif paper.category == 'ugc' or paper.category == 'ugc':
+                    elif paper.category == 'ugc' or paper.category == 'other':
                         total += self.file.configuration.section_2a_a_ii_per_publication * main_author_cut
                         paper.marks.ro1 = self.file.configuration.section_2a_a_ii_per_publication * main_author_cut
                 else:
@@ -205,7 +205,7 @@ class CalculationEngine:
                                     self.file.configuration.section_2a_a_i_per_wos * co_author_cut)  # / paper.co_author_count
                         paper.marks.ro1 = (
                                     self.file.configuration.section_2a_a_i_per_wos * co_author_cut)  # / paper.co_author_count
-                    elif paper.category == 'ugc' or paper.category == 'ugc':
+                    elif paper.category == 'ugc' or paper.category == 'other':
                         total += self.file.configuration.section_2a_a_ii_per_publication * co_author_cut
                         paper.marks.ro1 = self.file.configuration.section_2a_a_ii_per_publication * co_author_cut
             else:
@@ -738,7 +738,7 @@ class CalculationEngineR2:
                     elif paper.category == 'wos':
                         total += self.file.configuration.section_2a_a_i_per_wos * main_author_cut
                         paper.marks.ro2 = self.file.configuration.section_2a_a_i_per_wos * main_author_cut
-                    elif paper.category == 'ugc' or paper.category == 'ugc':
+                    elif paper.category == 'ugc' or paper.category == 'other':
                         total += self.file.configuration.section_2a_a_ii_per_publication * main_author_cut
                         paper.marks.ro2 = self.file.configuration.section_2a_a_ii_per_publication * main_author_cut
                 else:
@@ -768,7 +768,7 @@ class CalculationEngineR2:
                                 self.file.configuration.section_2a_a_i_per_wos * co_author_cut)  # / paper.co_author_count
                         paper.marks.ro2 = (
                                 self.file.configuration.section_2a_a_i_per_wos * co_author_cut)  # / paper.co_author_count
-                    elif paper.category == 'ugc' or paper.category == 'ugc':
+                    elif paper.category == 'ugc' or paper.category == 'other':
                         total += self.file.configuration.section_2a_a_ii_per_publication * co_author_cut
                         paper.marks.ro2 = self.file.configuration.section_2a_a_ii_per_publication * co_author_cut
             else:

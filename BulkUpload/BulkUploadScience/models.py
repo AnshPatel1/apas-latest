@@ -612,7 +612,7 @@ class ViewCoCurricular(models.Model):
 
 class ViewPatent(models.Model):
     faculty = models.ForeignKey('Account.User', on_delete=models.CASCADE, related_name='science_patent_bulk_faculty')
-    csv_origin = models.ForeignKey(UploadCSV, on_delete=models.CASCADE, related_name='science_patent_bulk_csv')
+    csv_origin = models.ForeignKey(UploadCSV, on_delete=models.CASCADE, related_name='science_patent_bulk_csv', null=True, blank=True)
     designation = models.CharField(max_length=100)
     department = models.CharField(max_length=100)
     description = models.TextField()
@@ -713,7 +713,7 @@ class ViewProject(models.Model):
 
 class ViewScopusWos(models.Model):
     faculty = models.ForeignKey('Account.User', on_delete=models.CASCADE, related_name='science_scopus_wos_bulk_faculty')
-    csv_origin = models.ForeignKey(UploadCSV, on_delete=models.CASCADE, related_name='science_scopus_wos_bulk_csv')
+    csv_origin = models.ForeignKey(UploadCSV, on_delete=models.CASCADE, related_name='science_scopus_wos_bulk_csv', null=True, blank=True)
     designation = models.CharField(max_length=100)
     department = models.CharField(max_length=100)
 
@@ -749,7 +749,7 @@ class ViewBook(models.Model):
     )
 
     faculty = models.ForeignKey('Account.User', on_delete=models.CASCADE, related_name='science_book_bulk_faculty')
-    csv_origin = models.ForeignKey(UploadCSV, on_delete=models.CASCADE, related_name='science_book_bulk_csv')
+    csv_origin = models.ForeignKey(UploadCSV, on_delete=models.CASCADE, related_name='science_book_bulk_csv', null=True, blank=True)
     designation = models.CharField(max_length=100)
     department = models.CharField(max_length=100)
 

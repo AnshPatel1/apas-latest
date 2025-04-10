@@ -11,3 +11,5 @@ exports/
 prepopulated/
 staticfiles/
 static/
+orsp_cache.sqlite
+
