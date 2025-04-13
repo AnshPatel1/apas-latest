@@ -1158,9 +1158,25 @@
                                                         {{ engineR2.calculateMastersThesis }}
                                                     </td>
                                                 </tr>
-
                                                 <tr>
                                                     <td style="width: 1px">D</td>
+                                                    <td>
+                                                        {% if file.patents.all|length == 0 and file.user.designation_abbreviation == 'assistant_prof_on_contract' %}
+                                                            Faculty Advisor (Only for Assistant Professor On
+                                                            Contract)
+                                                        {% else %}
+                                                            Patents / Inventions
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {{ engine.calculateSectionD }}
+                                                    </td>
+                                                    <td>
+                                                        {{ engineR2.calculateSectionD }}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 1px">E</td>
                                                     <td>Recognitions / Awards</td>
 
 {#                                                    <td>#}
@@ -1175,7 +1191,7 @@
                                                 </tr>
 
                                                 <tr>
-                                                    <td style="width: 1px">E
+                                                    <td style="width: 1px">F
                                                     </td>
                                                     <td>
                                                         {% if file.providing_consultancy.all|length == 0 and file.user.designation_abbreviation == 'assistant_prof_on_contract' %}
@@ -1274,22 +1290,22 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody>
-                                                <tr>
-                                                    <td style="width: 1px">A</td>
-                                                    <td>Successful Conversion of International Admission</td>
-
+{#                                                <tr>#}
+{#                                                    <td style="width: 1px">A</td>#}
+{#                                                    <td>Successful Conversion of International Admission</td>#}
+{##}
 {#                                                    <td>#}
 {#                                                        <a href="../internation-admission">Details</a>#}
 {#                                                    </td>#}
-                                                    <td>
-                                                        {{ engine.calculateInternationalAdmission }}
-                                                        / {{ file.configuration.section_3a_international_admission }}
-                                                    </td>
-                                                    <td>
-                                                        {{ engineR2.calculateInternationalAdmission }}
-                                                        / {{ file.configuration.section_3a_international_admission }}
-                                                    </td>
-                                                </tr>
+{#                                                    <td>#}
+{#                                                        {{ engine.calculateInternationalAdmission }}#}
+{#                                                        / {{ file.configuration.section_3a_international_admission }}#}
+{#                                                    </td>#}
+{#                                                    <td>#}
+{#                                                        {{ engineR2.calculateInternationalAdmission }}#}
+{#                                                        / {{ file.configuration.section_3a_international_admission }}#}
+{#                                                    </td>#}
+{#                                                </tr>#}
                                                 <tr>
                                                     <td style="width: 1px">B</td>
                                                     <td>Arranging Conferences / Seminars / Conclaves</td>

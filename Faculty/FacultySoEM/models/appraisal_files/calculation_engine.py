@@ -139,6 +139,7 @@ class CalculationEngine:
         if not self.file.user.designation_abbreviation == 'assistant_prof_on_contract':
             total += self.calculatePhDGuidance()
         total += self.calculateDissertationAll()
+        total += self.calculateSectionD()
         total += self.calculateAwards()
         total += self.calculateSectionE()
         total += self.calculateAcademiaCollaboration()
@@ -375,6 +376,43 @@ class CalculationEngine:
                 thesis.marks.ro1 = 0
             thesis.marks.save()
         return round(total, 2)
+
+    def calculateSectionD(self):
+        patent_marks = self.calculatePatent()
+        if self.file.user.designation_abbreviation == 'assistant_prof_on_contract' and len(
+                list(self.file.patents.all())) == 0:
+            return self.calculateFacultyAdvisor()
+        else:
+            return patent_marks
+
+    def calculatePatent(self):
+        total = 0
+        for patent in self.file.patents.all():
+            if patent.marks.ro1_agreed:
+                if patent.status == 'filed':
+                    total += self.file.configuration.section_2d_patent_filed
+                    patent.marks.ro1 = self.file.configuration.section_2d_patent_filed
+                elif patent.status == 'published':
+                    total += self.file.configuration.section_2d_patent_published
+                    patent.marks.ro1 = self.file.configuration.section_2d_patent_published
+                elif patent.status == 'granted':
+                    total += self.file.configuration.section_2d_patent_granted
+                    patent.marks.ro1 = self.file.configuration.section_2d_patent_granted
+                elif patent.status == 'licensed':
+                    total += self.file.configuration.section_2d_patent_granted_and_licensed
+                    patent.marks.ro1 = self.file.configuration.section_2d_patent_granted_and_licensed
+            patent.marks.save()
+        return round(total, 2)
+
+    def calculateFacultyAdvisor(self):
+        if self.file.user.designation_abbreviation == 'assistant_prof_on_contract':
+            if self.file.faculty_advisor_available:
+                total = self.file.faculty_advisor_total.ro1
+            else:
+                return 0
+            return round(total, 2)
+        else:
+            return 0
 
     def calculateAwards(self):
         total = 0
@@ -679,6 +717,7 @@ class CalculationEngineR2:
         if not self.file.user.designation_abbreviation == 'assistant_prof_on_contract':
             total += self.calculatePhDGuidance()
         total += self.calculateDissertationAll()
+        total += self.calculateSectionD()
         total += self.calculateAwards()
         total += self.calculateSectionE()
         total += self.calculateAcademiaCollaboration()
@@ -918,6 +957,44 @@ class CalculationEngineR2:
     #             dissertation.marks.ro2 = self.file.configuration.section_2c_i_marks_per_dissertation_awarded
     #         dissertation.marks.save()
     #     return round(total, 2)
+
+    def calculateSectionD(self):
+        patent_marks = self.calculatePatent()
+
+        if self.file.user.designation_abbreviation == 'assistant_prof_on_contract' and len(
+                list(self.file.patents.all())) == 0:
+            return self.calculateFacultyAdvisor()
+        else:
+            return patent_marks
+
+    def calculatePatent(self):
+        total = 0
+        for patent in self.file.patents.all():
+            if patent.marks.ro2_agreed:
+                if patent.status == 'filed':
+                    total += self.file.configuration.section_2d_patent_filed
+                    patent.marks.ro2 = self.file.configuration.section_2d_patent_filed
+                elif patent.status == 'published':
+                    total += self.file.configuration.section_2d_patent_published
+                    patent.marks.ro2 = self.file.configuration.section_2d_patent_published
+                elif patent.status == 'granted':
+                    total += self.file.configuration.section_2d_patent_granted
+                    patent.marks.ro2 = self.file.configuration.section_2d_patent_granted
+                elif patent.status == 'licensed':
+                    total += self.file.configuration.section_2d_patent_granted_and_licensed
+                    patent.marks.ro2 = self.file.configuration.section_2d_patent_granted_and_licensed
+            patent.marks.save()
+        return round(total, 2)
+
+    def calculateFacultyAdvisor(self):
+        if self.file.user.designation_abbreviation == 'assistant_prof_on_contract':
+            if self.file.faculty_advisor_available:
+                total = self.file.faculty_advisor_total.ro2
+            else:
+                return 0
+            return round(total, 2)
+        else:
+            return 0
 
     def calculateMastersThesis(self):
         total = 0

@@ -391,8 +391,6 @@ class FacultyViewSet:
         context['books'] = file.textbooks.all().union(file.research_books.all())
         if file is not None:
             context['file'] = file
-        if request.method == 'POST':
-            print(request.POST)
         return render(request, "html/faculty/maths/research-entry.html", context)
 
     @staticmethod
@@ -410,8 +408,6 @@ class FacultyViewSet:
         context['cycle'] = FacultyHelperFunctions.get_cycle()
         if file is not None:
             context['file'] = file
-        if request.method == 'POST':
-            print(request.POST)
         return render(request, "html/faculty/maths/project-entry.html", context)
 
     @staticmethod
@@ -433,7 +429,7 @@ class FacultyViewSet:
             data_available = 'No' not in dict(request.POST)['external-guidance-available']
             file.external_phd_guidance_available = data_available
             file.save()
-            print(request.POST)
+            
             if data_available:
                 entries = {key: value for key, value in dict(request.POST).items() if key.startswith('phdguidance')}
                 entries = list(entries.values())
@@ -561,7 +557,7 @@ class FacultyViewSet:
     #                 file.faculty_advisor.set(advisories)
     #             else:
     #                 file.faculty_advisor.all().delete()
-    #             print(request.POST)
+    #             
     #     return render(request, "html/faculty/maths/patent-entry.html", context)
 
     @staticmethod
@@ -574,8 +570,6 @@ class FacultyViewSet:
             }
             return render(request, "html/error_pages/pages-error.html", context)
 
-        if request.method == 'POST':
-            print(request.POST)
         context = {'user': request.user, 'page_name': 'award-entry'}
         file = FacultyHelperFunctions.get_appraisal_file(request)
         context['cycle'] = FacultyHelperFunctions.get_cycle()
@@ -890,8 +884,6 @@ class FacultyViewSet:
         if file is not None:
             context['file'] = file
 
-        if request.method == 'POST':
-            print(request.POST)
         return render(request, "html/faculty/maths/review.html", context)
 
     @staticmethod

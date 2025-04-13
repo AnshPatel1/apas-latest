@@ -89,7 +89,13 @@
                 <div data-i18n="Basic">Dissertation</div>
             </a>
         </li>
-
+        <li class="menu-item {{% if page_name == "patent-entry" %} active {% endif %}">
+            <a href="{% if page_name != "faculty-home" %}../{% endif %}patent/" class="menu-link">
+                    <i class="menu-icon tf-icons bx {% if not file.ro1_validator.patents_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                   style="color: {% if not file.ro1_validator.patents_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                <div data-i18n="Basic">Patents / Inventions</div>
+            </a>
+        </li>
         <li class="menu-item {{% if page_name == "award-entry" %} active {% endif %}">
             <a href="{% if page_name != "faculty-home" %}../{% endif %}award/" class="menu-link">
                 <i class="menu-icon tf-icons bx {% if not file.ro1_validator.award_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
