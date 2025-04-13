@@ -113,19 +113,19 @@ class FOLSGoalSheetAssistantProf(models.Model):
     #           20 marks to be given if appraisee is the PI
     #           5 marks to be given if appraisee is the Co-PI
     section_2a_c_category_major_per_pi = models.IntegerField(default=20)
-    section_2a_c_category_major_per_co_pi = models.IntegerField(default=5)
+    section_2a_c_category_major_per_co_pi = models.IntegerField(default=15)
 
     #       Category Medium:  (above 5 lakhs)
     #           15 marks to be given if appraisee is the PI
     #           3 marks to be given if appraisee is the Co-PI
     section_2a_c_category_medium_per_pi = models.IntegerField(default=15)
-    section_2a_c_category_medium_per_co_pi = models.IntegerField(default=3)
+    section_2a_c_category_medium_per_co_pi = models.IntegerField(default=10)
 
     #       Category Minor:  (above 50 lakhs)
     #           10 marks to be given if appraisee is the PI
     #           2 marks to be given if appraisee is the Co-PI
-    section_2a_c_category_minor_per_pi = models.IntegerField(default=10)
-    section_2a_c_category_minor_per_co_pi = models.IntegerField(default=2)
+    section_2a_c_category_minor_per_pi = models.IntegerField(default=7)
+    section_2a_c_category_minor_per_co_pi = models.IntegerField(default=4)
 
     #       Category Institutional Projects:  20 marks to be given
     section_2a_c_category_institutional_projects = models.IntegerField(default=20)
