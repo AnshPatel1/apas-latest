@@ -1084,7 +1084,7 @@ class FacultyHelperFunctions:
             'percent': percent,
         }
 
-        if percent >= 95:
+        if percent >= 95 and teaching_total >= file.configuration.section_1_minimum_marks:
             result['grade'] = 'OUTSTANDING'
         elif percent >= 65:
             result['grade'] = 'GOOD'
@@ -1093,8 +1093,6 @@ class FacultyHelperFunctions:
         else:
             result['grade'] = 'BELOW AVERAGE'
 
-        if teaching_total < file.configuration.section_1_minimum_marks and result['grade'] != 'OUTSTANDING':
-            result['grade'] = 'GOOD'
         return result
 
     @staticmethod
