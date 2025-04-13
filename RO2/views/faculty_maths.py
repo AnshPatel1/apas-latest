@@ -298,7 +298,7 @@ class RO2FacultyMathViewSet:
                    'cycle': FacultyHelperFunctions.get_cycle()}
 
         if request.method == 'POST':
-            print(request.POST)
+            
             bachelors = [value for key, value in dict(request.POST).items() if key.startswith('bachelors')]
             db_bachelors = list(file.bachelors_dissertation.all())
             masters = [value for key, value in dict(request.POST).items() if key.startswith('masters')]
@@ -514,7 +514,7 @@ class RO2FacultyMathViewSet:
             file.academia_collaboration.contribution_marks.ro2 = file.academia_collaboration.contribution_marks.ro1
             file.academia_collaboration.mou_marks.save()
             file.academia_collaboration.contribution_marks.save()
-            # print(request.POST)
+            # 
             # if request.POST.get('mou-action') == 'accept':
             #     file.academia_collaboration.mou_marks.ro2_agreed = True
             #     # file.academia_collaboration.mou_marks.ro2 = request.POST.get('mou_given')

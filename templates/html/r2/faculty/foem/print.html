@@ -281,40 +281,40 @@
                                                     </td>
                                                 </tr>
 
-{#                                                <tr class="visible">#}
-{#                                                    <td>#}
-{#                                                        <i class="menu-icon tf-icons bx {% if not file.ro2_validator.patents_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"#}
-{#                                                           style="color: {% if not file.ro2_validator.patents_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>#}
-{#                                                        <strong>Patent</strong>#}
-{#                                                        <br>#}
-{#                                                        OR <strong>Faculty Advisor</strong>#}
-{#                                                        <br>(Only for Assistant Professor on Contract)#}
-{#                                                    </td>#}
-{#                                                    <td>#}
-{#                                                        {% if not file.ro2_validator.patents_validated %}#}
-{#                                                            <span class="badge bg-label-danger me-1">Pending</span>#}
-{#                                                        {% else %}#}
-{#                                                            <span class="badge bg-label-success me-1">Data Received</span>#}
-{#                                                        {% endif %}#}
-{#                                                    </td>#}
-{#                                                    <td>#}
-{#                                                        {% if not file.ro2_validator.patents_validated %}#}
-{#                                                            <span>Enter valid data for all parameters and click the <strong>green Save button</strong> at the bottom</span>#}
-{#                                                        {% else %}#}
-{#                                                            <span>No actions required</span>#}
-{#                                                        {% endif %}#}
-{#                                                    </td>#}
-{#                                                    <td>#}
-{#                                                        <a href="{% if page_name != "faculty-home" %}../{% endif %}patent/"#}
-{#                                                           class="menu-link">#}
-{#                                                            <button type="button" id="add-btn"#}
-{#                                                                    class="btn btn-outline-primary">#}
-{#                                                                <span class="tf-icons bx bx-edit-alt"></span>&nbsp;#}
-{#                                                                Review#}
-{#                                                            </button>#}
-{#                                                        </a>#}
-{#                                                    </td>#}
-{#                                                </tr>#}
+                                                <tr class="visible">
+                                                    <td>
+                                                        <i class="menu-icon tf-icons bx {% if not file.ro2_validator.patents_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
+                                                           style="color: {% if not file.ro2_validator.patents_validated %}rgb(220, 53, 69){% else %}#71dd37{% endif %}"></i>
+                                                        <strong>Patent</strong>
+                                                        <br>
+                                                        OR <strong>Faculty Advisor</strong>
+                                                        <br>(Only for Assistant Professor on Contract)
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.patents_validated %}
+                                                            <span class="badge bg-label-danger me-1">Pending</span>
+                                                        {% else %}
+                                                            <span class="badge bg-label-success me-1">Data Received</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {% if not file.ro2_validator.patents_validated %}
+                                                            <span>Enter valid data for all parameters and click the <strong>green Save button</strong> at the bottom</span>
+                                                        {% else %}
+                                                            <span>No actions required</span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        <a href="{% if page_name != "faculty-home" %}../{% endif %}patent/"
+                                                           class="menu-link">
+                                                            <button type="button" id="add-btn"
+                                                                    class="btn btn-outline-primary">
+                                                                <span class="tf-icons bx bx-edit-alt"></span>&nbsp;
+                                                                Review
+                                                            </button>
+                                                        </a>
+                                                    </td>
+                                                </tr>
                                                 <tr class="visible">
                                                     <td>
                                                         <i class="menu-icon tf-icons bx {% if not file.ro2_validator.award_validated %}bx-time-five{% else %} bx-check-circle {% endif %}"
@@ -1114,9 +1114,26 @@
                                                     </td>
                                                 </tr>
 
-
                                                 <tr>
                                                     <td style="width: 1px">D</td>
+                                                    <td>
+                                                        {% if file.patents.all|length == 0 and file.user.designation_abbreviation == 'assistant_prof_on_contract' %}
+                                                            Faculty Advisor (Only for Assistant Professor On
+                                                            Contract)
+                                                        {% else %}
+                                                            Patents / Inventions
+                                                        {% endif %}
+                                                    </td>
+                                                    <td>
+                                                        {{ engine.calculateSectionD }}
+                                                    </td>
+                                                    <td>
+                                                        {{ engineR2.calculateSectionD }}
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td style="width: 1px">E</td>
                                                     <td>Recognitions / Awards</td>
 
 {#                                                    <td>#}
@@ -1131,7 +1148,7 @@
                                                 </tr>
 
                                                 <tr>
-                                                    <td style="width: 1px">E
+                                                    <td style="width: 1px">F
                                                     </td>
                                                     <td>
                                                         {% if file.providing_consultancy.all|length == 0 and file.user.designation_abbreviation == 'assistant_prof_on_contract' %}

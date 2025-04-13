@@ -324,7 +324,7 @@ class RO1FacultyMathViewSet:
                 i.save()
 
         if request.method == 'POST':
-            print(request.POST)
+            
             bachelors = [value for key, value in dict(request.POST).items() if key.startswith('bachelors')]
             db_bachelors = list(file.bachelors_dissertation.all())
             masters = [value for key, value in dict(request.POST).items() if key.startswith('masters')]

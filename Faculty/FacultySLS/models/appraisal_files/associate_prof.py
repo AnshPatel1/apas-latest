@@ -8,6 +8,7 @@ class FOLSAssociateProfAppraisalFile(models.Model):
         ('APPRAISEE', "APPRAISEE"),
         ('RO1', "Reporting Officer (RO)"),
         ('RO2', "Reviewing Officer (RV)"),
+        ('HR', "Human Resources (HR)"),
     )
     file_level = models.CharField(max_length=10, default="APPRAISEE", choices=file_levels)
     configuration = models.ForeignKey(FOLSGoalSheetAssociateProf, on_delete=models.PROTECT)
@@ -99,13 +100,13 @@ class FOLSAssociateProfAppraisalFile(models.Model):
     masters_thesis_total = models.ForeignKey('FacultySLS.MarkField', on_delete=models.CASCADE, related_name='sls_associate_prof_masters_thesis_total', null=True, blank=True)
     masters_thesis = models.ManyToManyField('FacultySLS.MastersDissertation', related_name='sls_associate_prof_masters_thesis', blank=True)
 
-    # # PART A > SECTION 2 > SUBSECTION D (Patents)
-    # patents_total = models.ForeignKey('FacultySLS.MarkField', on_delete=models.CASCADE, related_name='sls_associate_prof_patents_total', null=True, blank=True)
-    # patents = models.ManyToManyField('FacultySLS.Patent', related_name='sls_associate_prof_patents', blank=True)
-    # # only for Assistant Professor on Contract
-    # faculty_advisor_available = models.BooleanField(default=True)
-    # faculty_advisor_total = models.ForeignKey('FacultySLS.MarkField', on_delete=models.CASCADE, related_name='sls_associate_prof_faculty_advisor_total', null=True, blank=True)
-    # faculty_advisor = models.ManyToManyField('FacultySLS.FacultyAdvisor', related_name='sls_associate_prof_faculty_advisor', blank=True)
+    # PART A > SECTION 2 > SUBSECTION D (Patents)
+    patents_total = models.ForeignKey('FacultySLS.MarkField', on_delete=models.CASCADE, related_name='sls_associate_prof_patents_total', null=True, blank=True)
+    patents = models.ManyToManyField('FacultySLS.Patent', related_name='sls_associate_prof_patents', blank=True)
+    # only for Assistant Professor on Contract
+    faculty_advisor_available = models.BooleanField(default=True)
+    faculty_advisor_total = models.ForeignKey('FacultySLS.MarkField', on_delete=models.CASCADE, related_name='sls_associate_prof_faculty_advisor_total', null=True, blank=True)
+    faculty_advisor = models.ManyToManyField('FacultySLS.FacultyAdvisor', related_name='sls_associate_prof_faculty_advisor', blank=True)
 
     # PART A > SECTION 2 > SUBSECTION E (Recognition/Awards received)
     recognition_awards_total = models.ForeignKey('FacultySLS.MarkField', on_delete=models.CASCADE, related_name='sls_associate_prof_recognition_awards_total', null=True,

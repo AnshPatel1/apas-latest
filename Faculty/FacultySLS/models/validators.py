@@ -7,10 +7,11 @@ class FacultyValidator(models.Model):
     project_validated = models.BooleanField(default=False)
     phd_validated = models.BooleanField(default=False)
     dissertation_validated = models.BooleanField(default=False)
+    patents_validated = models.BooleanField(default=False)
     award_validated = models.BooleanField(default=False)
     consultancy_validated = models.BooleanField(default=False)
     academia_collab_validated = models.BooleanField(default=False)
-    international_admission_validated = models.BooleanField(default=False)
+    international_admission_validated = models.BooleanField(default=True)
     arranging_conferences_validated = models.BooleanField(default=False)
     mentorship_validated = models.BooleanField(default=False)
     attending_conferences_validated = models.BooleanField(default=False)
@@ -31,6 +32,7 @@ class FacultyValidator(models.Model):
         return self.teaching_validated and \
             self.phd_validated and \
             self.dissertation_validated and \
+            self.patents_validated and \
             self.consultancy_validated and \
             self.arranging_conferences_validated \
             and self.mentorship_validated and \
@@ -48,6 +50,7 @@ class FacultyValidator(models.Model):
                 self.project_validated and \
                 self.phd_validated and \
                 self.dissertation_validated and \
+                self.patents_validated and \
                 self.award_validated and \
                 self.consultancy_validated and \
                 self.academia_collab_validated and \

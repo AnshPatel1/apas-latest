@@ -7,11 +7,11 @@ class FOEMGoalSheetAssistantProfOnContract(models.Model):
     year = models.IntegerField()
     is_active = models.BooleanField(default=False)
 
-    grand_total = models.IntegerField(default=339)
+    grand_total = models.IntegerField(default=384)
 
     # ||||||||||||||||||||||   PART A   ||||||||||||||||||||||
     # TOTAL FOR PART A (SECTION 1 TO 4) SHOULD BE 307
-    part_a_total = models.IntegerField(default=299)
+    part_a_total = models.IntegerField(default=344)
 
     # ======================   Section 1: Teaching (TCS iON)   ======================
     # Configurations for Section 1
@@ -72,7 +72,7 @@ class FOEMGoalSheetAssistantProfOnContract(models.Model):
 
     # ======================   Section 2: Research And Publications/Patents   ======================
     # Section 2 Configurations:
-    section_2_subtotal = models.IntegerField(default=137)
+    section_2_subtotal = models.IntegerField(default=182)
     # ------- Section 2.A: Research Publications (RIMS / Dean Office) -------
     # Section 2.A Configurations:
     section_2a_subtotal = models.IntegerField(default=37)
@@ -161,20 +161,20 @@ class FOEMGoalSheetAssistantProfOnContract(models.Model):
     section_2c_ii_marks_per_thesis_submitted_with_ipr = models.IntegerField(default=12)
     section_2c_ii_max_thesis = models.IntegerField(default=10)
 
-    # # -------------- Section 2.D: Patents/Inventions leading to patents - (Having OR Option) --------------
-    # #     50 marks to be given for patent granted & licensed
-    # #     25 marks to be given for patent granted
-    # #     15 marks to be given for patent published
-    # #     5 marks to be given for patent filed
-    # section_2d_patent_granted_and_licensed = models.IntegerField(default=50)
-    # section_2d_patent_granted = models.IntegerField(default=25)
-    # section_2d_patent_published = models.IntegerField(default=15)
-    # section_2d_patent_filed = models.IntegerField(default=5)
-    #
-    # # -------------- OR (Only for Assistant Professors(On Contract)) --------------
-    # #     Faculty advisor to Student(s) representing PDEU for various industrial/technical/ societal competitive events.
-    # #     maximum of 25 marks to be given by RO/RV
-    # section_2d_faculty_advisor_to_student = models.IntegerField(default=25)
+    # -------------- Section 2.D: Patents/Inventions leading to patents - (Having OR Option) --------------
+    #     50 marks to be given for patent granted & licensed
+    #     25 marks to be given for patent granted
+    #     15 marks to be given for patent published
+    #     5 marks to be given for patent filed
+    section_2d_patent_granted_and_licensed = models.IntegerField(default=45)
+    section_2d_patent_granted = models.IntegerField(default=20)
+    section_2d_patent_published = models.IntegerField(default=10)
+    section_2d_patent_filed = models.IntegerField(default=5)
+
+    # -------------- OR (Only for Assistant Professors(On Contract)) --------------
+    #     Faculty advisor to Student(s) representing PDEU for various industrial/technical/ societal competitive events.
+    #     maximum of 25 marks to be given by RO/RV
+    section_2d_faculty_advisor_to_student = models.IntegerField(default=25)
 
     # -------------- Section 2.D: Recognition/Awards received --------------
     #     To be awarded by RO/RV. Capped at 10 marks

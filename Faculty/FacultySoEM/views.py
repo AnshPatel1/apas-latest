@@ -45,14 +45,13 @@ class FacultyViewSet:
             context['exam_duty'] = ViewExamDuty.objects.get(faculty=request.user)
             context['books'] = ViewBook.objects.filter(faculty=request.user)
             context['papers'] = ViewScopusWos.objects.filter(faculty=request.user, type='journal')
-            # context['ugc'] = ViewScopusWos.objects.filter(faculty=request.user, is_ugc=True)
             context['conferences'] = ViewScopusWos.objects.filter(faculty=request.user, type='conf')
             context['articles'] = ViewScopusWos.objects.filter(faculty=request.user, type='article')
             context['epubs'] = ViewScopusWos.objects.filter(faculty=request.user, type='epub')
             context['epubs_articles'] = context['epubs'].union(context['articles'])
             context['projects'] = ViewProject.objects.filter(faculty=request.user)
             context['internal_phd_guidances'] = ViewPhDGuidance.objects.filter(faculty=request.user)
-            # context['patents'] = ViewPatent.objects.filter(faculty=request.user)
+            context['patents'] = ViewPatent.objects.filter(faculty=request.user)
             context['awards'] = ViewAward.objects.filter(faculty=request.user)
             context['consultancies'] = ViewConsultancy.objects.filter(faculty=request.user)
             context['academia_collab'] = ViewAcademiaCollaboration.objects.get(faculty=request.user)
@@ -251,6 +250,50 @@ class FacultyViewSet:
             PhDGuidance.objects.bulk_create(phd_guidances)
             file.phd_guidance.set(phd_guidances)
 
+            # 8. Patents
+            @staticmethod
+            @login_required(login_url='/login/')
+            def patent_entry(request):
+                if not FacultyHelperFunctions.check_authorized_user(request):
+                    context = {
+                        'error_code': "Unauthorized Error",
+                        "error_message": "You are not authorized to view this page."
+                    }
+                    return render(request, "html/error_pages/pages-error.html", context)
+
+                context = {'user': request.user, 'page_name': 'patent-entry'}
+                file = FacultyHelperFunctions.get_appraisal_file(request)
+                context['cycle'] = FacultyHelperFunctions.get_cycle()
+                if file is not None:
+                    context['file'] = file
+                if request.method == 'POST':
+                    file.validator.patents_validated = True
+                    file.validator.save()
+                if request.user.designation_abbreviation == 'assistant_prof_on_contract':
+                    if request.method == 'POST':
+                        available = 'No' not in dict(request.POST)['faculty-available']
+                        file.faculty_advisor_available = available
+
+                        file.save()
+                        if available:
+                            entries = {key: value for key, value in dict(request.POST).items() if
+                                       key.startswith('faculty-advisor')}
+                            entries = list(entries.values())
+                            advisories = []
+                            for entry in entries:
+                                adv = FacultyAdvisor()
+                                adv.faculty = request.user
+                                adv.title = entry[0]
+                                adv.description = entry[1]
+                                advisories.append(adv)
+
+                            file.faculty_advisor.all().delete()
+                            FacultyAdvisor.objects.bulk_create(advisories)
+                            file.faculty_advisor.set(advisories)
+                        else:
+                            file.faculty_advisor.all().delete()
+                return render(request, "html/faculty/foem/patent-entry.html", context)
+
             # 9. Awards
             awards = []
             for award in context['awards']:
@@ -400,8 +443,7 @@ class FacultyViewSet:
         context['books'] = file.textbooks.all().union(file.research_books.all())
         if file is not None:
             context['file'] = file
-        if request.method == 'POST':
-            print(request.POST)
+
         return render(request, "html/faculty/foem/research-entry.html", context)
 
     @staticmethod
@@ -419,8 +461,7 @@ class FacultyViewSet:
         context['cycle'] = FacultyHelperFunctions.get_cycle()
         if file is not None:
             context['file'] = file
-        if request.method == 'POST':
-            print(request.POST)
+
         return render(request, "html/faculty/foem/project-entry.html", context)
 
     @staticmethod
@@ -442,7 +483,7 @@ class FacultyViewSet:
             data_available = 'No' not in dict(request.POST)['external-guidance-available']
             file.external_phd_guidance_available = data_available
             file.save()
-            print(request.POST)
+            
             if data_available:
                 entries = {key: value for key, value in dict(request.POST).items() if key.startswith('phdguidance')}
                 entries = list(entries.values())
@@ -526,50 +567,50 @@ class FacultyViewSet:
                 file.masters_thesis.all().delete()
         return render(request, "html/faculty/foem/dissertation-entry.html", context)
 
-    # @staticmethod
-    # @login_required(login_url='/login/')
-    # def patent_entry(request):
-    #     if not FacultyHelperFunctions.check_authorized_user(request):
-    #         context = {
-    #             'error_code': "Unauthorized Error",
-    #             "error_message": "You are not authorized to view this page."
-    #         }
-    #         return render(request, "html/error_pages/pages-error.html", context)
-    #
-    #     context = {'user': request.user, 'page_name': 'patent-entry'}
-    #     file = FacultyHelperFunctions.get_appraisal_file(request)
-    #     context['cycle'] = FacultyHelperFunctions.get_cycle()
-    #     if file is not None:
-    #         context['file'] = file
-    #     if request.method == 'POST':
-    #         file.validator.patents_validated = True
-    #         file.validator.save()
-    #     if request.user.designation_abbreviation == 'assistant_prof_on_contract':
-    #         # if True:
-    #         if request.method == 'POST':
-    #             available = 'No' not in dict(request.POST)['faculty-available']
-    #             file.faculty_advisor_available = available
-    #
-    #             file.save()
-    #             if available:
-    #                 entries = {key: value for key, value in dict(request.POST).items() if key.startswith('faculty-advisor')}
-    #                 entries = list(entries.values())
-    #                 print(entries)
-    #                 advisories = []
-    #                 for entry in entries:
-    #                     adv = FacultyAdvisor()
-    #                     adv.faculty = request.user
-    #                     adv.title = entry[0]
-    #                     adv.description = entry[1]
-    #                     advisories.append(adv)
-    #
-    #                 file.faculty_advisor.all().delete()
-    #                 FacultyAdvisor.objects.bulk_create(advisories)
-    #                 file.faculty_advisor.set(advisories)
-    #             else:
-    #                 file.faculty_advisor.all().delete()
-    #             print(request.POST)
-    #     return render(request, "html/faculty/foem/patent-entry.html", context)
+    @staticmethod
+    @login_required(login_url='/login/')
+    def patent_entry(request):
+        if not FacultyHelperFunctions.check_authorized_user(request):
+            context = {
+                'error_code': "Unauthorized Error",
+                "error_message": "You are not authorized to view this page."
+            }
+            return render(request, "html/error_pages/pages-error.html", context)
+
+        context = {'user': request.user, 'page_name': 'patent-entry'}
+        file = FacultyHelperFunctions.get_appraisal_file(request)
+        context['cycle'] = FacultyHelperFunctions.get_cycle()
+        if file is not None:
+            context['file'] = file
+        if request.method == 'POST':
+            file.validator.patents_validated = True
+            file.validator.save()
+        if request.user.designation_abbreviation == 'assistant_prof_on_contract':
+            # if True:
+            if request.method == 'POST':
+                available = 'No' not in dict(request.POST)['faculty-available']
+                file.faculty_advisor_available = available
+
+                file.save()
+                if available:
+                    entries = {key: value for key, value in dict(request.POST).items() if key.startswith('faculty-advisor')}
+                    entries = list(entries.values())
+                    print(entries)
+                    advisories = []
+                    for entry in entries:
+                        adv = FacultyAdvisor()
+                        adv.faculty = request.user
+                        adv.title = entry[0]
+                        adv.description = entry[1]
+                        advisories.append(adv)
+
+                    file.faculty_advisor.all().delete()
+                    FacultyAdvisor.objects.bulk_create(advisories)
+                    file.faculty_advisor.set(advisories)
+                else:
+                    file.faculty_advisor.all().delete()
+                print(request.POST)
+        return render(request, "html/faculty/foem/patent-entry.html", context)
 
     @staticmethod
     @login_required(login_url='/login/')
@@ -897,9 +938,6 @@ class FacultyViewSet:
         context['cycle'] = FacultyHelperFunctions.get_cycle()
         if file is not None:
             context['file'] = file
-
-        if request.method == 'POST':
-            print(request.POST)
         return render(request, "html/faculty/foem/review.html", context)
 
     @staticmethod

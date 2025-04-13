@@ -10,6 +10,7 @@ class ScienceAssistantProfAppraisalFile(models.Model):
         ('APPRAISEE', "APPRAISEE"),
         ('RO1', "Reporting Officer (RO)"),
         ('RO2', "Reviewing Officer (RV)"),
+        ('HR', "Human Resources (HR)"),
     )
     file_level = models.CharField(max_length=10, default="APPRAISEE", choices=file_levels)
     configuration = models.ForeignKey(ScienceGoalSheetAssistantProf, on_delete=models.PROTECT)

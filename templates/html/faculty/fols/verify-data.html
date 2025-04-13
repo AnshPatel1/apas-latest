@@ -642,57 +642,57 @@
                             </table>
                         </div>
                     </div>
-                    {#                    <h4 class="fw-bold py-3 mt-4">Section 2D / <span class="text-muted fw-light">Patents / Inventions Leading To Patents</span></h4>#}
-                    {#                    <div class="card mt-3">#}
-                    {#                        <h5 class="card-header">Patents / Inventions</h5>#}
-                    {#                        <hr class="my-0">#}
-                    {#                        <div class="card-body">#}
-                    {#                            <div class="table-responsive">#}
-                    {#                                <table class="table table-striped table-hover table-bordered" data-max=5 data-min=2>#}
-                    {#                                    <thead>#}
-                    {#                                    <tr>#}
-                    {#                                        <th style="width: 1px">Sr</th>#}
-                    {#                                        <th style="min-width: 500px">Description</th>#}
-                    {#                                        <th class="col-1">Status</th>#}
-                    {#                                        <th class="col-1">Month / Year</th>#}
-                    {#                                        <th class="col-1">Application no.</th>#}
-                    {#                                    </tr>#}
-                    {#                                    </thead>#}
-                    {#                                    <tbody class="table-border-bottom-0">#}
-                    {#                                    {% for patent in patents|dictsort:"status" %}#}
-                    {#                                        <tr>#}
-                    {#                                            <td class="sr-no">{{ forloop.counter }}</td>#}
-                    {#                                            <td>#}
-                    {#                                                {{ patent.description }}#}
-                    {#                                            </td>#}
-                    {#                                            <td>#}
-                    {#                                                {% if patent.status|upper == 'FILED' %}#}
-                    {#                                                    <span class="badge bg-label-dark">FILED</span>#}
-                    {#                                                {% elif patent.status|upper == 'PUBLISHED' %}#}
-                    {#                                                    <span class="badge bg-label-info">PUBLISHED</span>#}
-                    {#                                                {% elif patent.status|upper == 'GRANTED' %}#}
-                    {#                                                    <span class="badge bg-label-success">GRANTED</span>#}
-                    {#                                                {% elif patent.status|upper == 'LICENSED' %}#}
-                    {#                                                    <span class="badge bg-success">LICENSED</span>#}
-                    {#                                                {% else %}#}
-                    {#                                                    <span class="badge bg-danger">NA</span>#}
-                    {#                                                {% endif %}#}
-                    {#                                            </td>#}
-                    {#                                            <td>#}
-                    {#                                                {{ patent.month }} / {{ patent.year }}#}
-                    {#                                            </td>#}
-                    {#                                            <td>#}
-                    {#                                                {{ patent.application_no }}#}
-                    {#                                            </td>#}
-                    {#                                        </tr>#}
-                    {#                                    {% endfor %}#}
-                    {##}
-                    {#                                    </tbody>#}
-                    {#                                </table>#}
-                    {#                            </div>#}
-                    {#                        </div>#}
-                    {#                    </div>#}
-                    <h4 class="fw-bold py-3 mt-4">Section 2D / <span class="text-muted fw-light">Recognitions / Awards Received</span></h4>
+                    <h4 class="fw-bold py-3 mt-4">Section 2D / <span class="text-muted fw-light">Patents / Inventions Leading To Patents</span></h4>
+                    <div class="card mt-3 prepopulated">
+                        <h5 class="card-header">Patents / Inventions</h5>
+                        <hr class="my-0">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-hover table-bordered" data-max=5 data-min=2>
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 1px">Sr</th>
+                                        <th style="min-width: 500px">Description</th>
+                                        <th class="col-1">Status</th>
+                                        <th class="col-1">Month / Year</th>
+                                        <th class="col-1">Application no.</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="table-border-bottom-0">
+                                    {% for patent in patents|dictsort:"status" %}
+                                        <tr>
+                                            <td class="sr-no">{{ forloop.counter }}</td>
+                                            <td>
+                                                {{ patent.description }}
+                                            </td>
+                                            <td>
+                                                {% if patent.status|upper == 'FILED' %}
+                                                    <span class="badge bg-label-dark">FILED</span>
+                                                {% elif patent.status|upper == 'PUBLISHED' %}
+                                                    <span class="badge bg-label-info">PUBLISHED</span>
+                                                {% elif patent.status|upper == 'GRANTED' %}
+                                                    <span class="badge bg-label-success">GRANTED</span>
+                                                {% elif patent.status|upper == 'LICENSED' %}
+                                                    <span class="badge bg-success">LICENSED</span>
+                                                {% else %}
+                                                    <span class="badge bg-danger">NA</span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {{ patent.month }} / {{ patent.year }}
+                                            </td>
+                                            <td>
+                                                {{ patent.application_no }}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 class="fw-bold py-3 mt-4">Section 2E / <span class="text-muted fw-light">Recognitions / Awards Received</span></h4>
                     <div class="card mt-3 prepopulated">
                         <h5 class="card-header">Awards</h5>
                         <hr class="my-0">
@@ -728,7 +728,7 @@
                             </div>
                         </div>
                     </div>
-                    <h4 class="fw-bold py-3 mt-4">Section 2E / <span class="text-muted fw-light">Consultancy / MDPs / EDPs / Program Head / Industry Collaboration</span>
+                    <h4 class="fw-bold py-3 mt-4">Section 2F / <span class="text-muted fw-light">Consultancy / MDPs / EDPs / Program Head / Industry Collaboration</span>
                     </h4>
                     <div class="card mt-3 prepopulated">
                         <h5 class="card-header">Providing Consultancy | Organizing MDPs / EDPs</h5>
@@ -761,7 +761,7 @@
                             </table>
                         </div>
                     </div>
-                    <h4 class="fw-bold py-3 mt-4">Section 2F / <span class="text-muted fw-light">Academia Collaboration</span></h4>
+                    <h4 class="fw-bold py-3 mt-4">Section 2G / <span class="text-muted fw-light">Academia Collaboration</span></h4>
                     <div class="card mt-3 prepopulated">
                         <h5 class="card-header"> Academia Collaboration</h5>
                         <div class="card-body">
@@ -806,32 +806,32 @@
                         </div>
                     </div>
                     <h4 class="fw-bold py-3 mt-4">Section 3A / <span class="text-muted fw-light">Successful conversion of International Admission (SLS)/ Local Placements</span></h4>
-                    <div class="card mt-3 prepopulated">
-                        <h5 class="card-header">Successful conversion of International Admission (SLS)/ Local Placements</h5>
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-striped table-hover table-bordered">
-                                    <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th class="col-1">Marks</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody class="table-border-bottom-0">
-
-                                    <tr>
-                                        <td>
-                                            <strong>Marks awarded for Successful conversion of International Admission (SLS)/ Local Placements</strong>
-                                        </td>
-                                        <td>
-                                            {{ international_admission.marks }} / {{ file.configuration.section_3a_international_admission }}
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
+{#                    <div class="card mt-3 prepopulated">#}
+{#                        <h5 class="card-header">Successful conversion of International Admission (SLS)/ Local Placements</h5>#}
+{#                        <div class="card-body">#}
+{#                            <div class="table-responsive">#}
+{#                                <table class="table table-striped table-hover table-bordered">#}
+{#                                    <thead>#}
+{#                                    <tr>#}
+{#                                        <th>Name</th>#}
+{#                                        <th class="col-1">Marks</th>#}
+{#                                    </tr>#}
+{#                                    </thead>#}
+{#                                    <tbody class="table-border-bottom-0">#}
+{##}
+{#                                    <tr>#}
+{#                                        <td>#}
+{#                                            <strong>Marks awarded for Successful conversion of International Admission (SLS)/ Local Placements</strong>#}
+{#                                        </td>#}
+{#                                        <td>#}
+{#                                            {{ international_admission.marks }} / {{ file.configuration.section_3a_international_admission }}#}
+{#                                        </td>#}
+{#                                    </tr>#}
+{#                                    </tbody>#}
+{#                                </table>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
                     <h4 class="fw-bold py-3 mt-4">Section 4C / <span class="text-muted fw-light">Involvement in Extra curricular/ Co- curricular activities</span></h4>
                     <div class="card mt-3 prepopulated">
                         <h5 class="card-header">Involvement in Extra Curricular / Co-Curricular Activities</h5>

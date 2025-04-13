@@ -870,6 +870,140 @@
                         </div>
                     </div>
                     <h4 class="fw-bold py-3 mt-4 mb-4">
+                        Section 2 / <span class="text-muted fw-light">Patents</span>
+                    </h4>
+                    <div class="card mt-3 prepopulated">
+                        <h5 class="card-header">Patents / Inventions </h5>
+                        <hr class="my-0">
+                        <div class="card-body">
+                            {% if file.patents.all|length == 0 %}
+                                <div class="alert alert-warning m-2">
+                                    You have not achieved any data in this parameter
+                                </div>
+                            {% else %}
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover table-bordered" data-max=5 data-min=2>
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 1px">Sr</th>
+                                            <th style="min-width: 500px">Description</th>
+                                            <th class="col-1">Status</th>
+                                            <th class="col-1">Month / Year</th>
+                                            <th class="col-1">Application no.</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="table-border-bottom-0">
+                                        {% for patent in file.patents.all|dictsort:"status" %}
+                                            <tr>
+                                                <td class="sr-no">{{ forloop.counter }}</td>
+                                                <td>
+                                                    {{ patent.title }}
+                                                </td>
+                                                <td>
+                                                    {% if patent.status|upper == 'FILED' %}
+                                                        <span class="badge bg-label-dark">FILED</span>
+                                                    {% elif patent.status|upper == 'PUBLISHED' %}
+                                                        <span class="badge bg-label-info">PUBLISHED</span>
+                                                    {% elif patent.status|upper == 'GRANTED' %}
+                                                        <span class="badge bg-label-success">GRANTED</span>
+                                                    {% elif patent.status|upper == 'LICENSED' %}
+                                                        <span class="badge bg-success">LICENSED</span>
+                                                    {% else %}
+                                                        <span class="badge bg-danger">NA</span>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    {{ patent.month }} / {{ patent.year }}
+                                                </td>
+                                                <td>
+                                                    {{ patent.application_no }}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% if file.user.designation_abbreviation == 'assistant_prof_on_contract' and file.patents.all|length == 0 %}
+                        <div class="card mt-5 variable-data">
+                            <h5 class="card-header">Faculty Advisor</h5>
+                            <hr class="my-0">
+                            <div class="card-body">
+                                <div class="alert alert-secondary mb-4">
+                                    <input type="checkbox" {% if not file.faculty_advisor_available %}
+                                           checked {% endif %} class="form-check-input me-2"
+                                           name="faculty-available" value="No" id="hide-faculty-advisor"> Click here
+                                    if you don't have any data for this parameter
+                                    <input type="hidden" class="form-check-input me-2" name="faculty-available"
+                                           value="Yes">
+                                </div>
+                                <div class="add-type-table" id="faculty-advisor-target">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover table-bordered" data-max=1
+                                               data-min=1>
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 1px">Sr</th>
+                                                <th>Title</th>
+                                                <th>Description</th>
+                                                <th style="width: 1px; display: none">Del</th>
+                                            </tr>
+                                            <tr class="skeleton" style="display: none">
+                                                <td class="sr-no">Inf</td>
+                                                <td class="p-0">
+                                                    <textarea class="form-control count rounded-0" minlength=10
+                                                              maxlength=100 rows="3"
+                                                              name="skeleton" data-prefix="faculty-advisor-"></textarea>
+                                                </td>
+                                                <td class="p-0">
+                                                    <textarea class="form-control count rounded-0" minlength=10
+                                                              maxlength=100 rows="3"
+                                                              name="skeleton" data-prefix="faculty-advisor-"></textarea>
+                                                </td>
+                                                <td style="display: none">
+                                                    <i class="bx bx-trash rmvbtn"
+                                                       style="cursor: pointer; color: orangered; display: none;"></i>
+                                                </td>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="table-border-bottom-0">
+                                            {% for advisor in file.faculty_advisor.all %}
+                                                <tr>
+                                                    <td class="sr-no">{{ forloop.counter }}</td>
+                                                    <td class="p-0">
+                                                    <textarea class="form-control count rounded-0" minlength=10
+                                                              maxlength=100 rows="3"
+                                                              name="faculty-advisor-{{ forloop.counter }}"
+                                                              data-prefix="faculty-advisor-"
+                                                              required>{{ advisor.title }}</textarea>
+                                                    </td>
+                                                    <td class="p-0">
+                                                    <textarea class="form-control count rounded-0" minlength=10
+                                                              maxlength=100 rows="3"
+                                                              name="faculty-advisor-{{ forloop.counter }}"
+                                                              data-prefix="faculty-advisor-"
+                                                              required>{{ advisor.description }}</textarea>
+                                                    </td>
+                                                    <td style="display: none">
+                                                        <i class="bx bx-trash rmvbtn"
+                                                           style="cursor: pointer; color: orangered; display: none;"></i>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <button type="button" style="display: none"
+                                            class="btn btn-outline-primary addbtn mt-4 col-3"><i class='bx bx-plus'></i>&nbsp;
+                                        ADD
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                    <h4 class="fw-bold py-3 mt-4 mb-4">
                         Section 2 / <span class="text-muted fw-light">Recognition / Awards </span>
                     </h4>
                     <div class="card mt-3 prepopulated">
