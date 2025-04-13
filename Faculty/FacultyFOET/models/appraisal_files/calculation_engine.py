@@ -56,9 +56,7 @@ class CalculationEngine:
     def calculateStudentFeedback(self):
         st_load = self.file.student_feedback
         if st_load <= self.file.configuration.students_feedback_lower_limit:
-            return round(
-                self.file.configuration.students_feedback_lower_limit * self.file.configuration.students_feedback_s_coefficient,
-                0)
+            return round(self.file.configuration.students_feedback_minimum_marks, 0)
         else:
             return round(st_load * self.file.configuration.students_feedback_s_coefficient, 0)
 
@@ -659,9 +657,7 @@ class CalculationEngineR2:
     def calculateStudentFeedback(self):
         st_load = self.file.student_feedback
         if st_load <= self.file.configuration.students_feedback_lower_limit:
-            return round(
-                self.file.configuration.students_feedback_lower_limit * self.file.configuration.students_feedback_s_coefficient,
-                0)
+            return round(self.file.configuration.students_feedback_minimum_marks, 0)
         else:
             return round(st_load * self.file.configuration.students_feedback_s_coefficient, 0)
 

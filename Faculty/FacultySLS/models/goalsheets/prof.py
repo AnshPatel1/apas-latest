@@ -31,6 +31,7 @@ class FOLSGoalSheetProf(models.Model):
     # ------- Section 1.B: Students Feedback (TCS iON) -------
 
     students_feedback_s_coefficient = models.FloatField(default=3)
+    students_feedback_minimum_marks = models.FloatField(default=7)
     students_feedback_lower_limit = models.IntegerField(default=3)
 
     # ------- Section 1.C: Academic Practices (RO/ RV) -------
