@@ -281,6 +281,7 @@ class StaffAppraisalCycleConfiguration(models.Model):
 
 class FOETFacultyAppraisalCycleConfiguration(models.Model):
     year = models.IntegerField(default=datetime.datetime.now().year)
+    data_year = models.IntegerField(default=datetime.datetime.now().year - 1)
     is_active = models.BooleanField(default=True)
     verification_start_date = models.DateField()
     verification_end_date = models.DateField()
@@ -346,6 +347,7 @@ class FOETFacultyAppraisalCycleConfiguration(models.Model):
 
 class SLSFacultyAppraisalCycleConfiguration(models.Model):
     year = models.IntegerField(default=datetime.datetime.now().year)
+    data_year = models.IntegerField(default=datetime.datetime.now().year - 1)
     is_active = models.BooleanField(default=True)
     verification_start_date = models.DateField()
     verification_end_date = models.DateField()
@@ -411,6 +413,7 @@ class SLSFacultyAppraisalCycleConfiguration(models.Model):
 
 class SOEMFacultyAppraisalCycleConfiguration(models.Model):
     year = models.IntegerField(default=datetime.datetime.now().year)
+    data_year = models.IntegerField(default=datetime.datetime.now().year - 1)
     is_active = models.BooleanField(default=True)
     verification_start_date = models.DateField()
     verification_end_date = models.DateField()
@@ -476,6 +479,7 @@ class SOEMFacultyAppraisalCycleConfiguration(models.Model):
 
 class MathFacultyAppraisalCycleConfiguration(models.Model):
     year = models.IntegerField(default=datetime.datetime.now().year)
+    data_year = models.IntegerField(default=datetime.datetime.now().year - 1)
     is_active = models.BooleanField(default=True)
     verification_start_date = models.DateField()
     verification_end_date = models.DateField()
@@ -541,6 +545,7 @@ class MathFacultyAppraisalCycleConfiguration(models.Model):
 
 class ScienceFacultyAppraisalCycleConfiguration(models.Model):
     year = models.IntegerField(default=datetime.datetime.now().year)
+    data_year = models.IntegerField(default=datetime.datetime.now().year - 1)
     is_active = models.BooleanField(default=True)
     verification_start_date = models.DateField()
     verification_end_date = models.DateField()

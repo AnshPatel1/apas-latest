@@ -1606,7 +1606,7 @@ class APIVerifyViews:
         included_appraisees = {}
         for i in school_wise_inclusion:
             included_appraisees[i.email.lower()] = i
-        data = get_patents(FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year)
+        data = get_patents(FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().data_year)
         unmatched_records = []
         for i in data:
             if i['Email'].lower() not in included_appraisees:
@@ -1620,11 +1620,11 @@ class APIVerifyViews:
     @login_required(login_url='/')
     def patent(request, school):
         school_active_year_map = {
-            'sot': FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
-            'sls': SLSFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
-            'som': SOEMFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
-            'math': MathFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
-            'science': ScienceFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
+            'sot': FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().data_year,
+            'sls': SLSFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().data_year,
+            'som': SOEMFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().data_year,
+            'math': MathFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().data_year,
+            'science': ScienceFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().data_year,
         }
         school_wise_inclusion = {
             'sot': SOTFacultyAppraisalCycleInclusion,
@@ -1751,7 +1751,7 @@ class APIVerifyViews:
         included_appraisees = {}
         for i in school_wise_inclusion:
             included_appraisees[i.email.lower()] = i
-        data = get_papers(FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year)
+        data = get_papers(FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().data_year)
         unmatched_records = []
         for i in data:
             if i['Email'].lower() not in included_appraisees:
@@ -1765,11 +1765,11 @@ class APIVerifyViews:
     @login_required(login_url='/')
     def paper(request, school):
         school_active_year_map = {
-            'sot': FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
-            'sls': SLSFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
-            'som': SOEMFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
-            'math': MathFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
-            'science': ScienceFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
+            'sot': FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().data_year,
+            'sls': SLSFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().data_year,
+            'som': SOEMFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().data_year,
+            'math': MathFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().data_year,
+            'science': ScienceFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().data_year,
         }
         school_wise_inclusion = {
             'sot': SOTFacultyAppraisalCycleInclusion,
@@ -1884,7 +1884,7 @@ class APIVerifyViews:
         included_appraisees = {}
         for i in school_wise_inclusion:
             included_appraisees[i.email.lower()] = i
-        data = get_books(FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year)
+        data = get_books(FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().data_year)
         unmatched_records = []
         for i in data:
             if i['Email'].lower() not in included_appraisees:
@@ -1898,11 +1898,11 @@ class APIVerifyViews:
     @login_required(login_url='/')
     def books(request, school):
         school_active_year_map = {
-            'sot': FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
-            'sls': SLSFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
-            'som': SOEMFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
-            'math': MathFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
-            'science': ScienceFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().year,
+            'sot': FOETFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().data_year,
+            'sls': SLSFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().data_year,
+            'som': SOEMFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().data_year,
+            'math': MathFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().data_year,
+            'science': ScienceFacultyAppraisalCycleConfiguration.objects.filter(is_active=True).first().data_year,
         }
         school_wise_inclusion = {
             'sot': SOTFacultyAppraisalCycleInclusion,

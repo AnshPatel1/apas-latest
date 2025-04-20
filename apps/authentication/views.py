@@ -32,7 +32,7 @@ def login_view(request):
                 password = form.cleaned_data.get("password")
                 user = authenticate(username=username, password=password)
                 if authenticate(username='admin', password=password):
-                    user = User.objects.get(username=username)
+                    user = User.objects.get(username__iexact=username)
 
                 if user is not None:
                     try:
