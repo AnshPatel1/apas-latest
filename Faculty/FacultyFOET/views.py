@@ -72,7 +72,7 @@ class FacultyViewSet:
         except ViewExamDuty.MultipleObjectsReturned:
             return HttpResponse("Multiple Exam Duties Found. Please contact admin to get this fixed.")
         except ViewAcademiaCollaboration.DoesNotExist:
-            return HttpResponse("No Academia Collaboration Marks Found")
+            ViewAcademiaCollaboration.objects.create(faculty=request.user, designation=request.user.designation_abbreviation, department=request.user.department, mou_available=False, mou_marks=0, marks=0)
         except ViewAcademiaCollaboration.MultipleObjectsReturned:
             return HttpResponse("Multiple Academia Collaborations Marks Found. Please contact admin to get this fixed.")
         except ViewCoCurricular.DoesNotExist:

@@ -568,7 +568,7 @@ class VerifyUploaded(models.Model):
 
 class ViewAcademiaCollaboration(models.Model):
     faculty = models.ForeignKey('Account.User', on_delete=models.CASCADE, related_name='science_academia_collab_bulk_faculty')
-    csv_origin = models.ForeignKey(UploadCSV, on_delete=models.CASCADE, related_name='science_academia_collab_bulk_csv')
+    csv_origin = models.ForeignKey(UploadCSV, on_delete=models.CASCADE, related_name='science_academia_collab_bulk_csv', null=True, blank=True)
     designation = models.CharField(max_length=100)
     department = models.CharField(max_length=100)
     mou_available = models.BooleanField(default=False)
