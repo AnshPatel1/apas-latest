@@ -150,7 +150,7 @@
                                                         </thead>
                                                         <tbody>
                                                         {% for book in data|dictsortreversed:"status_code" %}
-                                                            {% if not book.is_finalized %}
+                                                            {% if not book.is_finalized and paper.status == 'verified' %}
                                                             <tr
                                                                     {% if book.status == 'verified' %}
                                                                         class="bg-label-success"
