@@ -1718,6 +1718,7 @@ class APIVerifyViews:
                     v.is_verified = True
                     v.verified_by = request.user
                 v.remarks = remarks
+                v.is_finalized = False
                 v.save()
             return redirect('hr-api-patent', school=school)
         return render(request, 'html/hr/verify_patent.html', context)
@@ -1844,6 +1845,7 @@ class APIVerifyViews:
                     v.is_verified = True
                     v.verified_by = request.user
                 v.remarks = remarks
+                v.is_finalized = False
                 try:
                     v.save()
                 except Exception as e:
@@ -1977,6 +1979,7 @@ class APIVerifyViews:
                     v.is_verified = True
                     v.verified_by = request.user
                 v.remarks = remarks
+                v.is_finalized = False
                 try:
                     v.save()
                 except Exception as e:
@@ -2043,6 +2046,20 @@ class APIVerifyViews:
 
     @staticmethod
     @login_required(login_url='/')
+    def finalize_verified_patent_view(request):
+        # PatentRecords.objects.all().update(is_finalized=False)
+        context = {
+            'pagename': 'hr-api-patent-finalize',
+            'request': request,
+            'title': "Finalized Verified Patent",
+            'child_view': 'hr-api-patent',
+            'data': [i.to_dict().values() for i in PatentRecords.objects.filter(is_verified=True, is_finalized=True)],
+            'headers': PatentRecords.objects.filter(is_verified=True).first().to_dict().keys()
+        }
+        return render(request, 'html/hr/view_finalize_records.html', context)
+
+    @staticmethod
+    @login_required(login_url='/')
     def finalize_verified_paper(request):
         # PatentRecords.objects.all().update(is_finalized=False)
         if request.method == "POST":
@@ -2087,6 +2104,20 @@ class APIVerifyViews:
 
     @staticmethod
     @login_required(login_url='/')
+    def finalize_verified_paper_view(request):
+        # PatentRecords.objects.all().update(is_finalized=False)
+        context = {
+            'pagename': 'hr-api-paper-finalize',
+            'request': request,
+            'title': "Finalized Verified Papers",
+            'child_view': 'hr-api-paper',
+            'data': [i.to_dict().values() for i in PaperRecords.objects.filter(is_verified=True, is_finalized=True)],
+            'headers': PaperRecords.objects.filter(is_verified=True).first().to_dict().keys()
+        }
+        return render(request, 'html/hr/view_finalize_records.html', context)
+
+    @staticmethod
+    @login_required(login_url='/')
     def finalize_verified_books(request):
         # PatentRecords.objects.all().update(is_finalized=False)
         if request.method == "POST":
@@ -2128,6 +2159,21 @@ class APIVerifyViews:
             'headers': BookRecords.objects.filter(is_verified=True).first().to_dict().keys()
         }
         return render(request, 'html/hr/finalize_records.html', context)
+
+
+    @staticmethod
+    @login_required(login_url='/')
+    def finalize_verified_books_view(request):
+        # PatentRecords.objects.all().update(is_finalized=False)
+        context = {
+            'pagename': 'hr-api-books-finalize',
+            'request': request,
+            'title': "Finalized Verified Books",
+            'child_view': 'hr-api-books',
+            'data': [i.to_dict().values() for i in BookRecords.objects.filter(is_verified=True, is_finalized=True)],
+            'headers': BookRecords.objects.filter(is_verified=True).first().to_dict().keys()
+        }
+        return render(request, 'html/hr/view_finalize_records.html', context)
 
 
 def get_patents(year):

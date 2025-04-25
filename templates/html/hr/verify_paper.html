@@ -667,7 +667,7 @@
 
   function download_data(method) {
     const rows = [
-      ["ID", "UID", "Email", "Department", "School", "Brief School", "Type", "Description", "Month", "Year", "Application No.", "Remarks", "Status"]
+      ["ID", "UID", "Email", "Department", "School", "Brief School", "Month", "Year", "Type", 'Title', "Entity", "Conference Organization", "Conference Level", "Quality", "ISBN", "Main Author", "Co Author", "Is Scopus", "Is WOS", "Is UGC", "Is ABDC", "Remarks"]
     ];
     if (method === 'rejected') {
       data.forEach((paper) => {
@@ -683,11 +683,21 @@
             paper.department,
             paper.school,
             paper.brief_school,
-            paper.ptn_type,
-            paper.ptn_desc,
             paper.month,
             paper.yr,
-            paper.application_no,
+            paper.type,
+            paper.title,
+            paper.entity,
+            paper.conference_organization,
+            paper.conference_level,
+            paper.quality,
+            paper.isbn,
+            paper.mainauthor,
+            paper.coauthor_count,
+            paper.Is_scopus,
+            paper.is_web_of_science,
+            paper.ugc,
+            paper.abdc,
             '" ' + document.querySelector(`textarea[name='paper-record-${paper.internal_ID}-remarks']`).value + ' "',
             paper.status
           ]);
@@ -703,14 +713,24 @@
             paper.department,
             paper.school,
             paper.brief_school,
-            paper.ptn_type,
-            paper.ptn_desc,
             paper.month,
             paper.yr,
-            paper.application_no,
+            paper.type,
+            paper.title,
+            paper.entity,
+            paper.conference_organization,
+            paper.conference_level,
+            paper.quality,
+            paper.isbn,
+            paper.mainauthor,
+            paper.coauthor_count,
+            paper.Is_scopus,
+            paper.is_web_of_science,
+            paper.ugc,
+            paper.abdc,
             '" ' + document.querySelector(`textarea[name='paper-record-${paper.internal_ID}-remarks']`).value + ' "',
             paper.status
-          ]);
+          ])
         }
       });
     }
