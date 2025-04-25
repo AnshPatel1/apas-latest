@@ -726,6 +726,10 @@ class StaffViewSet:
             context['grand_total_r1'] = round(context['grand_total_r1'], 2)
             context['can_submit'] = HelperFunctions.can_submit_ro2(None, file)
             context['can_show_result'] = StaffHelperFunctions.can_show_result()
+            if not context['can_show_result']:
+                context['error_code'] = "Result Error"
+                context['error_message'] = "Result not yet available."
+                return render(request, "html/error_pages/pages-error.html", context)
             context['cycle'], context['stage'], context['today'] = HelperFunctions.get_cycles()
             context['grade'] = GradeConfiguration.objects.filter(is_active=True).first().get_grade(
                 context['grand_total'])

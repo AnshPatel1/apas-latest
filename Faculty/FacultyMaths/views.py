@@ -935,6 +935,10 @@ class FacultyViewSet:
         file = FacultyHelperFunctions.get_appraisal_file(request)
         context = {'user': request.user, 'page_name': 'faculty-result', 'file': file,
                    'cycle': FacultyHelperFunctions.get_cycle()}
+        if not context['cycle'].get('show_result'):
+            context['error_code'] = "Result Error"
+            context['error_message'] = "Result not yet available."
+            return render(request, "html/error_pages/pages-error.html", context)
         engine = CalculationEngine(file)
         context['teaching'] = engine.calculateTeachingMaster()
         context['engine'] = engine
