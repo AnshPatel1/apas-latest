@@ -583,7 +583,7 @@
 
   function download_data(method) {
     const rows = [
-      ["ID", "UID", "Email", "Department", "School", "Brief School", "Type", "Description", "Month", "Year", "Application No.", "Remarks", "Status"]
+      ["ID", "UID", "Email", "Department", "School", "Brief School", "Month", "Year", "Level", "Title", "Category", "Type", "ISBN", "Main Author", "Co Author", "Editor", "Remarks", "Status"]
     ];
     if (method === 'rejected') {
       data.forEach((book) => {
@@ -599,11 +599,16 @@
             book.department,
             book.school,
             book.brief_school,
-            book.ptn_type,
-            book.ptn_desc,
             book.month,
             book.yr,
-            book.application_no,
+            book.level,
+            book.title,
+            book.category,
+            book.type,
+            book.isbn,
+            book.mainauthor,
+            book.coauthor_count,
+            book.editor,
             '" ' + document.querySelector(`textarea[name='book-record-${book.internal_ID}-remarks']`).value + ' "',
             book.status
           ]);
@@ -619,11 +624,16 @@
             book.department,
             book.school,
             book.brief_school,
-            book.ptn_type,
-            book.ptn_desc,
             book.month,
             book.yr,
-            book.application_no,
+            book.level,
+            book.title,
+            book.category,
+            book.type,
+            book.isbn,
+            book.mainauthor,
+            book.coauthor_count,
+            book.editor,
             '" ' + document.querySelector(`textarea[name='book-record-${book.internal_ID}-remarks']`).value + ' "',
             book.status
           ]);
@@ -634,7 +644,7 @@
     const encodedUri = encodeURI(csvContent);
     const link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "rejected_books.csv");
+    link.setAttribute("download", "rejected_accepted_books.csv");
     document.body.appendChild(link);
     link.click();
   }
