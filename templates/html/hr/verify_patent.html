@@ -437,12 +437,14 @@
     let rejectedIds = [];
     let acceptedIds = [];
     data.forEach((patent) => {
-        if (document.querySelector(`input[id='patent-record-${String(patent.internal_ID)}-reject']`).checked) {
+      if (document.querySelector(`input[id='patent-record-${patent.internal_ID}-accept']`)) {
+        if (document.querySelector(`input[id='patent-record-${patent.internal_ID}-reject']`).checked) {
             rejectedIds.push(patent.internal_ID);
         }
-        if (document.querySelector(`input[id='patent-record-${String(patent.internal_ID)}-accept']`).checked) {
+        if (document.querySelector(`input[id='patent-record-${patent.internal_ID}-accept']`).checked) {
             acceptedIds.push(patent.internal_ID);
         }
+      }
     })
 
     function deleteRecord(internal_id) {
@@ -485,7 +487,7 @@
     }
 
     data.forEach((patent) => {
-        document.querySelectorAll(`input[name='patent-record-${String(patent.internal_ID)}']`).forEach((i) => i.addEventListener('change', function (e) {
+        document.querySelectorAll(`input[name='patent-record-${patent.internal_ID}']`).forEach((i) => i.addEventListener('change', function (e) {
             if (e.target.value === 'accept') {
                 setRecord(patent.internal_ID, 'accept');
             }
@@ -502,7 +504,7 @@
         if (method === 'rejected') {
             data.forEach((patent) => {
                 if (rejectedIds.includes(patent.internal_ID)) {
-                    if (document.querySelector(`textarea[name='patent-record-${String(patent.internal_ID)}-remarks']`).value === "") {
+                    if (document.querySelector(`textarea[name='patent-record-${patent.internal_ID}-remarks']`).value === "") {
                         alert("Please fill remarks for all records before downloading.");
                         throw new Error("Please fill remarks for all records before downloading.");
                     }
@@ -518,7 +520,7 @@
                         patent.month,
                         patent.yr,
                         patent.application_no,
-                        '" ' + document.querySelector(`textarea[name='patent-record-${String(patent.internal_ID)}-remarks']`).value + ' "',
+                        '" ' + document.querySelector(`textarea[name='patent-record-${patent.internal_ID}-remarks']`).value + ' "',
                         patent.status
                     ]);
                 }
@@ -538,7 +540,7 @@
                         patent.month,
                         patent.yr,
                         patent.application_no,
-                        '" ' + document.querySelector(`textarea[name='patent-record-${String(patent.internal_ID)}-remarks']`).value + ' "',
+                        '" ' + document.querySelector(`textarea[name='patent-record-${patent.internal_ID}-remarks']`).value + ' "',
                         patent.status
                     ]);
                 }

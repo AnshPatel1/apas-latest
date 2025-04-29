@@ -523,11 +523,13 @@
   let rejectedIds = [];
   let acceptedIds = [];
   data.forEach((book) => {
-    if (document.querySelector(`input[id='book-record-${String(book.internal_ID)}-reject']`).checked) {
-      rejectedIds.push(book.internal_ID);
-    }
-    if (document.querySelector(`input[id='book-record-${String(book.internal_ID)}-accept']`).checked) {
-      acceptedIds.push(book.internal_ID);
+    if (document.querySelector(`input[id='book-record-${book.internal_ID}-reject']`)) {
+      if (document.querySelector(`input[id='book-record-${book.internal_ID}-reject']`).checked) {
+        rejectedIds.push(book.internal_ID);
+      }
+      if (document.querySelector(`input[id='book-record-${book.internal_ID}-accept']`).checked) {
+        acceptedIds.push(book.internal_ID);
+      }
     }
   })
 
@@ -571,7 +573,7 @@
   }
 
   data.forEach((book) => {
-    document.querySelectorAll(`input[name='book-record-${String(book.internal_ID)}']`).forEach((i) => i.addEventListener('change', function (e) {
+    document.querySelectorAll(`input[name='book-record-${book.internal_ID}']`).forEach((i) => i.addEventListener('change', function (e) {
       if (e.target.value === 'accept') {
         setRecord(book.internal_ID, 'accept');
       }
@@ -588,7 +590,7 @@
     if (method === 'rejected') {
       data.forEach((book) => {
         if (rejectedIds.includes(book.internal_ID)) {
-          if (document.querySelector(`textarea[name='book-record-${String(book.internal_ID)}-remarks']`).value === "") {
+          if (document.querySelector(`textarea[name='book-record-${book.internal_ID}-remarks']`).value === "") {
             alert("Please fill remarks for all records before downloading.");
             throw new Error("Please fill remarks for all records before downloading.");
           }
@@ -609,7 +611,7 @@
             book.mainauthor,
             book.coauthor_count,
             book.editor,
-            '" ' + document.querySelector(`textarea[name='book-record-${String(book.internal_ID)}-remarks']`).value + ' "',
+            '" ' + document.querySelector(`textarea[name='book-record-${book.internal_ID}-remarks']`).value + ' "',
             book.status
           ]);
         }
@@ -634,7 +636,7 @@
             book.mainauthor,
             book.coauthor_count,
             book.editor,
-            '" ' + document.querySelector(`textarea[name='book-record-${String(book.internal_ID)}-remarks']`).value + ' "',
+            '" ' + document.querySelector(`textarea[name='book-record-${book.internal_ID}-remarks']`).value + ' "',
             book.status
           ]);
         }

@@ -607,11 +607,13 @@
   let rejectedIds = [];
   let acceptedIds = [];
   data.forEach((paper) => {
-    if (document.querySelector(`input[id='paper-record-${String(paper.internal_ID)}-reject']`).checked) {
-      rejectedIds.push(paper.internal_ID);
-    }
-    if (document.querySelector(`input[id='paper-record-${String(paper.internal_ID)}-accept']`).checked) {
-      acceptedIds.push(paper.internal_ID);
+    if (document.querySelector(`input[id='paper-record-${paper.internal_ID}-reject']`)) {
+      if (document.querySelector(`input[id='paper-record-${paper.internal_ID}-reject']`).checked) {
+        rejectedIds.push(paper.internal_ID);
+      }
+      if (document.querySelector(`input[id='paper-record-${paper.internal_ID}-accept']`).checked) {
+        acceptedIds.push(paper.internal_ID);
+      }
     }
   })
 
@@ -655,7 +657,7 @@
   }
 
   data.forEach((paper) => {
-    document.querySelectorAll(`input[name='paper-record-${String(paper.internal_ID)}']`).forEach((i) => i.addEventListener('change', function (e) {
+    document.querySelectorAll(`input[name='paper-record-${paper.internal_ID}']`).forEach((i) => i.addEventListener('change', function (e) {
       if (e.target.value === 'accept') {
         setRecord(paper.internal_ID, 'accept');
       }
@@ -672,7 +674,7 @@
     if (method === 'rejected') {
       data.forEach((paper) => {
         if (rejectedIds.includes(paper.internal_ID)) {
-          if (document.querySelector(`textarea[name='paper-record-${String(paper.internal_ID)}-remarks']`).value === "") {
+          if (document.querySelector(`textarea[name='paper-record-${paper.internal_ID}-remarks']`).value === "") {
             alert("Please fill remarks for all records before downloading.");
             throw new Error("Please fill remarks for all records before downloading.");
           }
@@ -698,7 +700,7 @@
             paper.is_web_of_science,
             paper.ugc,
             paper.abdc,
-            '" ' + document.querySelector(`textarea[name='paper-record-${String(paper.internal_ID)}-remarks']`).value + ' "',
+            '" ' + document.querySelector(`textarea[name='paper-record-${paper.internal_ID}-remarks']`).value + ' "',
             paper.status
           ]);
         }
@@ -728,7 +730,7 @@
             paper.is_web_of_science,
             paper.ugc,
             paper.abdc,
-            '" ' + document.querySelector(`textarea[name='paper-record-${String(paper.internal_ID)}-remarks']`).value + ' "',
+            '" ' + document.querySelector(`textarea[name='paper-record-${paper.internal_ID}-remarks']`).value + ' "',
             paper.status
           ])
         }
