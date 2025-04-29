@@ -130,7 +130,7 @@ class PaperRecords(models.Model):
         if DEBUG:
             additional_cats = []
         validations = {
-            'type': self.type.lower() in ['journal', 'conf', 'epub', 'article', *additional_cats],
+            'type': self.type.lower() in ['journal', 'conf', 'epub', 'article'],
             'quality': self.type.lower() in ['journal', 'conf', 'epub', 'article'] and self.quality.lower() in ['q1', 'q2', 'q3', 'q4', 'na'],
             'is_main_or_author': self.is_main_author or self.co_author_count > 0,
         }
