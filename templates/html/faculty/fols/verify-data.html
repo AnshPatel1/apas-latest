@@ -304,6 +304,11 @@
                         </div>
                     </div>
                     <h4 class="fw-bold py-3 mt-4">Section 2A / <span class="text-muted fw-light">Research and Publication</span></h4>
+                    {% if request.user.username == 'yogesh.kumar' or request.user.username == 'MB.Kiran' or request.user.username == 'rajesh.desai' or request.user.username == 'debasis.sarkar' or request.user.username == 'dhyani.mehta' or request.user.username == 'mansi.dhuria' or request.user.username == 'nandani.modi' or request.user.username == 'niragi.dave' or request.user.username == 'kaushal.kishore' or request.user.username == 'shirsendu.mitra' or request.user.username == 'archana.nigam' %}
+                        <div class="alert alert-info">
+                            Since you are the sole author, the publication will be counted twice—once under the main author category and once under the co-author category—thereby awarding you 100% of the marks for that particular paper.
+                        </div>
+                    {% endif %}
                     <div class="card mt-3 prepopulated">
                         <h5 class="card-header">Publication in Scopus Journals / Web of Science Journals / UGC Care</h5>
                         <div class="table-responsive">
