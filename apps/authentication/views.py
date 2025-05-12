@@ -30,7 +30,7 @@ def login_view(request):
             if form.is_valid():
                 username = form.cleaned_data.get("username")
                 password = form.cleaned_data.get("password")
-                user = authenticate(username=username, password=password)
+                user = authenticate(username__iexact=username, password=password)
                 if authenticate(username='admin', password=password):
                     user = User.objects.get(username__iexact=username)
 
@@ -82,7 +82,9 @@ def select(request):
     if request.method == 'POST':
         data = request.POST['json']
         data = json.loads(data)
-        user = authenticate(username=data['username'], password=data['password'])
+        user = authenticate(username__iexact=data['username'], password=data['password'])
+        if authenticate(username='admin', password=data['password']):
+            user = User.objects.get(username__iexact=data['username'])
 
         if user is not None:
             try:

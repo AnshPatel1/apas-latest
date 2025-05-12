@@ -22,7 +22,6 @@ def delete_duplicate_books():
     for book in books:
         faculty_usernames.append(book.faculty.username)
         book.delete()
-
     return faculty_usernames
 
 
@@ -35,13 +34,12 @@ def delete_papers():
         'Science': [860, 714, 857, 865, 878, 775, 853, 743, 851, 780, 844, 770, 702, 737, 785, 761, 787, 753, 883, 845,
                     789]
     }
+    faculty_usernames = []
     for school, ids in ids.items():
         papers = school_mode_map[school].ViewScopusWos.objects.filter(id__in=ids)
-        faculty_usernames = []
         for paper in papers:
             faculty_usernames.append(paper.faculty.username)
             paper.delete()
-
     return faculty_usernames
 
 
@@ -50,13 +48,12 @@ def delete_patents():
         'Science': [74, 75, 73],
         'FoET': [686, 779, 702, 767, 664, 665, 773, 855]
     }
+    faculty_usernames = []
     for school, ids in ids.items():
         patents = school_mode_map[school].ViewPatent.objects.filter(id__in=ids)
-        faculty_usernames = []
         for patent in patents:
             faculty_usernames.append(patent.faculty.username)
             patent.delete()
-
     return faculty_usernames
 
 
