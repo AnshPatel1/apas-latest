@@ -4,13 +4,23 @@ import BulkUpload.BulkUploadFoET.models as BulkUploadFoET
 import BulkUpload.BulkUploadFoLS.models as BulkUploadFoLS
 import BulkUpload.BulkUploadMaths.models as BulkUploadMaths
 import BulkUpload.BulkUploadScience.models as BulkUploadScience
+import Faculty.FacultySoEM.models as ModelsFoEM
+import Faculty.FacultyFOET.models as ModelsFoET
+import Faculty.FacultySLS.models as ModelsFoLS
+import Faculty.FacultyMaths.models as ModelsMaths
+import Faculty.FacultyScience.models as ModelsScience
 
 models = [
     BulkUploadFoEM.ViewBook,
     BulkUploadFoET.ViewBook,
     BulkUploadFoLS.ViewBook,
     BulkUploadMaths.ViewBook,
-    BulkUploadScience.ViewBook
+    BulkUploadScience.ViewBook,
+    ModelsFoEM.Publication,
+    ModelsFoET.Publication,
+    ModelsFoLS.Publication,
+    ModelsMaths.Publication,
+    ModelsScience.Publication,
 ]
 
 def fix_isbn():
