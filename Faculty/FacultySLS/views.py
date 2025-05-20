@@ -496,28 +496,28 @@ class FacultyViewSet:
         if request.method == 'POST':
             file.validator.dissertation_validated = True
             file.validator.save()
-            # bachelors_available = 'No' not in dict(request.POST)['bachelors-available']
+            bachelors_available = 'No' not in dict(request.POST)['bachelors-available']
             masters_available = 'No' not in dict(request.POST)['masters-available']
-            # file.bachelors_dissertation_available = bachelors_available
+            file.bachelors_dissertation_available = bachelors_available
             file.masters_thesis_available = masters_available
             file.save()
-            # if bachelors_available:
-            #     entries = {key: value for key, value in dict(request.POST).items() if key.startswith('bachelors-dissertation')}
-            #     entries = list(entries.values())
-            #     bachelors = []
-            #     for entry in entries:
-            #         diss = BachelorsDissertation()
-            #         diss.faculty = request.user
-            #         diss.description = entry[0]
-            #         diss.student_name = entry[1]
-            #         if entry[2] == 'awarded':
-            #             diss.is_awarded = True
-            #         bachelors.append(diss)
-            #     file.bachelors_dissertation.all().delete()
-            #     BachelorsDissertation.objects.bulk_create(bachelors)
-            #     file.bachelors_dissertation.set(bachelors)
-            # else:
-            #     file.bachelors_dissertation.all().delete()
+            if bachelors_available:
+                entries = {key: value for key, value in dict(request.POST).items() if key.startswith('bachelors-dissertation')}
+                entries = list(entries.values())
+                bachelors = []
+                for entry in entries:
+                    diss = BachelorsDissertation()
+                    diss.faculty = request.user
+                    diss.description = entry[0]
+                    diss.student_name = entry[1]
+                    if entry[2] == 'awarded':
+                        diss.is_awarded = True
+                    bachelors.append(diss)
+                file.bachelors_dissertation.all().delete()
+                BachelorsDissertation.objects.bulk_create(bachelors)
+                file.bachelors_dissertation.set(bachelors)
+            else:
+                file.bachelors_dissertation.all().delete()
             if masters_available:
                 entries = {key: value for key, value in dict(request.POST).items() if key.startswith('masters-dissertation')}
                 entries = list(entries.values())

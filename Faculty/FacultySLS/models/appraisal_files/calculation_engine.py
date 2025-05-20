@@ -365,8 +365,7 @@ class CalculationEngine:
         return round(total, 2)
 
     def calculateDissertationAll(self):
-        # return self.calculateBachelorsDissertation() + self.calculateMastersThesis()
-        return self.calculateMastersThesis()
+        return self.calculateBachelorsDissertation() + self.calculateMastersThesis()
 
     def calculateBachelorsDissertation(self):
         total = 0
@@ -967,8 +966,7 @@ class CalculationEngineR2:
         return round(total, 2)
 
     def calculateDissertationAll(self):
-        # return self.calculateBachelorsDissertation() + self.calculateMastersThesis()
-        return self.calculateMastersThesis()
+        return self.calculateBachelorsDissertation() + self.calculateMastersThesis()
 
     def calculateBachelorsDissertation(self):
         total = 0

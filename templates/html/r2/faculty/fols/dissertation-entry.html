@@ -89,96 +89,96 @@
                         <h4 class="fw-bold py-3 mt-4 mb-4">
                             Section 2 / <span class="text-muted fw-light">Dissertation</span>
                         </h4>
-{#                        <div class="card mt-3 variable-data">#}
-{#                            <h5 class="card-header">Bachelors Dissertation</h5>#}
-{#                            <hr class="my-0">#}
-{#                            <div class="card-body">#}
-{#                                <div class="table-responsive">#}
-{#                                    <table class="table table-striped table-hover table-bordered" data-max=10 data-min=1>#}
-{#                                        <thead>#}
-{#                                        <tr>#}
-{#                                            <th style="width: 1px">Sr</th>#}
-{#                                            <th class="col-2">Student Details</th>#}
-{#                                            <th>Description</th>#}
-{#                                            <th class="col-1">Status</th>#}
-{#                                            <th class="col-md-2">R1 Actions</th>#}
-{#                                            <th class="col-2">R2 Remarks</th>#}
-{#                                            <th class="col-1">R2 Marks</th>#}
-{#                                        </tr>#}
-{#                                        </thead>#}
-{#                                        <tbody class="table-border-bottom-0">#}
-{#                                        {% for bachelor in file.bachelors_dissertation.all %}#}
-{#                                            <tr>#}
-{#                                                <td class="sr-no">{{ forloop.counter }}</td>#}
-{#                                                <td>#}
-{#                                                    {{ bachelor.student_name }}#}
-{#                                                </td>#}
-{#                                                <td>#}
-{#                                                    {{ bachelor.description }}#}
-{#                                                </td>#}
-{#                                                <td>#}
-{#                                                    {% if bachelor.is_awarded %}Awarded{% else %}In Process{% endif %}#}
-{#                                                </td>#}
-{#                                                <td>#}
-{#                                                    {% if bachelor.marks.ro1_agreed %}#}
-{#                                                        <span class="badge bg-label-success">ACCEPTED</span>#}
-{#                                                    {% else %}#}
-{#                                                        <span class="badge bg-label-danger">REJECTED</span>#}
-{#                                                    {% endif %}#}
-{#                                                    <br>#}
-{#                                                    R1 Remarks: {{ bachelor.marks.ro1_remarks }}#}
-{#                                                </td>#}
-{#                                                <td class="p-0">#}
-{#                                             <textarea class="form-control count" style="min-width: 250px" placeholder="Enter Remarks" maxlength=100 minlength=2 required#}
-{#                                                       name="bachelors-{{ forloop.counter }}"#}
-{#                                                       rows="6">{{ bachelor.marks.ro2_remarks|default_if_none:"OK" }}</textarea>#}
-{#                                                </td>#}
-{#                                                <td>#}
-{#                                                    <div#}
-{#                                                            style="margin: 0px"#}
-{#                                                            class="btn-group"#}
-{#                                                            role="group"#}
-{#                                                            aria-label="Basic radio toggle button group"#}
-{#                                                    >#}
-{#                                                        <input#}
-{#                                                                type="radio"#}
-{#                                                                class="btn-check"#}
-{#                                                                name="bachelors-{{ forloop.counter }}"#}
-{#                                                                id="bachelors-{{ forloop.counter }}-accept"#}
-{#                                                                value="accept"#}
-{#                                                                {% if bachelor.marks.ro2_agreed %}checked{% endif %}#}
-{#                                                                autocomplete="off"#}
-{#                                                                required#}
-{#                                                        />#}
-{#                                                        <label#}
-{#                                                                class="btn btn-outline-primary"#}
-{#                                                                for="bachelors-{{ forloop.counter }}-accept"#}
-{#                                                        >Accept</label#}
-{#                                                        >#}
-{#                                                        <input#}
-{#                                                                type="radio"#}
-{#                                                                class="btn-check"#}
-{#                                                                name="bachelors-{{ forloop.counter }}"#}
-{#                                                                id="bachelors-{{ forloop.counter }}-reject"#}
-{#                                                                value="reject"#}
-{#                                                                {% if not bachelor.marks.ro2_agreed %}checked{% endif %}#}
-{#                                                                autocomplete="off"#}
-{#                                                                required#}
-{#                                                        />#}
-{#                                                        <label#}
-{#                                                                class="btn btn-outline-danger"#}
-{#                                                                for="bachelors-{{ forloop.counter }}-reject"#}
-{#                                                        >Reject</label#}
-{#                                                        >#}
-{#                                                    </div>#}
-{#                                                </td>#}
-{#                                            </tr>#}
-{#                                        {% endfor %}#}
-{#                                        </tbody>#}
-{#                                    </table>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
+                        <div class="card mt-3 variable-data">
+                            <h5 class="card-header">Bachelors Dissertation</h5>
+                            <hr class="my-0">
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover table-bordered" data-max=10 data-min=1>
+                                        <thead>
+                                        <tr>
+                                            <th style="width: 1px">Sr</th>
+                                            <th class="col-2">Student Details</th>
+                                            <th>Description</th>
+                                            <th class="col-1">Status</th>
+                                            <th class="col-md-2">R1 Actions</th>
+                                            <th class="col-2">R2 Remarks</th>
+                                            <th class="col-1">R2 Marks</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody class="table-border-bottom-0">
+                                        {% for bachelor in file.bachelors_dissertation.all %}
+                                            <tr>
+                                                <td class="sr-no">{{ forloop.counter }}</td>
+                                                <td>
+                                                    {{ bachelor.student_name }}
+                                                </td>
+                                                <td>
+                                                    {{ bachelor.description }}
+                                                </td>
+                                                <td>
+                                                    {% if bachelor.is_awarded %}Awarded{% else %}In Process{% endif %}
+                                                </td>
+                                                <td>
+                                                    {% if bachelor.marks.ro1_agreed %}
+                                                        <span class="badge bg-label-success">ACCEPTED</span>
+                                                    {% else %}
+                                                        <span class="badge bg-label-danger">REJECTED</span>
+                                                    {% endif %}
+                                                    <br>
+                                                    R1 Remarks: {{ bachelor.marks.ro1_remarks }}
+                                                </td>
+                                                <td class="p-0">
+                                             <textarea class="form-control count" style="min-width: 250px" placeholder="Enter Remarks" maxlength=100 minlength=2 required
+                                                       name="bachelors-{{ forloop.counter }}"
+                                                       rows="6">{{ bachelor.marks.ro2_remarks|default_if_none:"OK" }}</textarea>
+                                                </td>
+                                                <td>
+                                                    <div
+                                                            style="margin: 0px"
+                                                            class="btn-group"
+                                                            role="group"
+                                                            aria-label="Basic radio toggle button group"
+                                                    >
+                                                        <input
+                                                                type="radio"
+                                                                class="btn-check"
+                                                                name="bachelors-{{ forloop.counter }}"
+                                                                id="bachelors-{{ forloop.counter }}-accept"
+                                                                value="accept"
+                                                                {% if bachelor.marks.ro2_agreed %}checked{% endif %}
+                                                                autocomplete="off"
+                                                                required
+                                                        />
+                                                        <label
+                                                                class="btn btn-outline-primary"
+                                                                for="bachelors-{{ forloop.counter }}-accept"
+                                                        >Accept</label
+                                                        >
+                                                        <input
+                                                                type="radio"
+                                                                class="btn-check"
+                                                                name="bachelors-{{ forloop.counter }}"
+                                                                id="bachelors-{{ forloop.counter }}-reject"
+                                                                value="reject"
+                                                                {% if not bachelor.marks.ro2_agreed %}checked{% endif %}
+                                                                autocomplete="off"
+                                                                required
+                                                        />
+                                                        <label
+                                                                class="btn btn-outline-danger"
+                                                                for="bachelors-{{ forloop.counter }}-reject"
+                                                        >Reject</label
+                                                        >
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
                         <div class="card mt-5 variable-data">
                             <h5 class="card-header">Masters Dissertation</h5>
                             <hr class="my-0">

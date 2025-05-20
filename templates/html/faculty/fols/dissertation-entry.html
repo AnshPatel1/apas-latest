@@ -111,78 +111,78 @@
                         <h4 class="fw-bold py-3 mt-4 mb-4">
                             Section 2 / <span class="text-muted fw-light">Dissertation</span>
                         </h4>
-{#                        <div class="card mt-3 variable-data">#}
-{#                            <h5 class="card-header">Bachelors Dissertation</h5>#}
-{#                            <hr class="my-0">#}
-{#                            <div class="card-body">#}
-{#                                <div class="alert alert-secondary mb-4">#}
-{#                                    <input type="checkbox" {% if not file.bachelors_dissertation_available %} checked {% endif %} class="form-check-input me-2" name="bachelors-available" value="No" data-hide-target="bachelors"#}
-{#                                           id="hide-bachelors-dissertation"> Check this box if you do not have any Bachelors Dissertation#}
-{#                                    <input type="hidden" name="bachelors-available" value="Yes">#}
-{#                                </div>#}
-{#                                <div class="add-type-table" id="bachelors-dissertation-target">#}
-{#                                    <div class="table-responsive">#}
-{#                                        <table class="table table-striped table-hover table-bordered" data-max=15 data-min=1>#}
-{#                                            <thead>#}
-{#                                            <tr>#}
-{#                                                <th style="width: 1px">Sr</th>#}
-{#                                                <th>Description</th>#}
-{#                                                <th>Student Details</th>#}
-{#                                                <th class="col-2">Status</th>#}
-{#                                                <th style="width: 1px">Del</th>#}
-{#                                            </tr>#}
-{#                                            <tr class="skeleton" style="display: none">#}
-{#                                                <td class="sr-no">Inf</td>#}
-{#                                                <td class="p-0">#}
-{#                                                    <textarea class="form-control count rounded-0" minlength=10 maxlength=100 rows="3"#}
-{#                                                              data-prefix="bachelors-dissertation-"></textarea>#}
-{#                                                </td>#}
-{#                                                <td class="p-0">#}
-{#                                                    <textarea class="form-control count rounded-0" minlength=10 maxlength=100 rows="3"#}
-{#                                                              data-prefix="bachelors-dissertation-"></textarea>#}
-{#                                                </td>#}
-{#                                                <td>#}
-{#                                                    <select data-prefix="bachelors-dissertation-" class="form-select" id="">#}
-{#                                                        <option value="awarded">Awarded</option>#}
-{#                                                    </select>#}
-{#                                                </td>#}
-{#                                                <td>#}
-{#                                                    <i class="bx bx-trash rmvbtn" style="cursor: pointer; color: orangered; display: none;"></i>#}
-{#                                                </td>#}
-{#                                            </tr>#}
-{#                                            </thead>#}
-{#                                            <tbody class="table-border-bottom-0">#}
-{#                                            {% for dissertation in file.bachelors_dissertation.all %}#}
-{#                                                <tr>#}
-{#                                                    <td class="sr-no">{{ forloop.counter }}</td>#}
-{#                                                    <td class="p-0">#}
-{#                                                    <textarea class="form-control count rounded-0" minlength=10 maxlength=100 rows="3"#}
-{#                                                              name="bachelors-dissertation-{{ forloop.counter }}" data-prefix="bachelors-dissertation-"#}
-{#                                                    >{{ dissertation.description }}</textarea>#}
-{#                                                    </td>#}
-{#                                                    <td class="p-0">#}
-{#                                                    <textarea class="form-control count rounded-0" minlength=10 maxlength=100 rows="3"#}
-{#                                                              name="bachelors-dissertation-{{ forloop.counter }}" data-prefix="bachelors-dissertation-"#}
-{#                                                    >{{ dissertation.student_name }}</textarea>#}
-{#                                                    </td>#}
-{#                                                    <td>#}
-{#                                                        <select name="bachelors-dissertation-{{ forloop.counter }}" data-prefix="bachelors-dissertation-"#}
-{#                                                                class="form-select" id="">#}
-{#                                                            <option {% if dissertation.is_awarded %} selected {% endif %} value="awarded">Awarded</option>#}
-{#                                                        </select>#}
-{#                                                    </td>#}
-{#                                                    <td>#}
-{#                                                        <i class="bx bx-trash rmvbtn" style="cursor: pointer; color: orangered; display: none;"></i>#}
-{#                                                    </td>#}
-{#                                                </tr>#}
-{#                                            {% endfor %}#}
-{#                                            </tbody>#}
-{#                                        </table>#}
-{#                                    </div>#}
-{#                                    <button type="button" class="btn btn-outline-primary addbtn mt-4 col-3"><i class='bx bx-plus'></i>&nbsp; ADD</button>#}
-{#                                </div>#}
-{#                            </div>#}
-{#                        </div>#}
+                        <div class="card mt-3 variable-data">
+                            <h5 class="card-header">Bachelors Dissertation</h5>
+                            <hr class="my-0">
+                            <div class="card-body">
+                                <div class="alert alert-secondary mb-4">
+                                    <input type="checkbox" {% if not file.bachelors_dissertation_available %} checked {% endif %} class="form-check-input me-2" name="bachelors-available" value="No" data-hide-target="bachelors"
+                                           id="hide-bachelors-dissertation"> Check this box if you do not have any Bachelors Dissertation
+                                    <input type="hidden" name="bachelors-available" value="Yes">
+                                </div>
+                                <div class="add-type-table" id="bachelors-dissertation-target">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped table-hover table-bordered" data-max=15 data-min=1>
+                                            <thead>
+                                            <tr>
+                                                <th style="width: 1px">Sr</th>
+                                                <th>Description</th>
+                                                <th>Student Details</th>
+                                                <th class="col-2">Status</th>
+                                                <th style="width: 1px">Del</th>
+                                            </tr>
+                                            <tr class="skeleton" style="display: none">
+                                                <td class="sr-no">Inf</td>
+                                                <td class="p-0">
+                                                    <textarea class="form-control count rounded-0" minlength=10 maxlength=100 rows="3"
+                                                              data-prefix="bachelors-dissertation-"></textarea>
+                                                </td>
+                                                <td class="p-0">
+                                                    <textarea class="form-control count rounded-0" minlength=10 maxlength=100 rows="3"
+                                                              data-prefix="bachelors-dissertation-"></textarea>
+                                                </td>
+                                                <td>
+                                                    <select data-prefix="bachelors-dissertation-" class="form-select" id="">
+                                                        <option value="awarded">Awarded</option>
+                                                    </select>
+                                                </td>
+                                                <td>
+                                                    <i class="bx bx-trash rmvbtn" style="cursor: pointer; color: orangered; display: none;"></i>
+                                                </td>
+                                            </tr>
+                                            </thead>
+                                            <tbody class="table-border-bottom-0">
+                                            {% for dissertation in file.bachelors_dissertation.all %}
+                                                <tr>
+                                                    <td class="sr-no">{{ forloop.counter }}</td>
+                                                    <td class="p-0">
+                                                    <textarea class="form-control count rounded-0" minlength=10 maxlength=100 rows="3"
+                                                              name="bachelors-dissertation-{{ forloop.counter }}" data-prefix="bachelors-dissertation-"
+                                                    >{{ dissertation.description }}</textarea>
+                                                    </td>
+                                                    <td class="p-0">
+                                                    <textarea class="form-control count rounded-0" minlength=10 maxlength=100 rows="3"
+                                                              name="bachelors-dissertation-{{ forloop.counter }}" data-prefix="bachelors-dissertation-"
+                                                    >{{ dissertation.student_name }}</textarea>
+                                                    </td>
+                                                    <td>
+                                                        <select name="bachelors-dissertation-{{ forloop.counter }}" data-prefix="bachelors-dissertation-"
+                                                                class="form-select" id="">
+                                                            <option {% if dissertation.is_awarded %} selected {% endif %} value="awarded">Awarded</option>
+                                                        </select>
+                                                    </td>
+                                                    <td>
+                                                        <i class="bx bx-trash rmvbtn" style="cursor: pointer; color: orangered; display: none;"></i>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <button type="button" class="btn btn-outline-primary addbtn mt-4 col-3"><i class='bx bx-plus'></i>&nbsp; ADD</button>
+                                </div>
+                            </div>
+                        </div>
                         <div class="card mt-5 variable-data">
                             <h5 class="card-header">Masters Dissertation</h5>
                             <hr class="my-0">

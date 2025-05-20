@@ -310,24 +310,23 @@ class RO2FacultyFOLSViewSet:
                    'cycle': FacultyHelperFunctions.get_cycle()}
 
         if request.method == 'POST':
-            
-            # bachelors = [value for key, value in dict(request.POST).items() if key.startswith('bachelors')]
-            # db_bachelors = list(file.bachelors_dissertation.all())
+            bachelors = [value for key, value in dict(request.POST).items() if key.startswith('bachelors')]
+            db_bachelors = list(file.bachelors_dissertation.all())
             masters = [value for key, value in dict(request.POST).items() if key.startswith('masters')]
             db_masters = list(file.masters_thesis.all())
 
-            # for i in range(len(db_bachelors)):
-            #     dissertation = db_bachelors[i]
-            #     if dissertation.marks is None:
-            #         dissertation.marks = MarkField()
-            #
-            #     if bachelors[i][1] == 'accept':
-            #         dissertation.marks.ro2_agreed = True
-            #     if bachelors[i][1] == 'reject':
-            #         dissertation.marks.ro2_agreed = False
-            #     dissertation.marks.ro2_remarks = bachelors[i][0]
-            #     dissertation.marks.save()
-            #     dissertation.save()
+            for i in range(len(db_bachelors)):
+                dissertation = db_bachelors[i]
+                if dissertation.marks is None:
+                    dissertation.marks = MarkField()
+
+                if bachelors[i][1] == 'accept':
+                    dissertation.marks.ro2_agreed = True
+                if bachelors[i][1] == 'reject':
+                    dissertation.marks.ro2_agreed = False
+                dissertation.marks.ro2_remarks = bachelors[i][0]
+                dissertation.marks.save()
+                dissertation.save()
 
             for i in range(len(db_masters)):
                 dissertation = db_masters[i]
