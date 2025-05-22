@@ -40,7 +40,7 @@ class CalculationEngine:
         return total
 
     def calculateTeachingLoad(self):
-        tl_avg = (self.file.teaching_load.semester_odd + self.file.teaching_load.semester_even) / 2
+        tl_avg = (self.file.teaching_load.semester_odd + self.file.teaching_load.semester_even + self.file.teaching_load.semester_third) / 3
         if tl_avg >= self.file.configuration.teaching_load_upper_limit:
             return round(
                 self.file.configuration.teaching_load_upper_limit * self.file.configuration.teaching_load_t_coefficient,
@@ -617,7 +617,7 @@ class CalculationEngineR2:
         return total
 
     def calculateTeachingLoad(self):
-        tl_avg = (self.file.teaching_load.semester_odd + self.file.teaching_load.semester_even) / 2
+        tl_avg = (self.file.teaching_load.semester_odd + self.file.teaching_load.semester_even + self.file.teaching_load.semester_third) / 3
         if tl_avg >= self.file.configuration.teaching_load_upper_limit:
             return round(
                 self.file.configuration.teaching_load_upper_limit * self.file.configuration.teaching_load_t_coefficient,
