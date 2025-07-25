@@ -3,6 +3,8 @@ import datetime
 from django.core.exceptions import ValidationError
 from django.db import models
 
+from Staff.models import GradeConfiguration
+
 
 # Create your models here.
 
@@ -629,3 +631,77 @@ class CurrentDate(models.Model):
 
 class ShowResult(models.Model):
     show_result = models.BooleanField(default=False, verbose_name='Show Result ?')
+
+
+def get_default_year():
+    return StaffAppraisalCycleInclusion.objects.first().year
+
+class StaffMarkOverride(models.Model):
+    user = models.ForeignKey('Account.User', on_delete=models.CASCADE, related_name='manual_staff_mark_override')
+    year = models.IntegerField(default=get_default_year)
+    ro1_total_marks = models.FloatField(verbose_name='RO1 Total Marks')
+    ro2_total_marks = models.FloatField(verbose_name='RO2 Total Marks')
+    ro1_grade = models.CharField(max_length=20, null=True, blank=True, verbose_name='RO1 Grade')
+    ro2_grade = models.CharField(max_length=20, null=True, blank=True, verbose_name='RO2 Grade')
+
+    class Meta:
+        verbose_name = 'Staff Mark Override (Dual Role)'
+        verbose_name_plural = 'Staff Mark Overrides (Dual Role)'
+
+    def __str__(self):
+        return f'Manual Override for {self.user} in year {self.year}'
+
+    def save(self, *args, **kwargs):
+        config = GradeConfiguration.objects.filter(is_active=True).first()
+        self.ro1_grade = config.get_grade(self.ro1_total_marks)
+        self.ro2_grade = config.get_grade(self.ro2_total_marks)
+        if self.ro1_grade == 'Invalid' or self.ro2_grade is 'Invalid':
+            raise ValidationError('Invalid marks provided for grade calculation.')
+        super().save(*args, **kwargs)
+
+    def get_appraisal_files(self):
+        try:
+            faculty_file = None
+            staff_file = {
+                'user': self.user,
+                'username': self.user.username,
+                'total_marks': {
+                    'ro1': self.ro1_total_marks,
+                    'ro2': self.ro2_total_marks
+                },
+                'grade_received_ro1': self.ro1_grade,
+                'grade_received_ro2': self.ro2_grade,
+            }
+            if SOTFacultyAppraisalCycleInclusion.check_inclusion(self.user):
+                from RO1.views.faculty_foet import FacultyHelperFunctions
+                faculty_file = FacultyHelperFunctions.get_file(self.user.id)
+            elif SLSFacultyAppraisalCycleInclusion.check_inclusion(self.user):
+                from RO1.views.faculty_fols import FacultyHelperFunctions
+                faculty_file = FacultyHelperFunctions.get_file(self.user.id)
+            elif SPMFacultyAppraisalCycleInclusion.check_inclusion(self.user):
+                from RO1.views.faculty_foem import FacultyHelperFunctions
+                faculty_file = FacultyHelperFunctions.get_file(self.user.id)
+            elif MathFacultyAppraisalCycleInclusion.check_inclusion(self.user):
+                from RO1.views.faculty_maths import FacultyHelperFunctions
+                faculty_file = FacultyHelperFunctions.get_file(self.user.id)
+            elif ScienceFacultyAppraisalCycleInclusion.check_inclusion(self.user):
+                from RO1.views.faculty_science import FacultyHelperFunctions
+                faculty_file = FacultyHelperFunctions.get_file(self.user.id)
+            if faculty_file.file_level == 'HR':
+                return {
+                    'faculty_file': faculty_file,
+                    'staff_file': DotDict(staff_file)
+                }
+        except Exception as e:
+            print(f"Error in getting appraisal files: {e}")
+        return None
+
+class DotDict:
+    def __init__(self, dictionary):
+        for key, value in dictionary.items():
+            if isinstance(value, dict):
+                value = DotDict(value)
+            setattr(self, key, value)
+
+    def __repr__(self):
+        return f"{self.__dict__}"

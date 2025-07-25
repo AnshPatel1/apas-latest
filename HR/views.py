@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 
+from Account.models import DualRole
 from Faculty.FacultyFOET.models.appraisal_files import *
 import Faculty.FacultyFOET.models.appraisal_files.calculation_engine as foet_calc
 from Faculty.FacultySLS.models.appraisal_files import *
@@ -625,6 +626,57 @@ class TrackGrade:
         context['graders'] = graders
 
         return render(request, 'html/hr/faculty-grade-view.html', context)
+
+    @staticmethod
+    @login_required(login_url='/login/')
+    def dual_role(request):
+        if not request.user.is_hr:
+            context = {
+                'error_code': "Unauthorized Error",
+                "error_message": "You are not authorized to view this page."
+            }
+            return render(request, 'html/error_pages/pages-error.html', context)
+        dual_role_data = []
+        for role in list(DualRole.objects.all()) + list(StaffMarkOverride.objects.all()):
+            res = role.get_appraisal_files()
+            if res:
+                faculty_file = res['faculty_file']
+                staff_file = res['staff_file']
+                final_percentage = round(staff_file.total_marks.ro2 * 0.4 + faculty_file.r2_percentage * 0.6 + 0.1, 0)
+                if final_percentage >= 95:
+                    final_grade = 'OUTSTANDING'
+                elif final_percentage >= 65:
+                    final_grade = 'GOOD'
+                elif final_percentage >= 35:
+                    final_grade = 'AVERAGE'
+                else:
+                    final_grade = 'BELOW AVERAGE'
+                dual_role_data.append({
+                    'full_name': faculty_file.user.full_name,
+                    'staff_username': staff_file.user.username,
+                    'faculty_username': faculty_file.user.username,
+                    'staff_ro1_marks': staff_file.total_marks.ro1,
+                    'staff_ro2_marks': staff_file.total_marks.ro2,
+                    'staff_ro1_grade': staff_file.grade_received_ro1,
+                    'staff_ro2_grade': staff_file.grade_received_ro2,
+                    'staff_r2_percentage_100': staff_file.total_marks.ro2,
+                    'faculty_ro1_marks': faculty_file.grand_total.ro1,
+                    'faculty_ro2_marks': faculty_file.grand_total.ro2,
+                    'faculty_ro1_grade': faculty_file.r1_grade,
+                    'faculty_ro2_grade': faculty_file.r2_grade,
+                    'faculty_r2_percentage_100': faculty_file.r2_percentage,
+                    'staff_percentage_40': round(staff_file.total_marks.ro2 * 0.4, 2),
+                    'faculty_percentage_60': round(faculty_file.r2_percentage * 0.6, 2),
+                    'final_percentage': final_percentage,
+                    'final_grade': final_grade
+                })
+        context = {
+            'pagename': 'dualrole-track',
+            'data': [i.values() for i in dual_role_data],
+            'headers': [i.upper().replace('_', ' ') for i in dual_role_data[0].keys()] if dual_role_data else []
+        }
+
+        return render(request, 'html/hr/dual-role-grade-view.html', context)
 
 
 @login_required(login_url='/login/')

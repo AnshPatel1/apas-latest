@@ -11,6 +11,7 @@ urlpatterns = [
     path('som/track/', TrackGrade.faculty_foem, name='hr-foem-track'),
     path('math/track/', TrackGrade.faculty_math, name='hr-math-track'),
     path('science/track/', TrackGrade.faculty_science, name='hr-science-track'),
+    path('dualrole/track/', TrackGrade.dual_role, name='hr-dualrole-track'),
     path('tally/', hr_data_tally, name='hr-tally'),
     path('api/patent/finalize/', APIVerifyViews.finalize_verified_patent, name='hr-api-patent-finalize'),
     path('api/patent/finalize/view/', APIVerifyViews.finalize_verified_patent_view, name='hr-api-patent-finalize'),

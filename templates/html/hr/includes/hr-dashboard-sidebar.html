@@ -87,6 +87,12 @@
                 <div data-i18n="Analytics">Science Grade</div>
             </a>
         </li>
+        <li class="menu-item {% if pagename == 'dualrole-track' %}active{% endif %}">
+            <a href="{% url 'hr-dualrole-track' %}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-adjust"></i>
+                <div data-i18n="Analytics">Dual Role Grade</div>
+            </a>
+        </li>
         <li class="menu-header small text-uppercase"><span class="menu-header-text">Tally</span></li>
         <!-- Cards -->
         <li class="menu-item {% if pagename == 'hr-tally' %}active{% endif %}">

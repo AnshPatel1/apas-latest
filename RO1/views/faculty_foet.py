@@ -1109,7 +1109,6 @@ class FacultyHelperFunctions:
     def get_file(appraisee_id):
         try:
             appraisee = User.objects.get(id=appraisee_id)
-            print(appraisee)
             if appraisee.designation_abbreviation == "assistant_prof_on_contract":
                 file = FOETAssistantProfOnContractAppraisalFile.objects.filter(user=appraisee).first()
             elif appraisee.designation_abbreviation == "assistant_prof":

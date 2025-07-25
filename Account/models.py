@@ -2,6 +2,8 @@ from uuid import uuid4
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager, PermissionsMixin
 
+from Staff.models import StaffAppraisalFile
+
 # Create your models here.
 # create custome user model
 schools = {
@@ -289,3 +291,32 @@ class DualRole(models.Model):
     def cleanup(self):
         self.main_user.password = self.faculty_profile.password
         self.faculty_profile.save()
+
+    def get_appraisal_files(self):
+        from MasterConfiguration.models import SOTFacultyAppraisalCycleInclusion, SPMFacultyAppraisalCycleInclusion, SLSFacultyAppraisalCycleInclusion, MathFacultyAppraisalCycleInclusion, ScienceFacultyAppraisalCycleInclusion
+        try:
+            faculty_file = None
+            staff_file = StaffAppraisalFile.objects.get(user=self.main_user)
+            if SOTFacultyAppraisalCycleInclusion.check_inclusion(self.faculty_profile):
+                from RO1.views.faculty_foet import FacultyHelperFunctions
+                faculty_file = FacultyHelperFunctions.get_file(self.faculty_profile.id)
+            elif SLSFacultyAppraisalCycleInclusion.check_inclusion(self.faculty_profile):
+                from RO1.views.faculty_fols import FacultyHelperFunctions
+                faculty_file = FacultyHelperFunctions.get_file(self.faculty_profile.id)
+            elif SPMFacultyAppraisalCycleInclusion.check_inclusion(self.faculty_profile):
+                from RO1.views.faculty_foem import FacultyHelperFunctions
+                faculty_file = FacultyHelperFunctions.get_file(self.faculty_profile.id)
+            elif MathFacultyAppraisalCycleInclusion.check_inclusion(self.faculty_profile):
+                from RO1.views.faculty_maths import FacultyHelperFunctions
+                faculty_file = FacultyHelperFunctions.get_file(self.faculty_profile.id)
+            elif ScienceFacultyAppraisalCycleInclusion.check_inclusion(self.faculty_profile):
+                from RO1.views.faculty_science import FacultyHelperFunctions
+                faculty_file = FacultyHelperFunctions.get_file(self.faculty_profile.id)
+            if faculty_file.file_level == 'HR' and staff_file.file_level == 'HR':
+                return {
+                    'faculty_file': faculty_file,
+                    'staff_file': staff_file
+                }
+        except Exception as e:
+            print(f"Error in getting appraisal files: {e}")
+        return None

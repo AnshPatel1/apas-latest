@@ -59,3 +59,7 @@ admin.site.register(MathFacultyAppraisalCycleConfiguration)
 admin.site.register(ScienceFacultyAppraisalCycleConfiguration)
 admin.site.register(CurrentDate)
 admin.site.register(ShowResult)
+
+@admin.register(StaffMarkOverride)
+class StaffMarkOverrideAdmin(admin.ModelAdmin):
+    autocomplete_fields = ['user']

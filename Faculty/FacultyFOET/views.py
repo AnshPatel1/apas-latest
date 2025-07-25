@@ -995,7 +995,6 @@ class FacultyHelperFunctions:
                 try:
                     file = FOETAssociateProfAppraisalFile.objects.get(user=request.user)
                 except FOETAssociateProfAppraisalFile.DoesNotExist:
-                    print("hi")
                     file = FOETAssociateProfAppraisalFile()
                     file.user = request.user
                     file.configuration = FOETGoalSheetAssociateProf.objects.filter(is_active=True).first()
