@@ -946,6 +946,60 @@
                                         </div>
                                     </div>
                                 </div>
+
+
+                                {% if dual_role %}
+                                    <div class="card mt-4">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <div class="col-12 my-3 d-flex justify-content-center">
+                                                <h4 style="font-weight: bold;">FINAL GRADE (40% STAFF + 60% FACULTY)</h4>
+                                            </div>
+                                            <table class="table table-bordered border-top m-0">
+                                                <thead>
+                                                <tr>
+                                                    <th>Sr</th>
+                                                    <th>Section</th>
+                                                    <th>R1 Score</th>
+                                                    <th>R1 Grade</th>
+                                                    <th>R2 Score</th>
+                                                    <th>R2 Grade</th>
+
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td style="width: 1px">1</td>
+                                                    <td>Staff Appraisal</td>
+                                                    <td>{{ dual_role.staff_ro1_marks }}</td>
+                                                    <td>{{ dual_role.staff_ro1_grade }}</td>
+                                                    <td>{{ dual_role.staff_ro2_marks }}</td>
+                                                    <td>{{ dual_role.staff_ro2_grade }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 1px">2</td>
+                                                    <td>Faculty Appraisal</td>
+                                                    <td>{{ dual_role.faculty_ro1_marks }}</td>
+                                                    <td>{{ dual_role.faculty_ro1_grade }}</td>
+                                                    <td>{{ dual_role.faculty_ro2_marks }}</td>
+                                                    <td>{{ dual_role.faculty_ro2_grade }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="width: 1px" class="bold"><strong>3</strong></td>
+                                                    <td><strong>FINAL (40% Staff + 60% Faculty) ({{ dual_role.staff_percentage_40 }}% + {{ dual_role.faculty_percentage_60 }}%)</strong></td>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td><strong>{{ dual_role.final_percentage }}%</strong></td>
+                                                    <td><strong>{{ dual_role.final_grade }}</strong></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endif %}
 {#                                <div class="card mt-4">#}
 {#                                    <div class="card-body">#}
 {#                                        <div class="table-responsive">#}

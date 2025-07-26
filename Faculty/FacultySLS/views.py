@@ -958,6 +958,8 @@ class FacultyViewSet:
     @staticmethod
     @login_required(login_url='/login/')
     def result(request):
+        from Account.models import DualRole
+        from MasterConfiguration.models import StaffMarkOverride
         if not FacultyHelperFunctions.check_authorized_user(request):
             context = {
                 'error_code': "Unauthorized Error",
@@ -981,6 +983,44 @@ class FacultyViewSet:
         context['can_submit'] = file.ro2_validator.is_valid_for_ro(
             file.user.designation_abbreviation == 'assistant_prof_on_contract') and file.file_level == 'HR'
 
+        dr = DualRole.objects.filter(faculty_profile=request.user).first()
+        if dr is not None:
+            dr = dr.get_appraisal_files()
+        overriden = StaffMarkOverride.objects.filter(user=request.user).first()
+        if overriden is not None:
+            overriden = overriden.get_appraisal_files()
+        dual_role_data = overriden or dr
+        if dual_role_data:
+            staff_file = dual_role_data['staff_file']
+            faculty_file = dual_role_data['faculty_file']
+            final_percentage = round(staff_file.total_marks.ro2 * 0.4 + faculty_file.r2_percentage * 0.6 + 0.1, 0)
+            if final_percentage >= 95:
+                final_grade = 'OUTSTANDING'
+            elif final_percentage >= 65:
+                final_grade = 'GOOD'
+            elif final_percentage >= 35:
+                final_grade = 'AVERAGE'
+            else:
+                final_grade = 'BELOW AVERAGE'
+            context['dual_role'] = {
+                'full_name': faculty_file.user.full_name,
+                'staff_username': staff_file.user.username,
+                'faculty_username': faculty_file.user.username,
+                'staff_ro1_marks': staff_file.total_marks.ro1,
+                'staff_ro2_marks': staff_file.total_marks.ro2,
+                'staff_ro1_grade': staff_file.grade_received_ro1,
+                'staff_ro2_grade': staff_file.grade_received_ro2,
+                'staff_r2_percentage_100': staff_file.total_marks.ro2,
+                'faculty_ro1_marks': faculty_file.grand_total.ro1,
+                'faculty_ro2_marks': faculty_file.grand_total.ro2,
+                'faculty_ro1_grade': faculty_file.r1_grade,
+                'faculty_ro2_grade': faculty_file.r2_grade,
+                'faculty_r2_percentage_100': faculty_file.r2_percentage,
+                'staff_percentage_40': round(staff_file.total_marks.ro2 * 0.4, 2),
+                'faculty_percentage_60': round(faculty_file.r2_percentage * 0.6, 2),
+                'final_percentage': final_percentage,
+                'final_grade': final_grade
+            }
         return render(request, "html/faculty/fols/result.html", context)
 
 
