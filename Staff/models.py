@@ -475,3 +475,41 @@ class StaffAppraisalFile(models.Model):
 
         file.save()
         return file
+
+
+class RollbackStaffProfile(models.Model):
+    """
+    This model is used to rollback the staff profile to a previous state.
+    It is used when the staff profile is updated and the user wants to rollback to the previous state.
+    """
+    user = models.ForeignKey('Account.User', on_delete=models.CASCADE, related_name='rollback_staff_profile')
+    stage = models.CharField(max_length=10, choices=[
+        ('RO1', 'RO1'),
+        ('RO2', 'RO2'),
+    ])
+    reason = models.TextField(null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.user.full_name} - {self.stage} - {self.timestamp}"
+
+    def save(
+        self,
+        force_insert = False,
+        force_update = False,
+        using = None,
+        update_fields = None,
+    ):
+        file = StaffAppraisalFile.objects.get(user=self.user)
+        if self.stage == 'RO2' or self.stage == 'RO1':
+            file.file_level = 'RO2'
+            file.grade_received_ro2 = None
+            file.ro2_grading_done = False
+            file.file_with = self.user.ro2_id
+        if self.stage == 'RO1':
+            file.file_level = 'RO1'
+            file.grade_received_ro1 = None
+            file.ro1_grading_done = False
+            file.file_with = self.user.ro1_id
+        file.save()
+        super().save(force_insert, force_update, using, update_fields)

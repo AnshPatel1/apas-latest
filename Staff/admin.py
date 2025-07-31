@@ -22,3 +22,9 @@ admin.site.register(MarkField)
 admin.site.register(Certificate)
 admin.site.register(StaffValidation)
 admin.site.register(GradeConfiguration)
+
+@admin.register(RollbackStaffProfile)
+class RollbackStaffProfileAdmin(admin.ModelAdmin):
+    autocomplete_fields = ['user']
+    list_display = ['user', "stage", 'reason', 'timestamp']
+    search_fields = ['user__username', 'user__email', 'user__full_name']
